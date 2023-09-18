@@ -3,49 +3,48 @@ using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class UserService : IService<User>
+    public class ProductService : IService<Product>
     {
         private readonly Context Context;
-        private readonly DbSet<User> Table;
+        private readonly DbSet<Product> Table;
 
-        public UserService(Context context)
+        public ProductService(Context context)
         {
             Context = context;
-            Table = context.Set<User>();
+            Table = context.Set<Product>();
         }
-
-        public void Add(User entity)
+        public void Add(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(User entity)
+        public void Delete(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public User Get(Guid id)
+        public Product Get(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Product> GetAll()
         {
             throw new NotImplementedException();
         }
 
         public void Save()
         {
+            throw new NotImplementedException();
         }
 
-        public void Update(User entity)
+        public void Update(Product entity)
         {
             throw new NotImplementedException();
         }
