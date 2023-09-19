@@ -49,6 +49,30 @@ namespace BusinessLogic.Test
             Assert.AreEqual(expected, total);
         }
 
+        [TestMethod]
+        public void Test3Products()
+        {
+            IPromotion p = new Promotion20Off();
+            List<Product> products = new List<Product>();
+            Product p1 = new Product()
+            {
+                Price = 100
+            };
+            Product p2 = new Product()
+            {
+                Price = 200
+            };
+            Product p3 = new Product()
+            {
+                Price = 300
+            };
+            products.Add(p1);
+            products.Add(p2);
+            products.Add(p3);
+            float total = p.GetTotal(products);
+            float expected = 100 + 200 + 300 - 300 * 0.2f;
+            Assert.AreEqual(expected, total);
+        }
 
 
     }
