@@ -7,7 +7,7 @@ namespace BusinessLogic
     {
         public float GetTotal(IEnumerable<Product> products)
         {
-            throw new NotImplementedException();
+            return 0;
         }
     }
 }
