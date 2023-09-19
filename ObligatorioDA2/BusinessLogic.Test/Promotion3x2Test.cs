@@ -15,6 +15,20 @@ namespace BusinessLogic.Test
             Assert.AreEqual(0, total);
         }
 
+        [TestMethod]
+        public void Test1Product()
+        {
+            IPromotion p = new Promotion3x2();
+            List<Product> products = new List<Product>();
+            Product p1 = new Product()
+            {
+                Price = 100,
+                Category = "cat1"
+            };
+            products.Add(p1);
+            float total = p.GetTotal(products);
+            Assert.AreEqual(100, total);
+        }
 
     }
 }
