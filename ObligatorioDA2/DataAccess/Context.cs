@@ -12,7 +12,7 @@ namespace DataAccess
     {
         public DbSet<User> Users{ get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Purchase> Purchase{ get; set; }
+        public DbSet<Purchase> Purchases{ get; set; }
         public DbSet<PromotionEntity> Promotions{ get; set; }
 
         public Context(DbContextOptions<Context> builder) : base(builder)
