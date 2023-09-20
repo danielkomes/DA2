@@ -107,5 +107,33 @@ namespace BusinessLogic.Test
             float expected = 100 + 200 + 300;
             Assert.AreEqual(expected, total);
         }
+
+        [TestMethod]
+        public void Test3Products2DifferentCategories()
+        {
+            IPromotion p = new Promotion3x2();
+            List<Product> products = new List<Product>();
+            Product p1 = new Product()
+            {
+                Price = 100,
+                Category = "cat1"
+            };
+            Product p2 = new Product()
+            {
+                Price = 200,
+                Category = "cat1"
+            };
+            Product p3 = new Product()
+            {
+                Price = 300,
+                Category = "cat2"
+            };
+            products.Add(p1);
+            products.Add(p2);
+            products.Add(p3);
+            float total = p.GetTotal(products);
+            float expected = 100 + 200 + 300;
+            Assert.AreEqual(expected, total);
+        }
     }
 }
