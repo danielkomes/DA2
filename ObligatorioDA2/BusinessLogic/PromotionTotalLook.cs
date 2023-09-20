@@ -7,7 +7,12 @@ namespace BusinessLogic
     {
         public float GetTotal(IEnumerable<Product> products)
         {
-            return 0;
+            float total = 0;
+            foreach (Product product in products)
+            {
+                total += product.Price;
+            }
+            return total;
         }
     }
 }
