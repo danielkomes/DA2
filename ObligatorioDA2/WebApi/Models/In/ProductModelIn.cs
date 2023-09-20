@@ -9,7 +9,7 @@ namespace WebApi.Models.In
         public string Description { get; set; }
         public string Brand { get; set; }
         public string Category { get; set; }
-        public string Color { get; set; }
+        public IEnumerable<string> Colors { get; set; }
 
         public Product ToEntity()
         {
@@ -20,7 +20,7 @@ namespace WebApi.Models.In
                 Description = Description,
                 Brand = Brand,
                 Category = Category,
-                Color = Color
+                Colors = Colors
             };
         }
     }
