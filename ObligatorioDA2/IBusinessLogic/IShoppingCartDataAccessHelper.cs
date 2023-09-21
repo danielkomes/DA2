@@ -10,9 +10,9 @@ namespace IBusinessLogic
 {
     public interface IShoppingCartDataAccessHelper
     {
-        public IService<Product> ProductService { get; set; }
-        public IService<User> UserService { get; set; }
-        public IService<PromotionEntity> PromotionService { get; set;}
+        //protected IService<User> UserService { get; set; }
+        //protected IService<Product> ProductService { get; set; }
+        //protected IService<PromotionEntity> PromotionService { get; set; }
 
         public bool VerifyProduct(Product product);
         public bool VerifyUser(User user);

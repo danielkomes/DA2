@@ -11,10 +11,18 @@ namespace BusinessLogic
 {
     public class ShoppingCartDataAccessHelper : IShoppingCartDataAccessHelper
     {
-        public IService<Product> ProductService { get; set; }
-        public IService<User> UserService { get; set; }
-        public IService<PromotionEntity> PromotionService { get; set; }
+        private readonly IService<User> UserService;
+        private readonly IService<Product> ProductService;
+        private readonly IService<PromotionEntity> PromotionService;
 
+        public ShoppingCartDataAccessHelper(IService<User> userService,
+            IService<Product> productService,
+            IService<PromotionEntity> promotionService)
+        {
+            UserService = userService;
+            ProductService = productService;
+            PromotionService = promotionService;
+        }
         public bool VerifyProduct(Product product)
         {
             throw new NotImplementedException();
