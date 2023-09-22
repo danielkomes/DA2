@@ -24,7 +24,8 @@ namespace BusinessLogic
         {
             //verificar el producto desde la BD
             //añadir al carrito
-            throw new NotImplementedException();
+
+            ProductsChecked = ProductsChecked.Append(product);
         }
 
         public void DoPurchase()
