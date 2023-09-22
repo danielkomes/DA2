@@ -10,9 +10,15 @@ namespace BusinessLogic
 {
     public class ShoppingCart : IShoppingCart
     {
-        public User User { get; set; }
+        public User? User { get; set; }
         public IEnumerable<Product> ProductsChecked { get; set; }
-        public IShoppingCartDataAccessHelper DataAccessHelper { get; set; }
+        private readonly IShoppingCartDataAccessHelper DataAccessHelper;
+
+        public ShoppingCart(IShoppingCartDataAccessHelper dataAccessHelper)
+        {
+            ProductsChecked = new List<Product>();
+            DataAccessHelper = dataAccessHelper;
+        }
 
         public void AddToCart(Product product)
         {

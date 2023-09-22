@@ -28,7 +28,7 @@ namespace BusinessLogic.Test
                 userMock.Object, productMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(true);
 
-            ShoppingCart cart = new ShoppingCart();
+            ShoppingCart cart = new ShoppingCart(helperMock.Object);
             cart.AddToCart(p);
             Product expected = p;
             Product actual = cart.ProductsChecked.First();
