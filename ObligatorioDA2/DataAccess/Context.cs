@@ -12,12 +12,12 @@ namespace DataAccess
     public class Context : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Purchase> Purchase { get; set; }
+        //public DbSet<Product> Products { get; set; }
+        //public DbSet<Purchase> Purchase { get; set; }
         public DbSet<PromotionEntity> Promotions { get; set; }
         public DbSet<Session> Sessions { get; set; }
-
-        public Context(DbContextOptions<Context> builder) : base(builder)
+        public Context() { }
+        public Context(DbContextOptions builder) : base(builder)
         {
 
         }
@@ -26,12 +26,12 @@ namespace DataAccess
             //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
-            modelBuilder.Entity<Product>()
-                .HasKey(p => p.Id);
+            //modelBuilder.Entity<Product>()
+            //    .HasKey(p => p.Id);
             //modelBuilder.Entity<Product>().HasMany<object>(/*v => v.Id*/)/*.WithMany<Product>()*/; //para setear en la bd relaciones entre tablas
 
-            modelBuilder.Entity<Purchase>()
-                .HasKey(p => p.Id);
+            //modelBuilder.Entity<Purchase>()
+            //    .HasKey(p => p.Id);
             modelBuilder.Entity<PromotionEntity>()
                 .HasKey(p => p.Id);
             modelBuilder.Entity<Session>()
