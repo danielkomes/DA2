@@ -19,11 +19,20 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void AddToCartCorrect()
         {
-            //User user = new User();
-            //var mock = new Mock<IService<User>>(MockBehavior.Strict);
-            //var userService = new UserService(mock.Object);
-            //mock.Setup(m => m.Get(It.IsAny<Guid>())).Returns(user);
-            //IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper();
+            Product p = new Product();
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, purchaseMock.Object);
+            helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(true);
+
+            ShoppingCart cart = new ShoppingCart();
+            cart.AddToCart(p);
+            Product expected = p;
+            Product actual = cart.ProductsChecked.First();
+            Assert.AreEqual(expected, actual);
         }
     }
 }
