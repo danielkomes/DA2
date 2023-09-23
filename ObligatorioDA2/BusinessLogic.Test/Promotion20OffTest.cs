@@ -9,7 +9,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestNoProducts()
         {
-            IPromotion p = new Promotion20Off();
+            PromotionAbstract p = new Promotion20Off();
             IEnumerable<Product> products = new List<Product>();
             float total = p.GetTotal(products);
             Assert.AreEqual(0, total);
@@ -18,7 +18,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test1Product()
         {
-            IPromotion p = new Promotion20Off();
+            PromotionAbstract p = new Promotion20Off();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -32,7 +32,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test2Products()
         {
-            IPromotion p = new Promotion20Off();
+            PromotionAbstract p = new Promotion20Off();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -52,7 +52,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products()
         {
-            IPromotion p = new Promotion20Off();
+            PromotionAbstract p = new Promotion20Off();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {

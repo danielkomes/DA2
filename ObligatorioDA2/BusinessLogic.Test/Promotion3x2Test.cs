@@ -9,7 +9,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestNoProducts()
         {
-            IPromotion p = new Promotion3x2();
+            PromotionAbstract p = new Promotion3x2();
             IEnumerable<Product> products = new List<Product>();
             float total = p.GetTotal(products);
             Assert.AreEqual(0, total);
@@ -18,7 +18,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test1Product()
         {
-            IPromotion p = new Promotion3x2();
+            PromotionAbstract p = new Promotion3x2();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -33,7 +33,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test2Products()
         {
-            IPromotion p = new Promotion3x2();
+            PromotionAbstract p = new Promotion3x2();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -55,7 +55,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products()
         {
-            IPromotion p = new Promotion3x2();
+            PromotionAbstract p = new Promotion3x2();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -83,7 +83,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products3DifferentCategories()
         {
-            IPromotion p = new Promotion3x2();
+            PromotionAbstract p = new Promotion3x2();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -111,7 +111,7 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products2DifferentCategories()
         {
-            IPromotion p = new Promotion3x2();
+            PromotionAbstract p = new Promotion3x2();
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
