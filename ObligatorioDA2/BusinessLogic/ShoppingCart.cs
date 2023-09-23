@@ -46,7 +46,12 @@ namespace BusinessLogic
             //verificar promociones en la BD, si algo falla, dar error
             //aplicar promociones y mostrar el total
             IEnumerable<PromotionEntity> promotions = DataAccessHelper.GetPromotions();
-            return 0;
+            float total = 0;
+            foreach (Product product in ProductsChecked)
+            {
+                total += product.Price;
+            }
+            return total;
         }
 
         public void RemoveFromCart(Product product)
