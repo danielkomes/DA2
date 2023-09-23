@@ -102,14 +102,20 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void GetTotalPrice2ProductPromotion20Off()
         {
-            Product p = new Product()
+            Product p1 = new Product()
             {
                 Price = 100
             };
-            PromotionEntity promotion = new PromotionEntity()
+            Product p2 = new Product()
             {
-
+                Price = 200
             };
+            PromotionEntity promotionEntity = new PromotionEntity();
+            Promotion20Off promotion20Off = new Promotion20Off(promotionEntity);
+            List<PromotionAbstract> promotionsList = new List<PromotionAbstract> {
+                promotion20Off
+            };
+
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
@@ -117,13 +123,14 @@ namespace BusinessLogic.Test
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
-                .Returns(new List<PromotionEntity>() { promotion });
-            helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(false);
+                .Returns(promotionsList);
+            helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
 
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
-            cart.AddToCart(p);
+            cart.AddToCart(p1);
+            cart.AddToCart(p2);
             float actual = cart.GetTotalPrice();
-            float expected = 0;
+            float expected = 100 + 200 - 200 * 0.2f;
             Assert.AreEqual(expected, actual);
             helperMock.VerifyAll();
         }
