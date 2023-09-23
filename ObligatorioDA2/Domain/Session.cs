@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace Domain
 {
-    public class PromotionEntity
+    public class Session
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public EPromotionType Type { get; set; }
+        public User User { get; set; }
+
+        public Session()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }

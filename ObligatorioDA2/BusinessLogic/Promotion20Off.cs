@@ -3,9 +3,17 @@ using IBusinessLogic;
 
 namespace BusinessLogic
 {
-    public class Promotion20Off : IPromotion
+    public class Promotion20Off : PromotionAbstract
     {
-        public float GetTotal(IEnumerable<Product> products)
+        private const EPromotionType TYPE = EPromotionType.Promotion20Off;
+        public Promotion20Off(PromotionEntity promotionEntity) : base(promotionEntity, TYPE)
+        {
+        }
+
+        //tener una constante de tipo Enum que será la usada para chequear
+        //si es la correcta para usar cuando me traiga las PromotionEntity
+        //tener un método de comparación con el enum
+        public override float GetTotal(IEnumerable<Product> products)
         {
             if (products.Count() == 0) return 0;
             float total = 0;

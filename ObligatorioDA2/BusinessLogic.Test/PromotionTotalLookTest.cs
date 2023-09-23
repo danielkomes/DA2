@@ -9,7 +9,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestNoProducts()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             IEnumerable<Product> products = new List<Product>();
             float total = p.GetTotal(products);
             Assert.AreEqual(0, total);
@@ -18,7 +19,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test1Product()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -33,7 +35,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test2Products()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -55,7 +58,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3ProductsSameColor()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -83,7 +87,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products1ColorDifferent()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -111,7 +116,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products1ColorExtra()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -139,7 +145,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products3Colors()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -167,7 +174,8 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void Test3Products3DifferentColors()
         {
-            IPromotion p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {

@@ -99,5 +99,33 @@ namespace BusinessLogic.Test
             helperMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void GetTotalPrice2ProductPromotion20Off()
+        {
+            Product p = new Product()
+            {
+                Price = 100
+            };
+            PromotionEntity promotion = new PromotionEntity()
+            {
+
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, promotionMock.Object);
+            helperMock.Setup(sp => sp.GetPromotions())
+                .Returns(new List<PromotionEntity>() { promotion });
+            helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(false);
+
+            ShoppingCart cart = new ShoppingCart(helperMock.Object);
+            cart.AddToCart(p);
+            float actual = cart.GetTotalPrice();
+            float expected = 0;
+            Assert.AreEqual(expected, actual);
+            helperMock.VerifyAll();
+        }
     }
 }
