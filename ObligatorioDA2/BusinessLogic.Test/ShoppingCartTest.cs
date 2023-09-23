@@ -65,7 +65,7 @@ namespace BusinessLogic.Test
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
-                .Returns(new List<PromotionEntity>());
+                .Returns(new List<PromotionAbstract>());
 
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
             float actual = cart.GetTotalPrice();
@@ -88,7 +88,7 @@ namespace BusinessLogic.Test
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
-                .Returns(new List<PromotionEntity>());
+                .Returns(new List<PromotionAbstract>());
             helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(true);
 
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
