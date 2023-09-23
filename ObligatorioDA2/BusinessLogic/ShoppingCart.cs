@@ -45,7 +45,8 @@ namespace BusinessLogic
             //...así que no necesito verificar el producto, ya se hace en el Add
             //verificar promociones en la BD, si algo falla, dar error
             //aplicar promociones y mostrar el total
-            throw new NotImplementedException();
+            IEnumerable<PromotionEntity> promotions = DataAccessHelper.GetPromotions();
+            return 0;
         }
 
         public void RemoveFromCart(Product product)
