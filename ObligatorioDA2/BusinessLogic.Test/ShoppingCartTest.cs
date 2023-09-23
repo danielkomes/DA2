@@ -58,7 +58,6 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void GetTotalPriceNoProductsNoPromotions()
         {
-            Product p = new Product();
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
