@@ -33,6 +33,9 @@ namespace BusinessLogic.Test
             Product expected = p;
             Product actual = cart.ProductsChecked.First();
             Assert.AreEqual(expected, actual);
+            helperMock.VerifyAll();
+        }
+
         }
     }
 }
