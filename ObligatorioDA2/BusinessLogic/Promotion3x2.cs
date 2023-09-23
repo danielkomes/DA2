@@ -3,9 +3,13 @@ using IBusinessLogic;
 
 namespace BusinessLogic
 {
-    public class Promotion3x2 : IPromotion
+    public class Promotion3x2 : PromotionAbstract
     {
-        public float GetTotal(IEnumerable<Product> products)
+        private const EPromotionType TYPE = EPromotionType.Promotion3x2;
+        public Promotion3x2(PromotionEntity promotionEntity) : base(promotionEntity, TYPE)
+        {
+        }
+        public override float GetTotal(IEnumerable<Product> products)
         {
             if (products.Count() == 0) return 0;
             float total = 0;
@@ -27,7 +31,7 @@ namespace BusinessLogic
                     minPrice = product.Price;
                 }
             }
-            if(categoryCount.Values.Max() >= 3)
+            if (categoryCount.Values.Max() >= 3)
             {
                 total -= minPrice;
             }

@@ -3,9 +3,13 @@ using IBusinessLogic;
 
 namespace BusinessLogic
 {
-    public class PromotionTotalLook : IPromotion
+    public class PromotionTotalLook : PromotionAbstract
     {
-        public float GetTotal(IEnumerable<Product> products)
+        private const EPromotionType TYPE = EPromotionType.PromotionTotalLook;
+        public PromotionTotalLook(PromotionEntity promotionEntity) : base(promotionEntity, TYPE)
+        {
+        }
+        public override float GetTotal(IEnumerable<Product> products)
         {
             if (products.Count() == 0) return 0;
             float total = 0;
