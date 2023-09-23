@@ -25,7 +25,8 @@ namespace BusinessLogic
             //verificar el producto desde la BD
             //añadir al carrito
 
-            DataAccessHelper.VerifyProduct(product);
+            bool valid = DataAccessHelper.VerifyProduct(product);
+            if (!valid) { return; } //TODO: throw exception 
             ProductsChecked = ProductsChecked.Append(product);
         }
 
