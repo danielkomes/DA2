@@ -45,11 +45,23 @@ namespace BusinessLogic
             //...así que no necesito verificar el producto, ya se hace en el Add
             //verificar promociones en la BD, si algo falla, dar error
             //aplicar promociones y mostrar el total
-            IEnumerable<PromotionAbstract> promotions = DataAccessHelper.GetPromotions();
+
             float total = 0;
-            foreach (Product product in ProductsChecked)
+
+            IEnumerable<PromotionAbstract> promotions = DataAccessHelper.GetPromotions();
+            if (promotions.Any())
             {
-                total += product.Price;
+                foreach (PromotionAbstract promotion in promotions)
+                {
+                    total = promotion.GetTotal(ProductsChecked);
+                }
+            }
+            else
+            {
+                foreach (Product product in ProductsChecked)
+                {
+                    total += product.Price;
+                }
             }
             return total;
         }
