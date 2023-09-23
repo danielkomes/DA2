@@ -12,6 +12,7 @@ namespace BusinessLogic
     {
         public User? User { get; set; }
         public IEnumerable<Product> ProductsChecked { get; set; }
+        public PromotionAbstract PromotionApplied { get; set; }
         private readonly IShoppingCartDataAccessHelper DataAccessHelper;
 
         public ShoppingCart(IShoppingCartDataAccessHelper dataAccessHelper)
@@ -47,13 +48,17 @@ namespace BusinessLogic
             //aplicar promociones y mostrar el total
 
             float total = 0;
-
             IEnumerable<PromotionAbstract> promotions = DataAccessHelper.GetPromotions();
+
             if (promotions.Any())
             {
+                List<PromotionResult> results = new List<PromotionResult>();
                 foreach (PromotionAbstract promotion in promotions)
                 {
-                    total = promotion.GetTotal(ProductsChecked);
+                    //total = promotion.GetTotal(ProductsChecked);
+                    PromotionResult result = promotion.GetTotal(ProductsChecked);
+                    results.Add(result);
+                    total = result.Result;
                 }
             }
             else
@@ -62,6 +67,7 @@ namespace BusinessLogic
                 {
                     total += product.Price;
                 }
+                PromotionApplied = null;
             }
             return total;
         }

@@ -13,6 +13,6 @@ namespace IBusinessLogic
             Type = type;
         }
 
-        public abstract float GetTotal(IEnumerable<Product> products);
+        public abstract PromotionResult GetTotal(IEnumerable<Product> products);
     }
 }
