@@ -38,6 +38,7 @@ namespace WebApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages(); 
@@ -45,6 +46,7 @@ namespace WebApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi"));
 
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
             app.Run();
         }
     }
