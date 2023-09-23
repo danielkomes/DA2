@@ -48,26 +48,19 @@ namespace BusinessLogic
             //aplicar promociones y mostrar el total
 
             float total = 0;
-            IEnumerable<PromotionAbstract> promotions = DataAccessHelper.GetPromotions();
 
-            if (promotions.Any())
+            foreach (Product product in ProductsChecked)
             {
-                List<PromotionResult> results = new List<PromotionResult>();
-                foreach (PromotionAbstract promotion in promotions)
-                {
-                    //total = promotion.GetTotal(ProductsChecked);
-                    PromotionResult result = promotion.GetTotal(ProductsChecked);
-                    results.Add(result);
-                    total = result.Result;
-                }
+                total += product.Price;
             }
-            else
+            PromotionApplied = null;
+
+            IEnumerable<PromotionAbstract> promotions = DataAccessHelper.GetPromotions();
+            foreach (PromotionAbstract promotion in promotions)
             {
-                foreach (Product product in ProductsChecked)
-                {
-                    total += product.Price;
-                }
-                PromotionApplied = null;
+                PromotionResult result = promotion.GetTotal(ProductsChecked);
+                if (result.Result < total) total = result.Result;
+                PromotionApplied = promotion;
             }
             return total;
         }
