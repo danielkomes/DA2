@@ -37,5 +37,10 @@ namespace BusinessLogic
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<PromotionEntity> GetPromotions()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

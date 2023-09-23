@@ -17,5 +17,6 @@ namespace IBusinessLogic
         public bool VerifyProduct(Product product);
         public bool VerifyUser(User user);
         public bool VerifyPromotion(PromotionEntity promotion);
+        public IEnumerable<PromotionEntity> GetPromotions();
     }
 }
