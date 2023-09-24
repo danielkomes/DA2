@@ -42,7 +42,7 @@ namespace BusinessLogic
 
         public bool VerifyUser(User user)
         {
-            throw new NotImplementedException();
+            return UserService.Exists(user.Id);
         }
 
         public IEnumerable<PromotionAbstract> GetPromotions()
