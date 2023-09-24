@@ -15,8 +15,10 @@ namespace IBusinessLogic
         //protected IService<PromotionEntity> PromotionService { get; set; }
 
         public bool VerifyProduct(Product product);
+        public bool VerifyProducts(IEnumerable<Product> products);
         public bool VerifyUser(User user);
         public bool VerifyPromotion(PromotionEntity promotion);
         public IEnumerable<PromotionAbstract> GetPromotions();
+        public void InsertPurchase(Purchase purchase);
     }
 }
