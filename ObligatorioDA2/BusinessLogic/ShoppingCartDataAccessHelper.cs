@@ -73,7 +73,7 @@ namespace BusinessLogic
 
         public void InsertPurchase(Purchase purchase)
         {
-            throw new NotImplementedException();
+            PurchaseService.Add(purchase);
         }
 
     }
