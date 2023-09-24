@@ -29,6 +29,7 @@ namespace BusinessLogic
             bool valid = DataAccessHelper.VerifyProduct(product);
             if (!valid) { return; } //TODO: throw exception 
             ProductsChecked = ProductsChecked.Append(product);
+            //TODO: GetTotalPrice();
         }
 
         public void DoPurchase()
@@ -40,7 +41,7 @@ namespace BusinessLogic
 
             DataAccessHelper.VerifyUser(User);
             DataAccessHelper.VerifyProducts(ProductsChecked);
-            Purchase purchase = new Purchase(User, ProductsChecked);
+            Purchase purchase = new Purchase(User, ProductsChecked, PromotionApplied?.PromotionEntity);
             DataAccessHelper.InsertPurchase(purchase);
         }
 

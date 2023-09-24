@@ -5,7 +5,7 @@ namespace IBusinessLogic
     public abstract class PromotionAbstract
     {
         public readonly EPromotionType Type;
-        protected readonly PromotionEntity PromotionEntity;
+        public readonly PromotionEntity PromotionEntity;
 
         public PromotionAbstract(PromotionEntity promotionEntity, EPromotionType type)
         {
