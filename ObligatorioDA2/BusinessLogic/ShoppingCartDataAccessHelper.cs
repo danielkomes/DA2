@@ -52,7 +52,21 @@ namespace BusinessLogic
             IEnumerable<PromotionAbstract> ret = new List<PromotionAbstract>();
             foreach (PromotionEntity entity in entities)
             {
-                ret = ret.Append(new Promotion20Off(entity));
+                switch (entity.Type)
+                {
+                    case EPromotionType.Promotion20Off:
+                        ret = ret.Append(new Promotion20Off(entity));
+                        break;
+                    case EPromotionType.Promotion3x2:
+                        ret = ret.Append(new Promotion3x2(entity));
+                        break;
+                    case EPromotionType.PromotionTotalLook:
+                        ret = ret.Append(new PromotionTotalLook(entity));
+                        break;
+                    default:
+                        //TODO: throw Exception?
+                        break;
+                }
             }
             return ret;
         }
