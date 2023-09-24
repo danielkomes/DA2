@@ -28,7 +28,7 @@ namespace BusinessLogic
         }
         public bool VerifyProduct(Product product)
         {
-            throw new NotImplementedException();
+            return ProductService.Exists(product.Id);
         }
         public bool VerifyProducts(IEnumerable<Product> products)
         {
