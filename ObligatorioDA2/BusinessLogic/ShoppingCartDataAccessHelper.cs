@@ -48,7 +48,13 @@ namespace BusinessLogic
 
         public IEnumerable<PromotionAbstract> GetPromotions()
         {
-            return new List<PromotionAbstract>();
+            IEnumerable<PromotionEntity> entities = PromotionService.GetAll();
+            IEnumerable<PromotionAbstract> ret = new List<PromotionAbstract>();
+            foreach (PromotionEntity entity in entities)
+            {
+                ret = ret.Append(new Promotion20Off(entity));
+            }
+            return ret;
         }
 
         public void InsertPurchase(Purchase purchase)
