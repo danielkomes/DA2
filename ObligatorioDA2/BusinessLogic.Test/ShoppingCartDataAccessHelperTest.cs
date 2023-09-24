@@ -93,5 +93,22 @@ namespace BusinessLogic.Test
             bool actual = helper.VerifyPromotion(promo.PromotionEntity);
             Assert.IsTrue(actual);
         }
+
+        [TestMethod]
+        public void VerifyPromotionInvalid()
+        {
+            PromotionEntity p = new PromotionEntity();
+            PromotionAbstract promo = new Promotion20Off(p);
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
+            promotionMock.Setup(m => m.Exists(promo.PromotionEntity.Id)).Returns(false);
+            bool actual = helper.VerifyPromotion(promo.PromotionEntity);
+            Assert.IsFalse(actual);
+        }
     }
 }
