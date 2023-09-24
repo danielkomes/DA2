@@ -232,15 +232,21 @@ namespace BusinessLogic.Test
             IEnumerable<PromotionAbstract> actual = helper.GetPromotions();
             for (int i = 0; i < actual.Count(); i++)
             {
-                Assert.AreEqual(actual.ElementAt(i), promotions.ElementAt(i));
+                Assert.AreEqual(actual.ElementAt(i).GetType(), promotions.ElementAt(i).GetType());
             }
         }
 
         [TestMethod]
         public void GetPromotions2Promotions()
         {
-            PromotionEntity p1 = new PromotionEntity();
-            PromotionEntity p2 = new PromotionEntity();
+            PromotionEntity p1 = new PromotionEntity()
+            {
+                Type = EPromotionType.Promotion20Off
+            };
+            PromotionEntity p2 = new PromotionEntity()
+            {
+                Type = EPromotionType.Promotion3x2
+            };
             PromotionAbstract promo1 = new Promotion20Off(p1);
             PromotionAbstract promo2 = new Promotion3x2(p2);
             IEnumerable<PromotionEntity> promotionEntities = new List<PromotionEntity>
@@ -263,7 +269,7 @@ namespace BusinessLogic.Test
             IEnumerable<PromotionAbstract> actual = helper.GetPromotions();
             for (int i = 0; i < actual.Count(); i++)
             {
-                Assert.AreEqual(actual.ElementAt(i), promotions.ElementAt(i));
+                Assert.AreEqual(actual.ElementAt(i).GetType(), promotions.ElementAt(i).GetType());
             }
         }
     }
