@@ -27,6 +27,7 @@ namespace BusinessLogic.Test
             productMock.Setup(m => m.Exists(p.Id)).Returns(true);
             bool actual = helper.VerifyProduct(p);
             Assert.IsTrue(actual);
+            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -43,6 +44,7 @@ namespace BusinessLogic.Test
             productMock.Setup(m => m.Exists(p.Id)).Returns(false);
             bool actual = helper.VerifyProduct(p);
             Assert.IsFalse(actual);
+            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -59,6 +61,7 @@ namespace BusinessLogic.Test
             userMock.Setup(m => m.Exists(u.Id)).Returns(true);
             bool actual = helper.VerifyUser(u);
             Assert.IsTrue(actual);
+            userMock.VerifyAll();
         }
 
         [TestMethod]
@@ -75,6 +78,7 @@ namespace BusinessLogic.Test
             userMock.Setup(m => m.Exists(u.Id)).Returns(false);
             bool actual = helper.VerifyUser(u);
             Assert.IsFalse(actual);
+            userMock.VerifyAll();
         }
 
         [TestMethod]
@@ -92,6 +96,7 @@ namespace BusinessLogic.Test
             promotionMock.Setup(m => m.Exists(promo.PromotionEntity.Id)).Returns(true);
             bool actual = helper.VerifyPromotion(promo.PromotionEntity);
             Assert.IsTrue(actual);
+            promotionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -109,6 +114,7 @@ namespace BusinessLogic.Test
             promotionMock.Setup(m => m.Exists(promo.PromotionEntity.Id)).Returns(false);
             bool actual = helper.VerifyPromotion(promo.PromotionEntity);
             Assert.IsFalse(actual);
+            promotionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -129,6 +135,7 @@ namespace BusinessLogic.Test
 
             bool actual = helper.VerifyProducts(products);
             Assert.IsTrue(actual);
+            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -149,6 +156,7 @@ namespace BusinessLogic.Test
 
             bool actual = helper.VerifyProducts(products);
             Assert.IsFalse(actual);
+            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -169,6 +177,7 @@ namespace BusinessLogic.Test
 
             bool actual = helper.VerifyProducts(products);
             Assert.IsFalse(actual);
+            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -205,6 +214,7 @@ namespace BusinessLogic.Test
 
             IEnumerable<PromotionAbstract> actual = helper.GetPromotions();
             Assert.IsFalse(actual.Any());
+            promotionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -234,6 +244,7 @@ namespace BusinessLogic.Test
             {
                 Assert.AreEqual(actual.ElementAt(i).GetType(), promotions.ElementAt(i).GetType());
             }
+            promotionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -271,6 +282,7 @@ namespace BusinessLogic.Test
             {
                 Assert.AreEqual(actual.ElementAt(i).GetType(), promotions.ElementAt(i).GetType());
             }
+            promotionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -313,6 +325,26 @@ namespace BusinessLogic.Test
             {
                 Assert.AreEqual(actual.ElementAt(i).GetType(), promotions.ElementAt(i).GetType());
             }
+            promotionMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void InsertPurchaseValid()
+        {
+            User user = new User();
+            IEnumerable<Product> products = new List<Product>();
+            Purchase purchase = new Purchase(user, products);
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
+            purchaseMock.Setup(m => m.Add(purchase));
+
+            helper.InsertPurchase(purchase);
+            purchaseMock.VerifyAll();
         }
     }
 }
