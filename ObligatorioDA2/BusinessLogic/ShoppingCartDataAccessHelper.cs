@@ -32,7 +32,7 @@ namespace BusinessLogic
         }
         public bool VerifyProducts(IEnumerable<Product> products)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool VerifyPromotion(PromotionEntity promotion)
