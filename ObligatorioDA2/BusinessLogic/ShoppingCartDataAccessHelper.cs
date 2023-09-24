@@ -37,7 +37,7 @@ namespace BusinessLogic
 
         public bool VerifyPromotion(PromotionEntity promotion)
         {
-            throw new NotImplementedException();
+            return PromotionService.Exists(promotion.Id);
         }
 
         public bool VerifyUser(User user)
