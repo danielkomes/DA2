@@ -48,7 +48,7 @@ namespace BusinessLogic
 
         public IEnumerable<PromotionAbstract> GetPromotions()
         {
-            throw new NotImplementedException();
+            return new List<PromotionAbstract>();
         }
 
         public void InsertPurchase(Purchase purchase)
