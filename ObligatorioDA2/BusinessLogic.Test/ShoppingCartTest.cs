@@ -22,10 +22,11 @@ namespace BusinessLogic.Test
             Product p = new Product();
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            var purchaseMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, purchaseMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(true);
 
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
@@ -42,10 +43,11 @@ namespace BusinessLogic.Test
             Product p = new Product();
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            var purchaseMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, purchaseMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(false);
 
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
@@ -61,9 +63,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
                 .Returns(new List<PromotionAbstract>());
 
@@ -84,9 +87,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
                 .Returns(new List<PromotionAbstract>());
             helperMock.Setup(sp => sp.VerifyProduct(p)).Returns(true);
@@ -119,9 +123,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
                 .Returns(promotionsList);
             helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
@@ -158,9 +163,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
                 .Returns(promotionsList);
             helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
@@ -202,9 +208,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
                 .Returns(promotionsList);
             helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
@@ -251,9 +258,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.GetPromotions())
                 .Returns(promotionsList);
             helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
@@ -275,9 +283,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
             cart.RemoveFromCart(p1);
             List<Product> actual = cart.ProductsChecked.ToList();
@@ -292,9 +301,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
             cart.AddToCart(p1);
@@ -312,9 +322,10 @@ namespace BusinessLogic.Test
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
             var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object);
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
             cart.AddToCart(p1);
