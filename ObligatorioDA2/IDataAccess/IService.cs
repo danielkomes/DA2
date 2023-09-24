@@ -9,6 +9,7 @@ namespace IDataAccess
         public void Update(T entity);
         public IEnumerable<T> GetAll();
         public T Get(Guid id);
+        public bool Exists(Guid id);
 
         public void Save();
         //ICollection<T> FindByCondition(Expression<Func<T, bool>> condition);

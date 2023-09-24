@@ -42,5 +42,13 @@ namespace BusinessLogic
             }
             return new PromotionResult(total, applied, PromotionEntity.Id);
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null) return false;
+            if (obj is not Promotion20Off) return false;
+            PromotionTotalLook other = obj as PromotionTotalLook;
+            return PromotionEntity.Equals(other.PromotionEntity);
+        }
     }
 }

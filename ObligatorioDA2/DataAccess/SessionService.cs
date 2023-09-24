@@ -24,6 +24,11 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
+        public bool Exists(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public Session Get(Guid id)
         {
             throw new NotImplementedException();

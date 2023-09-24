@@ -28,31 +28,52 @@ namespace BusinessLogic
         }
         public bool VerifyProduct(Product product)
         {
-            throw new NotImplementedException();
+            return ProductService.Exists(product.Id);
         }
         public bool VerifyProducts(IEnumerable<Product> products)
         {
-            throw new NotImplementedException();
+            if (!products.Any()) return false;
+            return products.All(p => VerifyProduct(p));
         }
 
         public bool VerifyPromotion(PromotionEntity promotion)
         {
-            throw new NotImplementedException();
+            return PromotionService.Exists(promotion.Id);
         }
 
         public bool VerifyUser(User user)
         {
-            throw new NotImplementedException();
+            return UserService.Exists(user.Id);
         }
 
         public IEnumerable<PromotionAbstract> GetPromotions()
         {
-            throw new NotImplementedException();
+            IEnumerable<PromotionEntity> entities = PromotionService.GetAll();
+            IEnumerable<PromotionAbstract> ret = new List<PromotionAbstract>();
+            foreach (PromotionEntity entity in entities)
+            {
+                switch (entity.Type)
+                {
+                    case EPromotionType.Promotion20Off:
+                        ret = ret.Append(new Promotion20Off(entity));
+                        break;
+                    case EPromotionType.Promotion3x2:
+                        ret = ret.Append(new Promotion3x2(entity));
+                        break;
+                    case EPromotionType.PromotionTotalLook:
+                        ret = ret.Append(new PromotionTotalLook(entity));
+                        break;
+                    default:
+                        //TODO: throw Exception?
+                        break;
+                }
+            }
+            return ret;
         }
 
         public void InsertPurchase(Purchase purchase)
         {
-            throw new NotImplementedException();
+            PurchaseService.Add(purchase);
         }
 
     }
