@@ -229,10 +229,42 @@ namespace BusinessLogic.Test
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
             promotionMock.Setup(m => m.GetAll()).Returns(promotionEntities);
 
-            IEnumerable<PromotionAbstract> result = helper.GetPromotions();
-            int actual = result.Count();
-            int expected = 1;
-            Assert.AreEqual(expected, actual);
+            IEnumerable<PromotionAbstract> actual = helper.GetPromotions();
+            for (int i = 0; i < actual.Count(); i++)
+            {
+                Assert.AreEqual(actual.ElementAt(i), promotions.ElementAt(i));
+            }
+        }
+
+        [TestMethod]
+        public void GetPromotions2Promotions()
+        {
+            PromotionEntity p1 = new PromotionEntity();
+            PromotionEntity p2 = new PromotionEntity();
+            PromotionAbstract promo1 = new Promotion20Off(p1);
+            PromotionAbstract promo2 = new Promotion3x2(p2);
+            IEnumerable<PromotionEntity> promotionEntities = new List<PromotionEntity>
+            {
+                p1, p2
+            };
+            IEnumerable<PromotionAbstract> promotions = new List<PromotionAbstract>
+            {
+                promo1, promo2
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
+            promotionMock.Setup(m => m.GetAll()).Returns(promotionEntities);
+
+            IEnumerable<PromotionAbstract> actual = helper.GetPromotions();
+            for (int i = 0; i < actual.Count(); i++)
+            {
+                Assert.AreEqual(actual.ElementAt(i), promotions.ElementAt(i));
+            }
         }
     }
 }
