@@ -32,7 +32,7 @@ namespace BusinessLogic
         }
         public bool VerifyProducts(IEnumerable<Product> products)
         {
-            return true;
+            return products.All(p => VerifyProduct(p));
         }
 
         public bool VerifyPromotion(PromotionEntity promotion)
