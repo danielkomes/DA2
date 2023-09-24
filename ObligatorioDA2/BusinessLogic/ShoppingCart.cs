@@ -37,7 +37,11 @@ namespace BusinessLogic
             //verificar productos en la bd, si algo falla, dar error
             //crear objeto Purchase
             //insertar objeto Purchase en la BD
-            throw new NotImplementedException();
+
+            DataAccessHelper.VerifyUser(User);
+            DataAccessHelper.VerifyProducts(ProductsChecked);
+            Purchase purchase = new Purchase(User, ProductsChecked);
+            DataAccessHelper.InsertPurchase(purchase);
         }
 
         public float GetTotalPrice()
