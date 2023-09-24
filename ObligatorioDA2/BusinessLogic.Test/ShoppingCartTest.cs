@@ -267,5 +267,41 @@ namespace BusinessLogic.Test
             Assert.AreEqual(expected, actual);
             helperMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void RemoveFromCartEmpty()
+        {
+            Product p1 = new Product();
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, promotionMock.Object);
+            ShoppingCart cart = new ShoppingCart(helperMock.Object);
+            cart.RemoveFromCart(p1);
+            List<Product> actual = cart.ProductsChecked.ToList();
+            Assert.IsTrue(!actual.Any());
+            helperMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void RemoveFromCart1Product()
+        {
+            Product p1 = new Product();
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, promotionMock.Object);
+            helperMock.Setup(sp => sp.VerifyProduct(It.IsAny<Product>())).Returns(true);
+            ShoppingCart cart = new ShoppingCart(helperMock.Object);
+            cart.AddToCart(p1);
+            cart.RemoveFromCart(p1);
+            List<Product> actual = cart.ProductsChecked.ToList();
+            Assert.IsTrue(!actual.Any());
+            helperMock.VerifyAll();
+        }
     }
 }
