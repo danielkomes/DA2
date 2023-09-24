@@ -68,7 +68,7 @@ namespace BusinessLogic
         public void RemoveFromCart(Product product)
         {
             //no necesita verificar, se elimina siempre
-            throw new NotImplementedException();
+            ProductsChecked = ProductsChecked.Where(p => p != product);
         }
     }
 }
