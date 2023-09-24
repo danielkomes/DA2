@@ -32,6 +32,7 @@ namespace BusinessLogic
         }
         public bool VerifyProducts(IEnumerable<Product> products)
         {
+            if (!products.Any()) return false;
             return products.All(p => VerifyProduct(p));
         }
 
