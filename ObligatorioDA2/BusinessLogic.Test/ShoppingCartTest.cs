@@ -334,5 +334,30 @@ namespace BusinessLogic.Test
             Assert.AreEqual(1, actual.Count());
             helperMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DoPurchase1Product()
+        {
+            User user = new User();
+            Product p1 = new Product();
+            List<Product> products = new List<Product> { p1 };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
+            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
+                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
+            helperMock.Setup(h => h.VerifyUser(user)).Returns(true);
+            helperMock.Setup(h => h.VerifyProduct(p1)).Returns(true);
+            helperMock.Setup(h => h.VerifyProducts(products)).Returns(true);
+
+            //Purchase purchase = new Purchase(user, products);
+            helperMock.Setup(h => h.InsertPurchase(It.IsAny<Purchase>()));
+            ShoppingCart cart = new ShoppingCart(helperMock.Object);
+            cart.AddToCart(p1);
+            cart.User = user;
+            cart.DoPurchase();
+        }
     }
 }
