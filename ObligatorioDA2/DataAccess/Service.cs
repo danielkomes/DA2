@@ -30,6 +30,11 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
+        public bool Exists(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public T Get(Guid id)
         {
             throw new NotImplementedException();
