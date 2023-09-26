@@ -2,7 +2,9 @@ using Domain;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
 using WebApi.Controllers;
+using WebApi.Models.In;
 using WebApi.Models.Out;
 
 namespace WebApi.Test
@@ -102,6 +104,28 @@ namespace WebApi.Test
             UserModelOut expectedModel = expectedOk.Value as UserModelOut;
             Assert.AreEqual(expectedModel.Email, actualModel.Email);
             Assert.AreEqual(expectedModel.Address, actualModel.Address);
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PostOk()
+        {
+            UserModelIn userModel = new UserModelIn()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object);
+            userMock.Setup(m => m.Add(It.IsAny<User>()));
+
+            IActionResult actual = userController.Post(userModel);
+            IActionResult expected = new OkObjectResult("User created");
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value, actualOk.Value);
             userMock.VerifyAll();
         }
     }
