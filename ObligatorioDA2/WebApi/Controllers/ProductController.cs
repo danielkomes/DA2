@@ -30,5 +30,11 @@ namespace WebApi.Controllers
             }
             return Ok(models);
         }
+
+        [HttpGet]
+        public IActionResult Get([FromBody] ProductModelIn model)
+        {
+            return Ok("");
+        }
     }
 }

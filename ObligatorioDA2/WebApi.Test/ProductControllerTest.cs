@@ -47,5 +47,35 @@ namespace WebApi.Test
             productMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void Get1ProductOk()
+        {
+            Product p1 = new Product();
+            Product p2 = new Product();
+            Product p3 = new Product();
+            IEnumerable<Product> products = new List<Product> { p1, p2, p3 };
+            ProductModelIn productModel = new ProductModelIn()
+            {
+                Name = p1.Name,
+                Description = p1.Description,
+                Price = p1.Price,
+                Brand = p1.Brand,
+                Category = p1.Category,
+                Colors = p1.Colors
+            };
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            ProductController productController = new ProductController(productMock.Object);
+            productMock.Setup(m => m.Get(It.IsAny<Product>())).Returns(p1);
+
+
+            IActionResult actual = productController.Get(productModel);
+            IActionResult expected = new OkObjectResult(new ProductModelOut(p1));
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            productMock.VerifyAll();
+        }
     }
 }
