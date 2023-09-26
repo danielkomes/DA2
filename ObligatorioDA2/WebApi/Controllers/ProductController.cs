@@ -34,7 +34,8 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Get([FromBody] ProductModelIn model)
         {
-            return Ok("");
+            Product p = ProductService.Get(model.ToEntity());
+            return Ok(new ProductModelOut(p));
         }
     }
 }
