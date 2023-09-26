@@ -10,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class UserService : IService<User>
+    public class PurchaseService : IService<Purchase>
     {
         private readonly Context Context;
-        private readonly DbSet<User> Table;
+        private readonly DbSet<Purchase> Table;
 
-        public UserService(Context context)
+        public PurchaseService(Context context)
         {
             Context = context;
-            Table = context.Set<User>();
+            Table = context.Set<Purchase>();
         }
 
-        public void Add(User entity)
+        public void Add(Purchase entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(User entity)
+        public void Delete(Purchase entity)
         {
             throw new NotImplementedException();
         }
@@ -36,12 +36,12 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
-        public User Get(Guid id)
+        public Purchase Get(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Purchase> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -50,7 +50,7 @@ namespace DataAccess
         {
         }
 
-        public void Update(User entity)
+        public void Update(Purchase entity)
         {
             throw new NotImplementedException();
         }

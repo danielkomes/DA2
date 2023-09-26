@@ -9,16 +9,19 @@ namespace BusinessLogic.Test
         [TestMethod]
         public void TestNoProducts()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             IEnumerable<Product> products = new List<Product>();
-            float total = p.GetTotal(products);
-            Assert.AreEqual(0, total);
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(0, false, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Test1Product()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -26,14 +29,16 @@ namespace BusinessLogic.Test
                 Colors = new List<string> { "red" }
             };
             products.Add(p1);
-            float total = p.GetTotal(products);
-            Assert.AreEqual(100, total);
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(100, false, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Test2Products()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -47,15 +52,17 @@ namespace BusinessLogic.Test
             };
             products.Add(p1);
             products.Add(p2);
-            float total = p.GetTotal(products);
-            float expected = 100 + 200;
-            Assert.AreEqual(expected, total);
+            float total = 100 + 200;
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(total, false, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Test3ProductsSameColor()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -75,15 +82,17 @@ namespace BusinessLogic.Test
             products.Add(p1);
             products.Add(p2);
             products.Add(p3);
-            float total = p.GetTotal(products);
-            float expected = 100 + 200 + 300 - 300 * 0.5f;
-            Assert.AreEqual(expected, total);
+            float total = 100 + 200 + 300 - 300 * 0.5f;
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(total, true, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Test3Products1ColorDifferent()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -103,15 +112,17 @@ namespace BusinessLogic.Test
             products.Add(p1);
             products.Add(p2);
             products.Add(p3);
-            float total = p.GetTotal(products);
-            float expected = 100 + 200 + 300;
-            Assert.AreEqual(expected, total);
+            float total = 100 + 200 + 300;
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(total, false, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Test3Products1ColorExtra()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -131,15 +142,17 @@ namespace BusinessLogic.Test
             products.Add(p1);
             products.Add(p2);
             products.Add(p3);
-            float total = p.GetTotal(products);
-            float expected = 100 + 200 + 300 - 300 * 0.5f;
-            Assert.AreEqual(expected, total);
+            float total = 100 + 200 + 300 - 300 * 0.5f;
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(total, true, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Test3Products3Colors()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -159,15 +172,17 @@ namespace BusinessLogic.Test
             products.Add(p1);
             products.Add(p2);
             products.Add(p3);
-            float total = p.GetTotal(products);
-            float expected = 100 + 200 + 300 - 300 * 0.5f;
-            Assert.AreEqual(expected, total);
+            float total = 100 + 200 + 300 - 300 * 0.5f;
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(total, true, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void Test3Products3DifferentColors()
         {
-            PromotionAbstract p = new PromotionTotalLook();
+            PromotionEntity pEntity = new PromotionEntity();
+            PromotionAbstract p = new PromotionTotalLook(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -187,9 +202,10 @@ namespace BusinessLogic.Test
             products.Add(p1);
             products.Add(p2);
             products.Add(p3);
-            float total = p.GetTotal(products);
-            float expected = 100 + 200 + 300;
-            Assert.AreEqual(expected, total);
+            float total = 100 + 200 + 300;
+            PromotionResult actual = p.GetTotal(products);
+            PromotionResult expected = new PromotionResult(total, false, pEntity.Id);
+            Assert.AreEqual(expected, actual);
         }
 
     }
