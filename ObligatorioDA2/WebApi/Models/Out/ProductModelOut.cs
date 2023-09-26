@@ -11,17 +11,14 @@ namespace WebApi.Models.Out
         public string Category { get; set; }
         public IEnumerable<string> Colors { get; set; }
 
-        public Product ToEntity()
+        public ProductModelOut(Product product)
         {
-            return new Product
-            {
-                Name = Name,
-                Price = Price,
-                Description = Description,
-                Brand = Brand,
-                Category = Category,
-                Colors = Colors
-            };
+            Name = product.Name;
+            Price = product.Price;
+            Description = product.Description;
+            Brand = product.Brand;
+            Category = product.Category;
+            Colors = product.Colors;
         }
     }
 }
