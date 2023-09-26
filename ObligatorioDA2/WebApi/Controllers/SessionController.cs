@@ -27,7 +27,7 @@ namespace WebApi.Controllers
         {
             //200 ok, si el email existe
             //201 created, si no está loggueado y el email no está registrado
-
+            SessionLogic.Authenticate(email, password);
             return Ok("Logged in");
         }
         [HttpDelete]
