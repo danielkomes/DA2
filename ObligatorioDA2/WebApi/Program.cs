@@ -1,3 +1,7 @@
+using DataAccess;
+using Domain;
+using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace WebApi
@@ -21,6 +25,9 @@ namespace WebApi
 
             //
             //add transient, singleton, scoped, etc
+            builder.Services.AddDbContext<DbContext, Context>();
+            builder.Services.AddTransient<IService<User>, UserService>();
+            builder.Services.AddHttpContextAccessor();
             //
 
             var app = builder.Build();
