@@ -76,5 +76,33 @@ namespace WebApi.Test
             }
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetOk()
+        {
+            User user1 = new User()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            IEnumerable<User> users = new List<User> { user1 };
+            IEnumerable<UserModelOut> userModelOuts = new List<UserModelOut> { new UserModelOut(user1) };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user1);
+
+
+            IActionResult actual = userController.Get("test@test.com");
+            IActionResult expected = new OkObjectResult(new UserModelOut(user1));
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+
+            OkObjectResult actualOk = actual as OkObjectResult;
+            UserModelOut actualModel = actualOk.Value as UserModelOut;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            UserModelOut expectedModel = expectedOk.Value as UserModelOut;
+            Assert.AreEqual(expectedModel.Email, actualModel.Email);
+            Assert.AreEqual(expectedModel.Address, actualModel.Address);
+            userMock.VerifyAll();
+        }
     }
 }
