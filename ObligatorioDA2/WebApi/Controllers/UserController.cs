@@ -24,7 +24,14 @@ namespace WebApi.Controllers
         {
             //200 ok (o 204 no content), si es admin
             //401 unauthorized, si no está loggueado o no es admin
-            return Ok(new List<UserModelOut> { new UserModelOut(new User()) });
+            IEnumerable<UserModelOut> models = new List<UserModelOut>();
+            IEnumerable<User> users = UserService.GetAll();
+            foreach (User user in users)
+            {
+                UserModelOut model = new UserModelOut(user);
+                models = models.Append(model);
+            }
+            return Ok(models);
         }
 
         // GET api/<ValuesController>/5
