@@ -31,6 +31,12 @@ namespace WebApi.Controllers
             return Ok(models);
         }
 
+        [HttpPost]
+        public IActionResult AddProduct([FromBody] ProductModelIn product)
+        {
+            return Ok("");
+        }
+
         //remove product from cart
         [HttpDelete]
         public IActionResult RemoveSelectedProducts([FromBody] IEnumerable<ProductModelIn> products)
