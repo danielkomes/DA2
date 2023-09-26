@@ -23,7 +23,12 @@ namespace WebApi.Controllers
         public IActionResult GetProducts()
         {
             //200 ok (o 204 no content)
-            return Ok("");
+            IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
+            foreach (Product p in ShoppingCart.ProductsChecked)
+            {
+                models = models.Append(new ProductModelOut(p));
+            }
+            return Ok(models);
         }
 
         //remove product from cart
