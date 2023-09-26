@@ -24,7 +24,7 @@ namespace WebApi.Controllers
         {
             //200 ok (o 204 no content), si es admin
             //401 unauthorized, si no está loggueado o no es admin
-            return Ok(new string[] { "value1", "value2" });
+            return Ok(new List<UserModelOut> { new UserModelOut(new User()) });
         }
 
         // GET api/<ValuesController>/5
