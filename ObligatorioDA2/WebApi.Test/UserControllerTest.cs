@@ -150,5 +150,27 @@ namespace WebApi.Test
             Assert.AreEqual(expectedOk.Value, actualOk.Value);
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteOk()
+        {
+            UserModelIn userModel = new UserModelIn()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object);
+            userMock.Setup(m => m.Delete(It.IsAny<User>()));
+
+            IActionResult actual = userController.Delete(userModel.Email);
+            IActionResult expected = new OkObjectResult("User deleted");
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            userMock.VerifyAll();
+        }
     }
 }
