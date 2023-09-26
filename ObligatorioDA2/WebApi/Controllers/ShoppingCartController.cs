@@ -48,6 +48,7 @@ namespace WebApi.Controllers
         public IActionResult RemoveAllProducts()
         {
             //200 ok
+            ShoppingCart.ProductsChecked = Enumerable.Empty<Product>();
             return Ok("All products removed");
         }
     }
