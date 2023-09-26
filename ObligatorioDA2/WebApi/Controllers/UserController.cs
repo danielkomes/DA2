@@ -58,11 +58,13 @@ namespace WebApi.Controllers
         //sign in
         //pedir email y address. Si el email es invalido, dar error
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] UserModelIn modelIn)
         {
             //201 created, si no está loggueado y el email no está registrado
             //401 unauthorized, si ya está logueado y no es admin
             //403 forbidden, si no está loggueado y el email ya fue registrado
+            UserService.Add(modelIn.ToEntity());
+            return Ok("User created");
         }
 
         // PUT api/<ValuesController>/5
