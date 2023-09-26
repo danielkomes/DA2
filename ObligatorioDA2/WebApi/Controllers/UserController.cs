@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Models.In;
 using WebApi.Models.Out;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -35,16 +36,22 @@ namespace WebApi.Controllers
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{email}")]
         //get one
         //filtro de autenticación? si no es admin, solo permitir si el id == id loggeado
         //si es admin, permitir siempre
-        public string Get(int id)
+        public IActionResult Get(string email)
         {
             //200 ok, si el id == loggedUser.id o es admin
             //401 unauthorized, si no está loggueado o el id != loggedUser.id
             //404 not found, si es admin y no existe
-            return "value";
+            User u = new User()
+            {
+                Email = email
+            };
+            User user = UserService.Get(u);
+            UserModelOut model = new UserModelOut(user);
+            return Ok(model);
         }
 
         // POST api/<ValuesController>
