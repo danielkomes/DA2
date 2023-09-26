@@ -24,12 +24,12 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
-        public bool Exists(Guid id)
+        public bool Exists(Session entity)
         {
             throw new NotImplementedException();
         }
 
-        public Session Get(Guid id)
+        public Session Get(Session entity)
         {
             throw new NotImplementedException();
         }

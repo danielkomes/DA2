@@ -28,7 +28,7 @@ namespace BusinessLogic
         }
         public bool VerifyProduct(Product product)
         {
-            return ProductService.Exists(product.Id);
+            return ProductService.Exists(product);
         }
         public bool VerifyProducts(IEnumerable<Product> products)
         {
@@ -38,12 +38,12 @@ namespace BusinessLogic
 
         public bool VerifyPromotion(PromotionEntity promotion)
         {
-            return PromotionService.Exists(promotion.Id);
+            return PromotionService.Exists(promotion);
         }
 
         public bool VerifyUser(User user)
         {
-            return UserService.Exists(user.Id);
+            return UserService.Exists(user);
         }
 
         public IEnumerable<PromotionAbstract> GetPromotions()
