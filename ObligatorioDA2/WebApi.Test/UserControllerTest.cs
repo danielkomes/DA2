@@ -128,5 +128,27 @@ namespace WebApi.Test
             Assert.AreEqual(expectedOk.Value, actualOk.Value);
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void PutOk()
+        {
+            UserModelIn userModel = new UserModelIn()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object);
+            userMock.Setup(m => m.Update(It.IsAny<User>()));
+
+            IActionResult actual = userController.Put(userModel);
+            IActionResult expected = new OkObjectResult("User modified");
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            userMock.VerifyAll();
+        }
     }
 }
