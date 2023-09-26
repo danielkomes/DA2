@@ -92,6 +92,8 @@ namespace WebApi.Controllers
             //401 unauthorized, si no es admin
             //403 forbidden, si el user a borrar es admin (los admins no se pueden borrar)
             //404 not found, si es admin y no existe
+            User user = new User() { Email = email };
+            UserService.Delete(user);
             return Ok("User deleted");
         }
     }
