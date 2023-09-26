@@ -33,9 +33,13 @@ namespace WebApi.Controllers
 
         //remove product from cart
         [HttpDelete]
-        public IActionResult RemoveSelectedProducts([FromQuery] IEnumerable<string> id)
+        public IActionResult RemoveSelectedProducts([FromBody] IEnumerable<ProductModelIn> products)
         {
             //200 ok
+            foreach (ProductModelIn model in products)
+            {
+                ShoppingCart.RemoveFromCart(model.ToEntity());
+            }
             return Ok("Product(s) removed");
         }
 
