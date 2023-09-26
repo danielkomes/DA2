@@ -40,7 +40,7 @@ namespace WebApi.Controllers
         //get one
         //filtro de autenticación? si no es admin, solo permitir si el id == id loggeado
         //si es admin, permitir siempre
-        public IActionResult Get(string email)
+        public IActionResult Get([FromRoute] string email)
         {
             //200 ok, si el id == loggedUser.id o es admin
             //401 unauthorized, si no está loggueado o el id != loggedUser.id
@@ -71,23 +71,28 @@ namespace WebApi.Controllers
         //edit user
         //filtro de autenticación, si no es admin, solo permitir si el id == id loggeado
         //si es admin, permitir siempre
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{email}")]
+        public IActionResult Put([FromRoute] string email, [FromBody] UserModelIn modelIn)
         {
             //200 ok, si el id == loggedUser.id o es admin
             //401 unauthorized, si no está loggueado o no es admin
             //403 forbidden, (si el id == loggedUser.id o es admin) y el email ya fue registrado
+            //404 not found, (si el id == loggedUser.id o es admin) y no existe
+            UserService.Update(modelIn.ToEntity());
+            return Ok("User modified");
         }
 
         // DELETE api/<ValuesController>/5
         //delete user
         //filtro de autenticacion, solo admins
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{email}")]
+        public IActionResult Delete(string email)
         {
             //200 ok, si es admin
             //401 unauthorized, si no es admin
             //403 forbidden, si el user a borrar es admin (los admins no se pueden borrar)
+            //404 not found, si es admin y no existe
+            return Ok("User deleted");
         }
     }
 }
