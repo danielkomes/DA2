@@ -64,7 +64,7 @@ namespace WebApi.Controllers
             //401 unauthorized, si ya está logueado y no es admin
             //403 forbidden, si no está loggueado y el email ya fue registrado
             UserService.Add(modelIn.ToEntity());
-            return Ok("User created");
+            return Created(modelIn.Email, "User created");
         }
 
         // PUT api/<ValuesController>/5
