@@ -34,7 +34,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult AddProduct([FromBody] ProductModelIn product)
         {
-            return Ok("");
+            ShoppingCart.AddToCart(product.ToEntity());
+            return Ok("Product added to cart");
         }
 
         //remove product from cart
