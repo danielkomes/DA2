@@ -35,6 +35,7 @@ namespace WebApi.Controllers
         {
             //200 ok, si está loggeado
             //401 unauthorized, si no está loggeado
+            SessionLogic.Logout();
             return Ok("Logged out");
         }
     }
