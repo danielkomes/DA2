@@ -28,5 +28,10 @@ namespace BusinessLogic
         {
             throw new NotImplementedException();
         }
+
+        public void Logout()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

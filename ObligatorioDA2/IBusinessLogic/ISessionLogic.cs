@@ -11,5 +11,6 @@ namespace IBusinessLogic
     {
         User? GetCurrentUser(Guid? token = null);
         Guid Authenticate(string email, string password);
+        void Logout();
     }
 }

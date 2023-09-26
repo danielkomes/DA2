@@ -35,5 +35,23 @@ namespace WebApi.Test
             sessionMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void LogoutOk()
+        {
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            SessionController sessionController = new SessionController(sessionMock.Object);
+            sessionMock.Setup(m => m.Logout());
+
+
+            IActionResult actual = sessionController.Logout();
+            IActionResult expected = new OkObjectResult("Logged out");
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            sessionMock.VerifyAll();
+        }
+
     }
 }
