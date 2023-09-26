@@ -30,12 +30,12 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
-        public bool Exists(Guid id)
+        public bool Exists(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public T Get(Guid id)
+        public T Get(T entity)
         {
             throw new NotImplementedException();
         }

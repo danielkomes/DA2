@@ -24,7 +24,7 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            productMock.Setup(m => m.Exists(p.Id)).Returns(true);
+            productMock.Setup(m => m.Exists(p)).Returns(true);
             bool actual = helper.VerifyProduct(p);
             Assert.IsTrue(actual);
             productMock.VerifyAll();
@@ -41,7 +41,7 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            productMock.Setup(m => m.Exists(p.Id)).Returns(false);
+            productMock.Setup(m => m.Exists(p)).Returns(false);
             bool actual = helper.VerifyProduct(p);
             Assert.IsFalse(actual);
             productMock.VerifyAll();
@@ -58,7 +58,7 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            userMock.Setup(m => m.Exists(u.Id)).Returns(true);
+            userMock.Setup(m => m.Exists(u)).Returns(true);
             bool actual = helper.VerifyUser(u);
             Assert.IsTrue(actual);
             userMock.VerifyAll();
@@ -75,7 +75,7 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            userMock.Setup(m => m.Exists(u.Id)).Returns(false);
+            userMock.Setup(m => m.Exists(u)).Returns(false);
             bool actual = helper.VerifyUser(u);
             Assert.IsFalse(actual);
             userMock.VerifyAll();
@@ -93,7 +93,7 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            promotionMock.Setup(m => m.Exists(promo.PromotionEntity.Id)).Returns(true);
+            promotionMock.Setup(m => m.Exists(promo.PromotionEntity)).Returns(true);
             bool actual = helper.VerifyPromotion(promo.PromotionEntity);
             Assert.IsTrue(actual);
             promotionMock.VerifyAll();
@@ -111,7 +111,7 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            promotionMock.Setup(m => m.Exists(promo.PromotionEntity.Id)).Returns(false);
+            promotionMock.Setup(m => m.Exists(promo.PromotionEntity)).Returns(false);
             bool actual = helper.VerifyPromotion(promo.PromotionEntity);
             Assert.IsFalse(actual);
             promotionMock.VerifyAll();
@@ -130,8 +130,8 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            productMock.Setup(m => m.Exists(p1.Id)).Returns(true);
-            productMock.Setup(m => m.Exists(p2.Id)).Returns(true);
+            productMock.Setup(m => m.Exists(p1)).Returns(true);
+            productMock.Setup(m => m.Exists(p2)).Returns(true);
 
             bool actual = helper.VerifyProducts(products);
             Assert.IsTrue(actual);
@@ -151,8 +151,8 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            productMock.Setup(m => m.Exists(p1.Id)).Returns(true);
-            productMock.Setup(m => m.Exists(p2.Id)).Returns(false);
+            productMock.Setup(m => m.Exists(p1)).Returns(true);
+            productMock.Setup(m => m.Exists(p2)).Returns(false);
 
             bool actual = helper.VerifyProducts(products);
             Assert.IsFalse(actual);
@@ -172,8 +172,7 @@ namespace BusinessLogic.Test
             var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
             IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
                 userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            productMock.Setup(m => m.Exists(p1.Id)).Returns(false);
-            productMock.Setup(m => m.Exists(p2.Id)).Returns(false);
+            productMock.Setup(m => m.Exists(It.IsAny<Product>())).Returns(false);
 
             bool actual = helper.VerifyProducts(products);
             Assert.IsFalse(actual);

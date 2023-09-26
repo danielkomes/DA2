@@ -8,8 +8,8 @@ namespace IDataAccess
         public void Delete(T entity);
         public void Update(T entity);
         public IEnumerable<T> GetAll();
-        public T Get(Guid id);
-        public bool Exists(Guid id);
+        public T Get(T entity);
+        public bool Exists(T entity);
 
         public void Save();
         //ICollection<T> FindByCondition(Expression<Func<T, bool>> condition);

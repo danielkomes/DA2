@@ -29,12 +29,12 @@ namespace DataAccess
             throw new NotImplementedException();
         }
 
-        public bool Exists(Guid id)
+        public bool Exists(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public Product Get(Guid id)
+        public Product Get(Product entity)
         {
             throw new NotImplementedException();
         }

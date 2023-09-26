@@ -1,3 +1,7 @@
+using DataAccess;
+using Domain;
+using IDataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace WebApi
@@ -21,6 +25,9 @@ namespace WebApi
 
             //
             //add transient, singleton, scoped, etc
+            builder.Services.AddDbContext<DbContext, Context>();
+            builder.Services.AddTransient<IService<User>, UserService>();
+            builder.Services.AddHttpContextAccessor();
             //
 
             var app = builder.Build();
@@ -38,6 +45,7 @@ namespace WebApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapRazorPages(); 
@@ -45,6 +53,7 @@ namespace WebApi
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi"));
 
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
             app.Run();
         }
     }
