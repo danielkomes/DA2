@@ -22,7 +22,13 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok("");
+            //200 ok (o 204 no content)
+            IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
+            foreach (Product product in ProductService.GetAll())
+            {
+                models = models.Append(new ProductModelOut(product));
+            }
+            return Ok(models);
         }
     }
 }
