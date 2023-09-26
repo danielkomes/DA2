@@ -51,5 +51,35 @@ namespace WebApi.Test
             cartMock.VerifyAll();
         }
 
+        [TestMethod]
+        public void RemoveProductOk()
+        {
+            Product p1 = new Product();
+            Product p2 = new Product();
+            Product p3 = new Product();
+            IEnumerable<Product> products = new List<Product> { p1, p2, p3 };
+            ProductModelIn productModel = new ProductModelIn()
+            {
+                Name = p1.Name,
+                Description = p1.Description,
+                Price = p1.Price,
+                Brand = p1.Brand,
+                Category = p1.Category,
+                Colors = p1.Colors
+            };
+            var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
+            ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
+            cartMock.Setup(m => m.RemoveFromCart(It.IsAny<Product>()));
+
+
+            IActionResult actual = cartController.RemoveSelectedProducts(new List<ProductModelIn> { productModel });
+            IActionResult expected = new OkObjectResult("Product(s) removed");
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            cartMock.VerifyAll();
+        }
     }
 }
