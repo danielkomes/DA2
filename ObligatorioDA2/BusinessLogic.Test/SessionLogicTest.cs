@@ -51,5 +51,26 @@ namespace BusinessLogic.Test
             sessionLogic.Authenticate(user);
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetCurrentUserOk()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            Session session = new Session()
+            {
+                User = user
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<IService<Session>>(MockBehavior.Strict);
+            ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
+            sessionMock.Setup(m => m.Get(It.IsAny<Session>())).Returns(session);
+            User? actual = sessionLogic.GetCurrentUser(session.Id);
+            User expected = user;
+            Assert.AreEqual(expected, actual);
+            userMock.VerifyAll();
+        }
     }
 }
