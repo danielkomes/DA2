@@ -72,5 +72,24 @@ namespace BusinessLogic.Test
             Assert.AreEqual(expected, actual);
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetCurrentUserNoToken()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            Session session = new Session()
+            {
+                User = user
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<IService<Session>>(MockBehavior.Strict);
+            ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
+            sessionMock.Setup(m => m.Get(It.IsAny<Session>())).Returns(session);
+            User? actual = sessionLogic.GetCurrentUser(null);
+        }
     }
 }
