@@ -162,5 +162,44 @@ namespace WebApi.Test
             }
             productMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetProductsByNameNoMatch()
+        {
+            Product p1 = new Product()
+            {
+                Name = "p1"
+            };
+            Product p2 = new Product()
+            {
+                Name = "p1"
+            };
+            Product p3 = new Product()
+            {
+                Name = "p2"
+            };
+            IEnumerable<Product> products = new List<Product> { p1, p2, p3 };
+            IEnumerable<ProductModelOut> productModels = new List<ProductModelOut>
+            {
+                new ProductModelOut(p1),
+                new ProductModelOut(p2),
+            };
+            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
+            ProductController productController = new ProductController(productMock.Object);
+            productMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(new List<Product>());
+
+
+            IActionResult actual = productController.GetAll("product1");
+            IActionResult expected = new OkObjectResult(new List<ProductModelOut>());
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            IEnumerable<ProductModelOut> actualModels = actualOk.Value as IEnumerable<ProductModelOut>;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            IEnumerable<ProductModelOut> expectedModels = expectedOk.Value as IEnumerable<ProductModelOut>;
+            Assert.AreEqual(expectedModels.Count(), actualModels.Count());
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            productMock.VerifyAll();
+        }
     }
 }
