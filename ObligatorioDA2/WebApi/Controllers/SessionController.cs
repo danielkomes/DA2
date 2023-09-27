@@ -2,6 +2,7 @@
 using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using WebApi.Models.In;
 using WebApi.Models.Out;
 
@@ -27,7 +28,11 @@ namespace WebApi.Controllers
         {
             //200 ok, si el email existe
             //201 created, si no está loggueado y el email no está registrado
-            SessionLogic.Authenticate(email, password);
+            User user = new User()
+            {
+                Email = email
+            };
+            SessionLogic.Authenticate(user);
             return Ok("Logged in");
         }
         [HttpDelete]

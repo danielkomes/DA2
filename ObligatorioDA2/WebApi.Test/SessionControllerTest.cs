@@ -22,7 +22,7 @@ namespace WebApi.Test
             Guid token = new Guid();
             var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
             SessionController sessionController = new SessionController(sessionMock.Object);
-            sessionMock.Setup(m => m.Authenticate("email@test.com", "password123")).Returns(token);
+            sessionMock.Setup(m => m.Authenticate(It.IsAny<User>())).Returns(token);
 
 
             IActionResult actual = sessionController.Login("email@test.com", "password123");

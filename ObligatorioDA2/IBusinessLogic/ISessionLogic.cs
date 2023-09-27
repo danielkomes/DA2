@@ -10,7 +10,7 @@ namespace IBusinessLogic
     public interface ISessionLogic
     {
         User? GetCurrentUser(Guid? token = null);
-        Guid Authenticate(string email, string password);
+        Guid Authenticate(User user);
         void Logout();
     }
 }
