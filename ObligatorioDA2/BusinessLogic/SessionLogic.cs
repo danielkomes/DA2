@@ -54,7 +54,12 @@ namespace BusinessLogic
 
         public void Logout()
         {
-            throw new NotImplementedException();
+            Session session = new Session()
+            {
+                User = CurrentUser
+            };
+            SessionService.Delete(session);
+            CurrentUser = null;
         }
     }
 }
