@@ -4,6 +4,7 @@ using IDataAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,10 @@ namespace BusinessLogic
             //if found, create and insert session in DB
             //else throw exception
             User userOut = UserService.Get(userIn);
+            if (userOut is null)
+            {
+                throw new InvalidCredentialException("Invalid credentials");
+            }
             Session session = new Session()
             {
                 User = userOut
