@@ -91,5 +91,20 @@ namespace BusinessLogic.Test
             sessionMock.Setup(m => m.Get(It.IsAny<Session>())).Returns(session);
             User? actual = sessionLogic.GetCurrentUser(null);
         }
+
+        [TestMethod]
+        public void LogoutOk()
+        {
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<IService<Session>>(MockBehavior.Strict);
+            ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
+            sessionMock.Setup(m => m.Get(It.IsAny<Session>())).Returns(new Session());
+            sessionMock.Setup(m => m.Delete(It.IsAny<Session>()));
+            sessionLogic.Logout();
+
+            User actual = sessionLogic.GetCurrentUser(new Session().Id);
+            Assert.IsNull(actual);
+            userMock.VerifyAll();
+        }
     }
 }
