@@ -41,6 +41,7 @@ namespace BusinessLogic
 
         public User? GetCurrentUser(Guid? token = null)
         {
+            if (CurrentUser is not null) return CurrentUser;
             if (token is null) throw new ArgumentException("Authorization token was null");
             Session sessionIn = new Session()
             {
