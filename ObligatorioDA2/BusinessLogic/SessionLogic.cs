@@ -19,9 +19,19 @@ namespace BusinessLogic
             SessionService = sessionService;
             UserService = userService;
         }
-        public Guid Authenticate(string email, string password)
+        public Guid Authenticate(User userIn)
         {
-            throw new NotImplementedException();
+            //get user
+            //if found, create and insert session in DB
+            //else throw exception
+            User userOut = UserService.Get(userIn);
+            Session session = new Session()
+            {
+                User = userOut
+            };
+            SessionService.Add(session);
+            SessionService.Save();
+            return session.Id;
         }
 
         public User? GetCurrentUser(Guid? token = null)
