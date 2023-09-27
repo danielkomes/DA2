@@ -41,7 +41,13 @@ namespace BusinessLogic
 
         public User? GetCurrentUser(Guid? token = null)
         {
-            throw new NotImplementedException();
+            Session sessionIn = new Session()
+            {
+                Id = (Guid)token
+            };
+            Session session = SessionService.Get(sessionIn);
+            if (session is not null) CurrentUser = session.User;
+            return CurrentUser;
         }
 
         public void Logout()
