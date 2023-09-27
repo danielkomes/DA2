@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +32,11 @@ namespace DataAccess
         }
 
         public bool Exists(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> FindByCondition(Expression<Func<T, bool>> condition)
         {
             throw new NotImplementedException();
         }
