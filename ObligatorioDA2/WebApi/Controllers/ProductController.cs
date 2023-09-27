@@ -20,11 +20,26 @@ namespace WebApi.Controllers
 
         //get all
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(
+            [FromQuery] string? name = null,
+            [FromQuery] string? brand = null,
+            [FromQuery] string? category = null)
         {
             //200 ok (o 204 no content)
+            IEnumerable<Product> products;
+            if (name is null && brand is null && category is null)
+            {
+                products = ProductService.GetAll();
+            }
+            else
+            {
+                products = ProductService.FindByCondition(
+                p => p.Name.Equals(name) ||
+                p.Brand.Equals(brand) ||
+                p.Category.Equals(category));
+            }
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
-            foreach (Product product in ProductService.GetAll())
+            foreach (Product product in products)
             {
                 models = models.Append(new ProductModelOut(product));
             }
