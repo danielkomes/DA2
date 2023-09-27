@@ -35,5 +35,21 @@ namespace BusinessLogic.Test
             sessionMock.VerifyAll();
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCredentialException))]
+        public void AuthenticateFail()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<IService<Session>>(MockBehavior.Strict);
+            ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
+            userMock.Setup(m => m.Get(user)).Returns(value: null as User);
+            sessionLogic.Authenticate(user);
+            userMock.VerifyAll();
+        }
     }
 }
