@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +33,11 @@ namespace DataAccess
         }
 
         public bool Exists(User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> FindByCondition(Expression<Func<User, bool>> condition)
         {
             throw new NotImplementedException();
         }

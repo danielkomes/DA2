@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filters;
 using WebApi.Models.In;
 using WebApi.Models.Out;
 
@@ -20,6 +21,9 @@ namespace WebApi.Controllers
         // GET: api/<ValuesController>
         //get all
         //filtro de autenticación, sólo admins
+
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -36,6 +40,7 @@ namespace WebApi.Controllers
         }
 
         // GET api/<ValuesController>/5
+        [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpGet("{email}")]
         //get one
         //filtro de autenticación? si no es admin, solo permitir si el id == id loggeado
@@ -43,8 +48,8 @@ namespace WebApi.Controllers
         public IActionResult Get([FromRoute] string email)
         {
             //200 ok, si el id == loggedUser.id o es admin
-            //401 unauthorized, si no está loggueado o el id != loggedUser.id
-            //404 not found, si es admin y no existe
+            //TODO: 401 unauthorized, si no está loggueado o el id != loggedUser.id
+            //TODO: 404 not found, si es admin y no existe
             User u = new User()
             {
                 Email = email
@@ -57,12 +62,14 @@ namespace WebApi.Controllers
         // POST api/<ValuesController>
         //sign in
         //pedir email y address. Si el email es invalido, dar error
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpPost]
         public IActionResult Post([FromBody] UserModelIn modelIn)
         {
             //201 created, si no está loggueado y el email no está registrado
             //401 unauthorized, si ya está logueado y no es admin
-            //403 forbidden, si no está loggueado y el email ya fue registrado
+            //403 TODO: forbidden, si no está loggueado y el email ya fue registrado
             UserService.Add(modelIn.ToEntity());
             return Created(modelIn.Email, "User created");
         }
@@ -71,6 +78,7 @@ namespace WebApi.Controllers
         //edit user
         //filtro de autenticación, si no es admin, solo permitir si el id == id loggeado
         //si es admin, permitir siempre
+        [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpPut("{email}")]
         public IActionResult Put([FromRoute] string email, [FromBody] UserModelIn modelIn)
         {
@@ -78,6 +86,7 @@ namespace WebApi.Controllers
             //401 unauthorized, si no está loggueado o no es admin
             //403 forbidden, (si el id == loggedUser.id o es admin) y el email ya fue registrado
             //404 not found, (si el id == loggedUser.id o es admin) y no existe
+            //TODO: verificar email
             UserService.Update(modelIn.ToEntity());
             return Ok("User modified");
         }
@@ -85,8 +94,10 @@ namespace WebApi.Controllers
         // DELETE api/<ValuesController>/5
         //delete user
         //filtro de autenticacion, solo admins
+        [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpDelete("{email}")]
-        public IActionResult Delete(string email)
+        public IActionResult Delete([FromRoute] string email)
         {
             //200 ok, si es admin
             //401 unauthorized, si no es admin
