@@ -65,7 +65,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult DoPurchase()
         {
-            return Ok("");
+            ShoppingCart.DoPurchase();
+            return Ok("Purchase done");
         }
     }
 }
