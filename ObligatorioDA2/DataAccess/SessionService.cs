@@ -15,19 +15,32 @@ namespace DataAccess
         private readonly Context Context;
         private readonly DbSet<Session> Table;
 
+        public SessionService(Context context)
+        {
+            Context = context;
+            Table = Context.Set<Session>();
+        }
+
         public void Add(Session entity)
         {
-            throw new NotImplementedException();
+            Table.Add(entity);
+            Save();
+            //throw new NotImplementedException();
         }
 
         public void Delete(Session entity)
         {
-            throw new NotImplementedException();
+            var result = Table.FromSqlInterpolated($"SELECT * FROM Sessions")
+                .Where(s => s.User.Equals(entity.User));
+            Table.Remove(result.First());
+            Save();
+            //throw new NotImplementedException();
         }
 
         public bool Exists(Session entity)
         {
-            throw new NotImplementedException();
+            return Get(entity) is not null;
+            //throw new NotImplementedException();
         }
 
         public IEnumerable<Session> FindByCondition(Expression<Func<Session, bool>> condition)
@@ -37,22 +50,30 @@ namespace DataAccess
 
         public Session Get(Session entity)
         {
-            throw new NotImplementedException();
+            //return Table.Select(u => u.Id.Equals(entity.Id)) as Session;
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Sessions")
+                .Where(s => s.Id.Equals(entity.Id));
+            if (!ret.Any()) return null;
+            return ret.First();
         }
 
         public IEnumerable<Session> GetAll()
         {
-            throw new NotImplementedException();
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Sessions");
+            return ret.ToList();
+            //throw new NotImplementedException();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            Context.SaveChanges();
+            //throw new NotImplementedException();
         }
 
         public void Update(Session entity)
         {
-            throw new NotImplementedException();
+            //Table.Update(entity);
+            //throw new NotImplementedException();
         }
     }
 }

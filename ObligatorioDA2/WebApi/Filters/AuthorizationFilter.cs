@@ -14,13 +14,13 @@ namespace WebApi.Filters
             var authorizationHeader = context.HttpContext.Request.Headers["Authorization"].ToString();
             Guid token = Guid.Empty;
 
-            if (string.IsNullOrEmpty(authorizationHeader) || !Guid.TryParse(authorizationHeader, out token))
-            {
-                context.Result = new ObjectResult(new { Message = "Authorization header missing" })
-                {
-                    StatusCode = StatusCodes.Status401Unauthorized
-                };
-            }
+            //if (string.IsNullOrEmpty(authorizationHeader) || !Guid.TryParse(authorizationHeader, out token))
+            //{
+            //    context.Result = new ObjectResult(new { Message = "Authorization header missing" })
+            //    {
+            //        StatusCode = StatusCodes.Status401Unauthorized
+            //    };
+            //}
 
             ISessionLogic sessionLogic = GetSessionLogic(context);
             User currentUser = sessionLogic.GetCurrentUser(token);

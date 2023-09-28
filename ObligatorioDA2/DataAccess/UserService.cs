@@ -24,17 +24,22 @@ namespace DataAccess
 
         public void Add(User entity)
         {
-            throw new NotImplementedException();
+            Table.Add(entity);
+            Save();
+            //throw new NotImplementedException();
         }
 
         public void Delete(User entity)
         {
-            throw new NotImplementedException();
+            Table.Remove(Get(entity));
+            Save();
+            //throw new NotImplementedException();
         }
 
         public bool Exists(User entity)
         {
-            throw new NotImplementedException();
+            return Get(entity) is not null;
+            //throw new NotImplementedException();
         }
 
         public IEnumerable<User> FindByCondition(Expression<Func<User, bool>> condition)
@@ -44,21 +49,32 @@ namespace DataAccess
 
         public User Get(User entity)
         {
-            throw new NotImplementedException();
+            //return Table.Select(u => u.Email.Equals(entity.Email)) as User;
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Users")
+                .Where(u => u.Email.Equals(entity.Email));
+
+            if (!ret.Any()) return null;
+            return ret.First();
+            //throw new NotImplementedException();
         }
 
         public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Sessions");
+            return ret.ToList();
+            //throw new NotImplementedException();
         }
 
         public void Save()
         {
+            Context.SaveChanges();
         }
 
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            Table.Update(entity);
+            Save();
+            //throw new NotImplementedException();
         }
     }
 }

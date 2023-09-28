@@ -13,6 +13,7 @@ namespace WebApi.Controllers
 {
     [Route("api/session")]
     [ApiController]
+    [ExceptionFilter]
     public class SessionController : ControllerBase
     {
         private readonly ISessionLogic SessionLogic;
@@ -24,14 +25,20 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] string email)
         {
-            //200 ok, si el email existe
-            //TODO: 201 created, si no está loggueado y el email no está registrado
             User user = new User()
             {
                 Email = email
             };
-            SessionLogic.Authenticate(user);
-            return Ok("Logged in");
+            bool success = SessionLogic.Authenticate(user);
+            if (success)
+            {
+                //200 ok, si el email existe
+                return Ok("Logged in");
+            }
+            else
+            {
+                return Unauthorized("Invalid credentials");
+            }
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]

@@ -13,6 +13,7 @@ namespace WebApi.Controllers
     [Route("api/shopping-cart")]
     [ApiController]
     [AuthorizationFilter(RoleNeeded = EUserRole.Customer)]
+    [ExceptionFilter]
     public class ShoppingCartController : ControllerBase
     {
         private readonly IShoppingCart ShoppingCart;

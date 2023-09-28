@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using BusinessLogic;
+using Domain;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
@@ -11,6 +12,7 @@ namespace WebApi.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [ExceptionFilter]
     public class UserController : ControllerBase
     {
         private readonly IService<User> UserService;
@@ -60,18 +62,27 @@ namespace WebApi.Controllers
         }
 
         // POST api/<ValuesController>
-        //sign in
+        //sign iup
         //pedir email y address. Si el email es invalido, dar error
-        [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
+        //cualquiera puede
+        //[ServiceFilter(typeof(AuthenticationFilter))]
+        //[AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpPost]
         public IActionResult Post([FromBody] UserModelIn modelIn)
         {
-            //201 created, si no está loggueado y el email no está registrado
-            //401 unauthorized, si ya está logueado y no es admin
-            //403 TODO: forbidden, si no está loggueado y el email ya fue registrado
-            UserService.Add(modelIn.ToEntity());
-            return Created(modelIn.Email, "User created");
+            //TODO: 401 unauthorized, si ya está logueado y no es admin
+            bool exists = UserService.Exists(modelIn.ToEntity());
+            if (!exists)
+            {
+                //201 created, si no está loggueado y el email no está registrado
+                UserService.Add(modelIn.ToEntity());
+                return Created(modelIn.Email, "User created");
+            }
+            else
+            {
+                //403 TODO: forbidden, si no está loggueado y el email ya fue registrado
+                return Forbid("Email already exists");
+            }
         }
 
         // PUT api/<ValuesController>/5

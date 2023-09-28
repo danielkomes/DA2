@@ -28,6 +28,8 @@ namespace DataAccess
             //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
+            //modelBuilder.Entity<User>()
+            //    .HasKey(u => u.Email);
             modelBuilder.Entity<User>().Property(p => p.Roles)
                 .HasConversion
                 (

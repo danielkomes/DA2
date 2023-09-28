@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filters;
 using WebApi.Models.In;
 using WebApi.Models.Out;
 
@@ -10,6 +11,7 @@ namespace WebApi.Controllers
 {
     [Route("api/products")]
     [ApiController]
+    [ExceptionFilter]
     public class ProductController : ControllerBase
     {
         private readonly IService<Product> ProductService;

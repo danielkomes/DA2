@@ -1,8 +1,11 @@
 using DataAccess;
 using Domain;
 using IDataAccess;
+using IBusinessLogic;
+using BusinessLogic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using WebApi.Filters;
 
 namespace WebApi
 {
@@ -25,8 +28,18 @@ namespace WebApi
 
             //
             //add transient, singleton, scoped, etc
+            //builder.Services.AddDbContext<DbContext, Context>();
             builder.Services.AddDbContext<DbContext, Context>();
             builder.Services.AddTransient<IService<User>, UserService>();
+            builder.Services.AddTransient<IService<Product>, ProductService>();
+            builder.Services.AddTransient<IService<Purchase>, PurchaseService>();
+            builder.Services.AddTransient<IService<Session>, SessionService>();
+            builder.Services.AddSingleton<ISessionLogic, SessionLogic>();
+
+
+            builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
+            builder.Services.AddScoped<AuthenticationFilter>();
+            //builder.Services.AddTransient<AuthorizationFilter>();
             builder.Services.AddHttpContextAccessor();
             //
 
@@ -48,8 +61,8 @@ namespace WebApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapRazorPages(); 
-            
+            app.MapRazorPages();
+
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi"));
 
