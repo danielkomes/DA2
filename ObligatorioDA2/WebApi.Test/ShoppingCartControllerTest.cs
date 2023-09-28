@@ -143,5 +143,32 @@ namespace WebApi.Test
             Assert.AreEqual(expectedOk.Value, actualOk.Value);
             cartMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DoPurchaseOk()
+        {
+            Product p1 = new Product();
+            ProductModelIn model = new ProductModelIn()
+            {
+                Name = p1.Name,
+                Description = p1.Description,
+                Price = p1.Price,
+                Brand = p1.Brand,
+                Category = p1.Category,
+                Colors = p1.Colors
+            };
+            var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
+            ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
+            cartMock.Setup(m => m.DoPurchase());
+
+            IActionResult actual = cartController.DoPurchase();
+            IActionResult expected = new OkObjectResult("Purchase done");
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            cartMock.VerifyAll();
+        }
     }
 }

@@ -62,5 +62,10 @@ namespace WebApi.Controllers
         }
 
         //TODO: DoPurchase en shopping cart controller, con el authentication filter
+        [HttpPost]
+        public IActionResult DoPurchase()
+        {
+            return Ok("");
+        }
     }
 }
