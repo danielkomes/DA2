@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] string email, [FromBody] string password)
+        public IActionResult Login([FromBody] string email)
         {
             //200 ok, si el email existe
             //TODO: 201 created, si no está loggueado y el email no está registrado

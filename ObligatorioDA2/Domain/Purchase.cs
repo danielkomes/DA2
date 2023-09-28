@@ -8,10 +8,13 @@
         public PromotionEntity? Promotion { get; set; }
         public DateTime Date { get; set; }
 
-        public Purchase(User user, IEnumerable<Product> products, PromotionEntity promotion = null)
+        public Purchase() { }
+
+        public Purchase(User user, IEnumerable<Product> products, PromotionEntity? promotion = null)
         {
             User = user;
             Products = products;
+            Promotion = promotion;
             Id = new Guid();
             Date = DateTime.Now;
         }
