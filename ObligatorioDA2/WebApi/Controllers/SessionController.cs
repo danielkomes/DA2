@@ -3,6 +3,7 @@ using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using WebApi.Filters;
 using WebApi.Models.In;
 using WebApi.Models.Out;
 
@@ -20,14 +21,11 @@ namespace WebApi.Controllers
             SessionLogic = sessionService;
         }
 
-        // POST api/<ValuesController>
-        //sign in
-        //pedir email y address. Si el email es invalido, dar error
         [HttpPost]
         public IActionResult Login([FromBody] string email, [FromBody] string password)
         {
             //200 ok, si el email existe
-            //201 created, si no está loggueado y el email no está registrado
+            //TODO: 201 created, si no está loggueado y el email no está registrado
             User user = new User()
             {
                 Email = email
@@ -35,11 +33,13 @@ namespace WebApi.Controllers
             SessionLogic.Authenticate(user);
             return Ok("Logged in");
         }
+
+        [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpDelete]
         public IActionResult Logout()
         {
             //200 ok, si está loggeado
-            //401 unauthorized, si no está loggeado
+            //401 TODO: (via filter) unauthorized, si no está loggeado
             SessionLogic.Logout();
             return Ok("Logged out");
         }

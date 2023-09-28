@@ -2,6 +2,7 @@
 using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Filters;
 using WebApi.Models.In;
 using WebApi.Models.Out;
 
@@ -11,6 +12,7 @@ namespace WebApi.Controllers
 {
     [Route("api/shopping-cart")]
     [ApiController]
+    [AuthorizationFilter(RoleNeeded = EUserRole.Customer)]
     public class ShoppingCartController : ControllerBase
     {
         private readonly IShoppingCart ShoppingCart;
@@ -58,5 +60,7 @@ namespace WebApi.Controllers
             ShoppingCart.ProductsChecked = Enumerable.Empty<Product>();
             return Ok("All products removed");
         }
+
+        //TODO: DoPurchase en shopping cart controller, con el authentication filter
     }
 }
