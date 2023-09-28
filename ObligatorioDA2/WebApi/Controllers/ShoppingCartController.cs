@@ -61,7 +61,7 @@ namespace WebApi.Controllers
             return Ok("All products removed");
         }
 
-        //TODO: DoPurchase en shopping cart controller, con el authentication filter
+        [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpPost]
         public IActionResult DoPurchase()
         {
