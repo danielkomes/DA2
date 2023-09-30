@@ -8,7 +8,7 @@ namespace Domain
 {
     public enum EUserRole
     {
-        Customer,
-        Admin
+        Admin,
+        Customer
     }
 }

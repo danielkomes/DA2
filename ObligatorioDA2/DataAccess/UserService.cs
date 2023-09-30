@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using DataAccess.Exceptions;
+using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -38,8 +39,14 @@ namespace DataAccess
 
         public bool Exists(User entity)
         {
-            return Get(entity) is not null;
-            //throw new NotImplementedException();
+            try
+            {
+                return Get(entity) is not null;
+            }
+            catch (ResourceNotFoundException)
+            {
+                return false;
+            }
         }
 
         public IEnumerable<User> FindByCondition(Expression<Func<User, bool>> condition)
@@ -49,18 +56,15 @@ namespace DataAccess
 
         public User Get(User entity)
         {
-            //return Table.Select(u => u.Email.Equals(entity.Email)) as User;
-            var ret = Table.FromSqlInterpolated($"SELECT * FROM Users")
-                .Where(u => u.Email.Equals(entity.Email));
-
-            if (!ret.Any()) return null;
-            return ret.First();
-            //throw new NotImplementedException();
+            if (entity is null) throw new ResourceNotFoundException("User not found");
+            var ret = Table.FirstOrDefault(u => u.Email.Equals(entity.Email));
+            if (ret is null) throw new ResourceNotFoundException("User not found");
+            return ret;
         }
 
         public IEnumerable<User> GetAll()
         {
-            var ret = Table.FromSqlInterpolated($"SELECT * FROM Sessions");
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Users");
             return ret.ToList();
             //throw new NotImplementedException();
         }
@@ -72,9 +76,11 @@ namespace DataAccess
 
         public void Update(User entity)
         {
-            Table.Update(entity);
+            var found = Table.FirstOrDefault(u => u.Id == entity.Id);
+            if (found is null) throw new ResourceNotFoundException("User not found");
+            found.Email = entity.Email;
+            found.Address = entity.Address;
             Save();
-            //throw new NotImplementedException();
         }
     }
 }

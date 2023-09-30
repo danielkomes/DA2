@@ -65,8 +65,20 @@ namespace DataAccess
 
             modelBuilder.Entity<Purchase>()
                 .HasKey(p => p.Id);
+            modelBuilder.Entity<Purchase>().Property(p => p.Products)
+                .HasConversion
+                (
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                    v => JsonSerializer.Deserialize<IEnumerable<Product>>(v, (JsonSerializerOptions)null),
+                    new ValueComparer<IEnumerable<Product>>
+                    (
+                        (c1, c2) => c1.SequenceEqual(c2),
+                        c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                        c => c.ToList()
+                    )
+                );
             //modelBuilder.Entity<Purchase>()
-            //    .HasMany<Product>();
+            //    .HasMany(p => p.Products);
             //modelBuilder.Entity<Purchase>()
             //    .HasOne<User>();
             //modelBuilder.Entity<Purchase>()

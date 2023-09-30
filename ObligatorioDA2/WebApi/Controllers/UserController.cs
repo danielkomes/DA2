@@ -1,5 +1,7 @@
 ﻿using BusinessLogic;
+using DataAccess.Exceptions;
 using Domain;
+using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
@@ -16,9 +18,11 @@ namespace WebApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IService<User> UserService;
-        public UserController(IService<User> userService)
+        private readonly ISessionLogic SessionLogic;
+        public UserController(IService<User> userService, ISessionLogic sessionLogic)
         {
             UserService = userService;
+            SessionLogic = sessionLogic;
         }
         // GET: api/<ValuesController>
         //get all
@@ -56,17 +60,37 @@ namespace WebApi.Controllers
             {
                 Email = email
             };
-            User user = UserService.Get(u);
-            UserModelOut model = new UserModelOut(user);
-            return Ok(model);
+
+            User current = SessionLogic.GetCurrentUser();
+            if (current.Roles.Contains(EUserRole.Admin))
+            {
+                User user = UserService.Get(u);
+                UserModelOut model = new UserModelOut(user);
+                return Ok(model);
+            }
+            else
+            {
+                try
+                {
+                    User user = UserService.Get(u);
+                    if (user.Id != current.Id)
+                    {
+                        return StatusCode(403, "Profile mismatch");
+                    }
+                    else
+                    {
+                        return Ok(new UserModelOut(user));
+                    }
+
+                }
+                catch (ResourceNotFoundException)
+                {
+                    return StatusCode(403, "Profile mismatch");
+                }
+            }
         }
 
-        // POST api/<ValuesController>
-        //sign iup
-        //pedir email y address. Si el email es invalido, dar error
-        //cualquiera puede
-        //[ServiceFilter(typeof(AuthenticationFilter))]
-        //[AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
+        [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpPost]
         public IActionResult Post([FromBody] UserModelIn modelIn)
         {
@@ -81,14 +105,10 @@ namespace WebApi.Controllers
             else
             {
                 //403 TODO: forbidden, si no está loggueado y el email ya fue registrado
-                return Forbid("Email already exists");
+                return StatusCode(403, "Email already exists");
             }
         }
 
-        // PUT api/<ValuesController>/5
-        //edit user
-        //filtro de autenticación, si no es admin, solo permitir si el id == id loggeado
-        //si es admin, permitir siempre
         [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpPut("{email}")]
         public IActionResult Put([FromRoute] string email, [FromBody] UserModelIn modelIn)
@@ -98,13 +118,46 @@ namespace WebApi.Controllers
             //403 forbidden, (si el id == loggedUser.id o es admin) y el email ya fue registrado
             //404 not found, (si el id == loggedUser.id o es admin) y no existe
             //TODO: verificar email
-            UserService.Update(modelIn.ToEntity());
-            return Ok("User modified");
+            User current = SessionLogic.GetCurrentUser();
+            User newUser = modelIn.ToEntity();
+            bool exists = UserService.Exists(newUser);
+            User oldUser = new User()
+            {
+                Email = email
+            };
+            //oldUser = UserService.Get(oldUser);
+            if (current.Roles.Contains(EUserRole.Admin))
+            {
+                oldUser = UserService.Get(oldUser);
+                newUser.Id = oldUser.Id;
+                if (exists) return StatusCode(403, "Email already exists");
+                UserService.Update(newUser);
+                return Ok("User modified");
+            }
+            else
+            {
+                try
+                {
+                    oldUser = UserService.Get(oldUser);
+                    if (current.Id != oldUser.Id)
+                    {
+                        return StatusCode(403, "Profile mismatch");
+                    }
+                    else
+                    {
+                        if (exists) return StatusCode(403, "Email already exists");
+                        newUser.Id = oldUser.Id;
+                        UserService.Update(newUser);
+                        return Ok("User modified");
+                    }
+                }
+                catch (ResourceNotFoundException)
+                {
+                    return StatusCode(403, "Profile mismatch");
+                }
+            }
         }
 
-        // DELETE api/<ValuesController>/5
-        //delete user
-        //filtro de autenticacion, solo admins
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpDelete("{email}")]

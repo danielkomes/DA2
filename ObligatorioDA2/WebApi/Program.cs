@@ -28,17 +28,24 @@ namespace WebApi
 
             //
             //add transient, singleton, scoped, etc
-            //builder.Services.AddDbContext<DbContext, Context>();
             builder.Services.AddDbContext<DbContext, Context>();
             builder.Services.AddTransient<IService<User>, UserService>();
             builder.Services.AddTransient<IService<Product>, ProductService>();
             builder.Services.AddTransient<IService<Purchase>, PurchaseService>();
+            builder.Services.AddTransient<IService<PromotionEntity>, PromotionService>();
             builder.Services.AddTransient<IService<Session>, SessionService>();
-            builder.Services.AddSingleton<ISessionLogic, SessionLogic>();
+            builder.Services.AddScoped<ISessionLogic, SessionLogic>();
+            builder.Services.AddScoped<IShoppingCart, ShoppingCart>();
+            builder.Services.AddTransient<IShoppingCartDataAccessHelper, ShoppingCartDataAccessHelper>();
+            //builder.Services.AddSingleton(provider =>
+            //{
+            //    var dataAccessHelper = provider.GetRequiredService<IShoppingCartDataAccessHelper>();
+            //    return new ShoppingCart(dataAccessHelper);
+            //});
 
 
             builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
-            builder.Services.AddScoped<AuthenticationFilter>();
+            builder.Services.AddTransient<AuthenticationFilter>();
             //builder.Services.AddTransient<AuthorizationFilter>();
             builder.Services.AddHttpContextAccessor();
             //

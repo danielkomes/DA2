@@ -24,7 +24,8 @@ namespace DataAccess
 
         public void Add(Purchase entity)
         {
-            throw new NotImplementedException();
+            Table.Add(entity);
+            Save();
         }
 
         public void Delete(Purchase entity)
@@ -49,11 +50,15 @@ namespace DataAccess
 
         public IEnumerable<Purchase> GetAll()
         {
-            throw new NotImplementedException();
+            return Table
+                .Include(s => s.User)
+                .ToList();
+
         }
 
         public void Save()
         {
+            Context.SaveChanges();
         }
 
         public void Update(Purchase entity)

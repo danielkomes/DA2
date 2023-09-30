@@ -32,8 +32,21 @@ namespace BusinessLogic
         }
         public bool VerifyProducts(IEnumerable<Product> products)
         {
-            if (!products.Any()) return false;
+            if (!products.Any()) throw new InvalidDataException("No products in cart");
             return products.All(p => VerifyProduct(p));
+        }
+        public IEnumerable<Product> GetProducts(IEnumerable<Guid> ids)
+        {
+            IEnumerable<Product> products = new List<Product>();
+            foreach (Guid id in ids)
+            {
+                Product p = new Product()
+                {
+                    Id = id
+                };
+                products = products.Append(ProductService.Get(p));
+            }
+            return products;
         }
 
         public bool VerifyPromotion(PromotionEntity promotion)

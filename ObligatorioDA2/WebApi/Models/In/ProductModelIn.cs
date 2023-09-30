@@ -4,6 +4,7 @@ namespace WebApi.Models.In
 {
     public class ProductModelIn
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public float Price { get; set; }
         public string Description { get; set; }
@@ -15,6 +16,7 @@ namespace WebApi.Models.In
         {
             return new Product
             {
+                Id = Id,
                 Name = Name,
                 Price = Price,
                 Description = Description,

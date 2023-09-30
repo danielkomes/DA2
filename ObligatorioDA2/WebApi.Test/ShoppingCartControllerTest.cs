@@ -72,7 +72,7 @@ namespace WebApi.Test
             cartMock.Setup(m => m.RemoveFromCart(It.IsAny<Product>()));
 
 
-            IActionResult actual = cartController.RemoveSelectedProducts(new List<ProductModelIn> { productModel });
+            IActionResult actual = cartController.RemoveSelectedProduct(new List<ProductModelIn> { productModel });
             IActionResult expected = new OkObjectResult("Product(s) removed");
 
             Assert.AreEqual(expected.GetType(), actual.GetType());

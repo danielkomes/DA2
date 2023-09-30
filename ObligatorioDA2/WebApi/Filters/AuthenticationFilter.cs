@@ -9,9 +9,11 @@ namespace WebApi.Filters
     public class AuthenticationFilter : Attribute, IAuthorizationFilter
     {
         private readonly ISessionLogic SessionLogic;
-        public AuthenticationFilter(ISessionLogic sessionLogic)
+        private readonly IShoppingCart ShoppingCart;
+        public AuthenticationFilter(ISessionLogic sessionLogic, IShoppingCart shoppingCart)
         {
             SessionLogic = sessionLogic;
+            ShoppingCart = shoppingCart;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -19,14 +21,14 @@ namespace WebApi.Filters
             var header = context.HttpContext.Request.Headers["Authorization"].ToString();
             Guid token = Guid.Empty;
 
-            //if (string.IsNullOrEmpty(header) || !Guid.TryParse(header, out token))
-            //{
-            //    context.Result = new ObjectResult(new { Message = "Authorization header missing" })
-            //    {
-            //        StatusCode = StatusCodes.Status401Unauthorized
-            //    };
-            //}
-            //else
+            if (string.IsNullOrEmpty(header) || !Guid.TryParse(header, out token))
+            {
+                context.Result = new ObjectResult(new { Message = "Authorization header missing" })
+                {
+                    StatusCode = StatusCodes.Status401Unauthorized
+                };
+            }
+            else
             {
                 User currentUser = SessionLogic.GetCurrentUser(token);
                 if (currentUser is null)
@@ -35,6 +37,10 @@ namespace WebApi.Filters
                     {
                         StatusCode = StatusCodes.Status401Unauthorized
                     };
+                }
+                else
+                {
+                    ShoppingCart.User = currentUser;
                 }
             }
         }

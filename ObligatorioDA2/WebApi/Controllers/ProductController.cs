@@ -36,9 +36,9 @@ namespace WebApi.Controllers
             else
             {
                 products = ProductService.FindByCondition(
-                p => p.Name.Equals(name) ||
-                p.Brand.Equals(brand) ||
-                p.Category.Equals(category));
+                p => p.Name.Contains(name) ||
+                p.Brand.Contains(brand) ||
+                p.Category.Contains(category));
             }
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
             foreach (Product product in products)
@@ -48,11 +48,16 @@ namespace WebApi.Controllers
             return Ok(models);
         }
 
-        [HttpGet]
-        public IActionResult Get([FromBody] ProductModelIn model)
+        [HttpGet("{id}")]
+        public IActionResult Get([FromRoute] Guid id)
         {
-            Product p = ProductService.Get(model.ToEntity());
-            return Ok(new ProductModelOut(p));
+            Product p = new Product()
+            {
+                Id = id
+            };
+            Product result = ProductService.Get(p);
+            if (result is null) return NotFound("Product not found");
+            return Ok(new ProductModelOut(result));
         }
     }
 }

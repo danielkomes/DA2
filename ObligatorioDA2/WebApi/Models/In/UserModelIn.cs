@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace WebApi.Models.In
 {

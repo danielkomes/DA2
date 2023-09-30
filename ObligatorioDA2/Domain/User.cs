@@ -9,7 +9,7 @@
         public User()
         {
             Id = Guid.NewGuid();
-            Roles = new List<EUserRole>();
+            Roles = new List<EUserRole> { EUserRole.Customer };
         }
     }
 }

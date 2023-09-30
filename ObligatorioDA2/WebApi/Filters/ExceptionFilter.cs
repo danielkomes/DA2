@@ -26,6 +26,10 @@ namespace WebApi.Filters
                 // 409 - Conflict
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
             }
+            catch (InvalidDataException e)
+            {
+                context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
+            }
             //catch (InvalidCredentialException e)
             //{
             //    context.Result = new ObjectResult(new { Message = e.Message }) { StatusCode = 401 };

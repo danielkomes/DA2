@@ -50,8 +50,8 @@ namespace DataAccess
 
         public Session Get(Session entity)
         {
-            //return Table.Select(u => u.Id.Equals(entity.Id)) as Session;
-            var ret = Table.FromSqlInterpolated($"SELECT * FROM Sessions")
+            var ret = Table
+                .Include(s => s.User)
                 .Where(s => s.Id.Equals(entity.Id));
             if (!ret.Any()) return null;
             return ret.First();

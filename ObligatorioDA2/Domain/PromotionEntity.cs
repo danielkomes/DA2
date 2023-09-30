@@ -13,6 +13,11 @@ namespace Domain
         public string Description { get; set; }
         public EPromotionType Type { get; set; }
 
+        public PromotionEntity()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;
