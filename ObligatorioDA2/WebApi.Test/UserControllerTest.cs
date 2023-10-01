@@ -1,6 +1,8 @@
+using DataAccess.Exceptions;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
@@ -81,6 +83,7 @@ namespace WebApi.Test
                 Assert.AreEqual(expectedModels.ElementAt(i).Address, actualModels.ElementAt(i).Address);
             }
             userMock.VerifyAll();
+            sessionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -111,6 +114,118 @@ namespace WebApi.Test
             Assert.AreEqual(expectedModel.Email, actualModel.Email);
             Assert.AreEqual(expectedModel.Address, actualModel.Address);
             userMock.VerifyAll();
+            sessionMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetUserBeingAdmin()
+        {
+            User user1 = new User()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            User admin = new User()
+            {
+                Email = "test@test.com",
+                Address = "test 123",
+                Roles = new List<EUserRole>() { EUserRole.Admin }
+            };
+            IEnumerable<User> users = new List<User> { user1 };
+            IEnumerable<UserModelOut> userModelOuts = new List<UserModelOut> { new UserModelOut(user1) };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user1);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(admin);
+
+
+            IActionResult actual = userController.Get("test@test.com");
+            IActionResult expected = new OkObjectResult(new UserModelOut(user1));
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+
+            OkObjectResult actualOk = actual as OkObjectResult;
+            UserModelOut actualModel = actualOk.Value as UserModelOut;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            UserModelOut expectedModel = expectedOk.Value as UserModelOut;
+            Assert.AreEqual(expectedModel.Email, actualModel.Email);
+            Assert.AreEqual(expectedModel.Address, actualModel.Address);
+            userMock.VerifyAll();
+            sessionMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetUserBeingAnother()
+        {
+            User target = new User()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            User current = new User()
+            {
+                Email = "test2@test2.com",
+                Address = "test 456"
+            };
+            IEnumerable<User> users = new List<User> { target };
+            IEnumerable<UserModelOut> userModelOuts = new List<UserModelOut> { new UserModelOut(target) };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(target);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(current);
+
+
+            IActionResult actual = userController.Get("test@test.com");
+            IActionResult expected = new ObjectResult("Profile mismatch");
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+
+            ObjectResult actualOk = actual as ObjectResult;
+            //UserModelOut actualModel = actualOk.Value as UserModelOut;
+            ObjectResult expectedOk = expected as ObjectResult;
+            //UserModelOut expectedModel = expectedOk.Value as UserModelOut;
+            //Assert.AreEqual(expectedModel.Email, actualModel.Email);
+            //Assert.AreEqual(expectedModel.Address, actualModel.Address);
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            userMock.VerifyAll();
+            sessionMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void GetInvalidUserBeingAnother()
+        {
+            User target = new User()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            User current = new User()
+            {
+                Email = "test2@test2.com",
+                Address = "test 456"
+            };
+            IEnumerable<User> users = new List<User> { target };
+            IEnumerable<UserModelOut> userModelOuts = new List<UserModelOut> { new UserModelOut(target) };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Throws(new ResourceNotFoundException("User not found"));
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(current);
+
+
+            IActionResult actual = userController.Get("test@test.com");
+            IActionResult expected = new ObjectResult("Profile mismatch");
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+
+            ObjectResult actualOk = actual as ObjectResult;
+            //UserModelOut actualModel = actualOk.Value as UserModelOut;
+            ObjectResult expectedOk = expected as ObjectResult;
+            //UserModelOut expectedModel = expectedOk.Value as UserModelOut;
+            //Assert.AreEqual(expectedModel.Email, actualModel.Email);
+            //Assert.AreEqual(expectedModel.Address, actualModel.Address);
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            userMock.VerifyAll();
+            sessionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -134,6 +249,30 @@ namespace WebApi.Test
             CreatedResult actualOk = actual as CreatedResult;
             CreatedResult expectedOk = expected as CreatedResult;
             Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PostEmailAlreadyExists()
+        {
+            UserModelIn userModel = new UserModelIn()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(true);
+
+            IActionResult actual = userController.Post(userModel);
+            IActionResult expected = new ObjectResult("Email already exists") { StatusCode = StatusCodes.Status403Forbidden };
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            ObjectResult actualOk = actual as ObjectResult;
+            ObjectResult expectedOk = expected as ObjectResult;
+            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            Assert.AreEqual(expectedOk.StatusCode, actualOk.StatusCode);
             userMock.VerifyAll();
         }
 
@@ -165,6 +304,151 @@ namespace WebApi.Test
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            sessionMock.VerifyAll();
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PutAnotherUserBeingAdminOk()
+        {
+            User current = new User()
+            {
+                Email = "admin@admin.com",
+                Address = "admin",
+                Roles = new List<EUserRole> { EUserRole.Admin }
+            };
+            User target = new User()
+            {
+                Email = "user@test.com",
+                Address = "user address",
+            };
+            UserModelIn updated = new UserModelIn()
+            {
+                Email = "test@test.com",
+                Address = "test 123"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(current);
+            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(false);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(target);
+            userMock.Setup(m => m.Update(It.IsAny<User>()));
+
+            IActionResult actual = userController.Put(current.Email, updated);
+            IActionResult expected = new OkObjectResult("User modified");
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            sessionMock.VerifyAll();
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PutBeingAnotherUser()
+        {
+            User current = new User()
+            {
+                Email = "user@test.com",
+                Address = "user address",
+            };
+            User target = new User()
+            {
+                Email = "user2@test2.com",
+                Address = "user2 address",
+            };
+            UserModelIn updated = new UserModelIn()
+            {
+                Email = "updated@test.com",
+                Address = "updated address"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(current);
+            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(false);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(target);
+
+            IActionResult actual = userController.Put(current.Email, updated);
+            IActionResult expected = new ObjectResult("Profile mismatch") { StatusCode = StatusCodes.Status403Forbidden };
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            ObjectResult actualOk = actual as ObjectResult;
+            ObjectResult expectedOk = expected as ObjectResult;
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            Assert.AreEqual(expectedOk.StatusCode, actualOk.StatusCode);
+            sessionMock.VerifyAll();
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PutInvalidUserBeingAnotherUser()
+        {
+            User current = new User()
+            {
+                Email = "user@test.com",
+                Address = "user address",
+            };
+            User target = new User()
+            {
+                Email = "user2@test2.com",
+                Address = "user2 address",
+            };
+            UserModelIn updated = new UserModelIn()
+            {
+                Email = "updated@test.com",
+                Address = "updated address"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(current);
+            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(false);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Throws(new ResourceNotFoundException("User not found"));
+
+            IActionResult actual = userController.Put(current.Email, updated);
+            IActionResult expected = new ObjectResult("Profile mismatch") { StatusCode = StatusCodes.Status403Forbidden };
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            ObjectResult actualOk = actual as ObjectResult;
+            ObjectResult expectedOk = expected as ObjectResult;
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            Assert.AreEqual(expectedOk.StatusCode, actualOk.StatusCode);
+            sessionMock.VerifyAll();
+            userMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void PutEmailAlreadyExists()
+        {
+            User current = new User()
+            {
+                Email = "user@test.com",
+                Address = "user address",
+            };
+            UserModelIn updated = new UserModelIn()
+            {
+                Email = "updated@test.com",
+                Address = "updated address"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(current);
+            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(true);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(current);
+
+            IActionResult actual = userController.Put(current.Email, updated);
+            IActionResult expected = new ObjectResult("Email already exists") { StatusCode = StatusCodes.Status403Forbidden };
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            ObjectResult actualOk = actual as ObjectResult;
+            ObjectResult expectedOk = expected as ObjectResult;
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
+            Assert.AreEqual(expectedOk.StatusCode, actualOk.StatusCode);
+            sessionMock.VerifyAll();
             userMock.VerifyAll();
         }
 

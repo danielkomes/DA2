@@ -59,7 +59,7 @@ namespace BusinessLogic.Test
         public void Test3Products()
         {
             PromotionEntity pEntity = new PromotionEntity();
-            PromotionAbstract p = new Promotion20Off(pEntity);
+            PromotionAbstract promotion = new Promotion20Off(pEntity);
             List<Product> products = new List<Product>();
             Product p1 = new Product()
             {
@@ -77,7 +77,7 @@ namespace BusinessLogic.Test
             products.Add(p2);
             products.Add(p3);
             float total = 100 + 200 + 300 - 300 * 0.2f;
-            PromotionResult actual = p.GetTotal(products);
+            PromotionResult actual = promotion.GetTotal(products);
             PromotionResult expected = new PromotionResult(total, true, pEntity.Id);
             Assert.AreEqual(expected, actual);
         }

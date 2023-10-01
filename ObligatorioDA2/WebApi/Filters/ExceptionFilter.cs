@@ -17,23 +17,14 @@ namespace WebApi.Filters
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status404NotFound };
             }
-            //catch (InvalidResourceException e)
-            //{
-            //    context.Result = new ObjectResult(new { Message = e.Message }) { StatusCode = 400 };
-            //}
             catch (InvalidOperationException e)
             {
-                // 409 - Conflict
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
             }
             catch (InvalidDataException e)
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
             }
-            //catch (InvalidCredentialException e)
-            //{
-            //    context.Result = new ObjectResult(new { Message = e.Message }) { StatusCode = 401 };
-            //}
             catch (Exception e)
             {
                 Console.WriteLine($"Message: {e.Message} - StackTrace: {e.StackTrace}");

@@ -75,7 +75,7 @@ namespace WebApi.Controllers
                     User user = UserService.Get(u);
                     if (user.Id != current.Id)
                     {
-                        return StatusCode(403, "Profile mismatch");
+                        return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
                     }
                     else
                     {
@@ -85,7 +85,7 @@ namespace WebApi.Controllers
                 }
                 catch (ResourceNotFoundException)
                 {
-                    return StatusCode(403, "Profile mismatch");
+                    return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
                 }
             }
         }
@@ -94,19 +94,16 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UserModelIn modelIn)
         {
-            //TODO: 401 unauthorized, si ya está logueado y no es admin
             bool exists = UserService.Exists(modelIn.ToEntity());
-            
+
             if (!exists)
             {
-                //201 created, si no está loggueado y el email no está registrado
                 UserService.Add(modelIn.ToEntity());
                 return Created(modelIn.Email, "User created");
             }
             else
             {
-                //403 TODO: forbidden, si no está loggueado y el email ya fue registrado
-                return StatusCode(403, "Email already exists");
+                return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
             }
         }
 
@@ -114,11 +111,6 @@ namespace WebApi.Controllers
         [HttpPut("{email}")]
         public IActionResult Put([FromRoute] string email, [FromBody] UserModelIn modelIn)
         {
-            //200 ok, si el id == loggedUser.id o es admin
-            //401 unauthorized, si no está loggueado o no es admin
-            //403 forbidden, (si el id == loggedUser.id o es admin) y el email ya fue registrado
-            //404 not found, (si el id == loggedUser.id o es admin) y no existe
-            //TODO: verificar email
             User current = SessionLogic.GetCurrentUser();
             User newUser = modelIn.ToEntity();
             bool exists = UserService.Exists(newUser);
@@ -126,35 +118,34 @@ namespace WebApi.Controllers
             {
                 Email = email
             };
-            //oldUser = UserService.Get(oldUser);
-            if (current.Roles.Contains(EUserRole.Admin))
+            if (current.Roles.Contains(EUserRole.Admin)) //is admin
             {
                 oldUser = UserService.Get(oldUser);
                 newUser.Id = oldUser.Id;
-                if (exists) return StatusCode(403, "Email already exists");
+                if (exists) return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
                 UserService.Update(newUser);
                 return Ok("User modified");
             }
-            else
+            else //is not admin 
             {
                 try
                 {
                     oldUser = UserService.Get(oldUser);
-                    if (current.Id != oldUser.Id)
+                    if (current.Id != oldUser.Id) //it's not their profile
                     {
-                        return StatusCode(403, "Profile mismatch");
+                        return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
                     }
-                    else
+                    else //it's their own profile
                     {
-                        if (exists) return StatusCode(403, "Email already exists");
+                        if (exists) return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
                         newUser.Id = oldUser.Id;
                         UserService.Update(newUser);
                         return Ok("User modified");
                     }
                 }
-                catch (ResourceNotFoundException)
+                catch (ResourceNotFoundException) //the other profile does not exist
                 {
-                    return StatusCode(403, "Profile mismatch");
+                    return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
                 }
             }
         }

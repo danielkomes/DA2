@@ -31,7 +31,7 @@ namespace WebApi.Controllers
             }
             else
             {
-                return StatusCode(403, "Email already exists");
+                return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
             }
         }
     }

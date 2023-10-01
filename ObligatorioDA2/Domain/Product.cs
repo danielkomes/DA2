@@ -15,5 +15,12 @@
             Id = Guid.NewGuid();
         }
 
+        public override bool Equals(object? obj)
+        {
+            if (obj is null) return false;
+            if (obj is not Product) return false;
+            Product other = obj as Product;
+            return Id == other.Id;
+        }
     }
 }

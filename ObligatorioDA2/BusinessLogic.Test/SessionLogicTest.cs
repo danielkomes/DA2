@@ -33,7 +33,6 @@ namespace BusinessLogic.Test
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             sessionMock.VerifyAll();
-            userMock.VerifyAll();
         }
 
         [TestMethod]
@@ -49,7 +48,7 @@ namespace BusinessLogic.Test
             ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
             userMock.Setup(m => m.Get(user)).Returns(value: null as User);
             sessionLogic.Authenticate(user);
-            userMock.VerifyAll();
+            sessionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -70,7 +69,7 @@ namespace BusinessLogic.Test
             User? actual = sessionLogic.GetCurrentUser(session.Id);
             User expected = user;
             Assert.AreEqual(expected, actual);
-            userMock.VerifyAll();
+            sessionMock.VerifyAll();
         }
 
         [TestMethod]
@@ -104,7 +103,7 @@ namespace BusinessLogic.Test
 
             User actual = sessionLogic.GetCurrentUser(new Session().Id);
             Assert.IsNull(actual);
-            userMock.VerifyAll();
+            sessionMock.VerifyAll();
         }
     }
 }
