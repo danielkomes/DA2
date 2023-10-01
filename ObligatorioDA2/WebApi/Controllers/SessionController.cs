@@ -26,7 +26,12 @@ namespace WebApi.Controllers
                 Email = email
             };
             Guid token = SessionLogic.Authenticate(user);
-            return Ok("Logged in" + Environment.NewLine + "Token: " + token);
+            var ret = new
+            {
+                result = "Logged in",
+                token = token
+            };
+            return Ok(ret);
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]

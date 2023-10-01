@@ -1,8 +1,10 @@
 using Domain;
+using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
 using WebApi.Controllers;
 using WebApi.Models.In;
 using WebApi.Models.Out;
@@ -19,7 +21,8 @@ namespace WebApi.Test
             IEnumerable<User> users = new List<User> { user1 };
             IEnumerable<UserModelOut> userModelOuts = new List<UserModelOut> { new UserModelOut(user1) };
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            UserController userController = new UserController(userMock.Object);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
             userMock.Setup(m => m.GetAll()).Returns(users);
 
 
@@ -59,7 +62,8 @@ namespace WebApi.Test
             };
 
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            UserController userController = new UserController(userMock.Object);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
             userMock.Setup(m => m.GetAll()).Returns(users);
 
 
@@ -90,8 +94,10 @@ namespace WebApi.Test
             IEnumerable<User> users = new List<User> { user1 };
             IEnumerable<UserModelOut> userModelOuts = new List<UserModelOut> { new UserModelOut(user1) };
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            UserController userController = new UserController(userMock.Object);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
             userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user1);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(user1);
 
 
             IActionResult actual = userController.Get("test@test.com");
@@ -116,7 +122,9 @@ namespace WebApi.Test
                 Address = "test 123"
             };
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            UserController userController = new UserController(userMock.Object);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(false);
             userMock.Setup(m => m.Add(It.IsAny<User>()));
 
             IActionResult actual = userController.Post(userModel);
@@ -132,16 +140,25 @@ namespace WebApi.Test
         [TestMethod]
         public void PutOk()
         {
+            User current = new User()
+            {
+                Email = "user@test.com",
+                Address = "user address"
+            };
             UserModelIn userModel = new UserModelIn()
             {
                 Email = "test@test.com",
                 Address = "test 123"
             };
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            UserController userController = new UserController(userMock.Object);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
+            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(current);
+            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(false);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(current);
             userMock.Setup(m => m.Update(It.IsAny<User>()));
 
-            IActionResult actual = userController.Put(userModel.Email, userModel);
+            IActionResult actual = userController.Put(current.Email, userModel);
             IActionResult expected = new OkObjectResult("User modified");
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -160,7 +177,8 @@ namespace WebApi.Test
                 Address = "test 123"
             };
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            UserController userController = new UserController(userMock.Object);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserController userController = new UserController(userMock.Object, sessionMock.Object);
             userMock.Setup(m => m.Delete(It.IsAny<User>()));
 
             IActionResult actual = userController.Delete(userModel.Email);

@@ -10,6 +10,10 @@
         public string Category { get; set; }
         public IEnumerable<string> Colors { get; set; }
 
+        public Product()
+        {
+            Id = Guid.NewGuid();
+        }
 
     }
 }

@@ -87,7 +87,7 @@ namespace WebApi.Controllers
             if (promotionApplied is null) promotionApplied = "None";
             var ret = new
             {
-                result = "Product added to cart",
+                result = "Product removed from cart",
                 promotionApplied = promotionApplied,
                 totalPrice = total,
                 currentProducts = ids

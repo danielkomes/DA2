@@ -96,6 +96,7 @@ namespace WebApi.Controllers
         {
             //TODO: 401 unauthorized, si ya está logueado y no es admin
             bool exists = UserService.Exists(modelIn.ToEntity());
+            
             if (!exists)
             {
                 //201 created, si no está loggueado y el email no está registrado

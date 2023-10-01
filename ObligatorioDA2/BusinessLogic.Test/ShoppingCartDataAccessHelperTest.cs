@@ -180,6 +180,7 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void VerifyProductsEmptyProducts()
         {
             Product p1 = new Product();

@@ -24,14 +24,18 @@ namespace WebApi.Test
             SessionController sessionController = new SessionController(sessionMock.Object);
             sessionMock.Setup(m => m.Authenticate(It.IsAny<User>())).Returns(token);
 
-
-            IActionResult actual = sessionController.Login("email@test.com", "password123");
-            IActionResult expected = new OkObjectResult("Logged in");
+            var expectedObject = new
+            {
+                result = "Logged in",
+                token = token
+            };
+            IActionResult actual = sessionController.Login("email@test.com");
+            IActionResult expected = new OkObjectResult(expectedObject);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
-            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
             sessionMock.VerifyAll();
         }
 
