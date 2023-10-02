@@ -1,11 +1,6 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
@@ -49,11 +44,6 @@ namespace BusinessLogic
             return products;
         }
 
-        public bool VerifyPromotion(PromotionEntity promotion)
-        {
-            return PromotionService.Exists(promotion);
-        }
-
         public bool VerifyUser(User user)
         {
             return UserService.Exists(user);
@@ -75,9 +65,6 @@ namespace BusinessLogic
                         break;
                     case EPromotionType.PromotionTotalLook:
                         ret = ret.Append(new PromotionTotalLook(entity));
-                        break;
-                    default:
-                        //TODO: throw Exception?
                         break;
                 }
             }

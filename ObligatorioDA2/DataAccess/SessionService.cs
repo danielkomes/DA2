@@ -1,12 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -25,7 +20,6 @@ namespace DataAccess
         {
             Table.Add(entity);
             Save();
-            //throw new NotImplementedException();
         }
 
         public void Delete(Session entity)
@@ -34,13 +28,11 @@ namespace DataAccess
                 .Where(s => s.User.Equals(entity.User));
             Table.Remove(result.First());
             Save();
-            //throw new NotImplementedException();
         }
 
         public bool Exists(Session entity)
         {
             return Get(entity) is not null;
-            //throw new NotImplementedException();
         }
 
         public IEnumerable<Session> FindByCondition(Expression<Func<Session, bool>> condition)
@@ -61,19 +53,16 @@ namespace DataAccess
         {
             var ret = Table.FromSqlInterpolated($"SELECT * FROM Sessions");
             return ret.ToList();
-            //throw new NotImplementedException();
         }
 
         public void Save()
         {
             Context.SaveChanges();
-            //throw new NotImplementedException();
         }
 
         public void Update(Session entity)
         {
-            //Table.Update(entity);
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

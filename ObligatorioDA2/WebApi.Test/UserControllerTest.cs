@@ -5,8 +5,6 @@ using IDataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
-using System.Runtime.Intrinsics.X86;
 using WebApi.Controllers;
 using WebApi.Models.In;
 using WebApi.Models.Out;
@@ -181,11 +179,7 @@ namespace WebApi.Test
             Assert.AreEqual(expected.GetType(), actual.GetType());
 
             ObjectResult actualOk = actual as ObjectResult;
-            //UserModelOut actualModel = actualOk.Value as UserModelOut;
             ObjectResult expectedOk = expected as ObjectResult;
-            //UserModelOut expectedModel = expectedOk.Value as UserModelOut;
-            //Assert.AreEqual(expectedModel.Email, actualModel.Email);
-            //Assert.AreEqual(expectedModel.Address, actualModel.Address);
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
             userMock.VerifyAll();
             sessionMock.VerifyAll();
@@ -218,11 +212,7 @@ namespace WebApi.Test
             Assert.AreEqual(expected.GetType(), actual.GetType());
 
             ObjectResult actualOk = actual as ObjectResult;
-            //UserModelOut actualModel = actualOk.Value as UserModelOut;
             ObjectResult expectedOk = expected as ObjectResult;
-            //UserModelOut expectedModel = expectedOk.Value as UserModelOut;
-            //Assert.AreEqual(expectedModel.Email, actualModel.Email);
-            //Assert.AreEqual(expectedModel.Address, actualModel.Address);
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
             userMock.VerifyAll();
             sessionMock.VerifyAll();

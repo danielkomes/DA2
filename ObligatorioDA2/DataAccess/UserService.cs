@@ -2,13 +2,7 @@
 using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -27,14 +21,12 @@ namespace DataAccess
         {
             Table.Add(entity);
             Save();
-            //throw new NotImplementedException();
         }
 
         public void Delete(User entity)
         {
             Table.Remove(Get(entity));
             Save();
-            //throw new NotImplementedException();
         }
 
         public bool Exists(User entity)
@@ -66,7 +58,6 @@ namespace DataAccess
         {
             var ret = Table.FromSqlInterpolated($"SELECT * FROM Users");
             return ret.ToList();
-            //throw new NotImplementedException();
         }
 
         public void Save()

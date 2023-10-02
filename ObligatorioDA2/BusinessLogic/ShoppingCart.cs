@@ -1,11 +1,5 @@
 ﻿using Domain;
 using IBusinessLogic;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
@@ -31,11 +25,8 @@ namespace BusinessLogic
 
         public void AddToCart(Product product)
         {
-            //verificar el producto desde la BD
-            //añadir al carrito
-
             bool valid = DataAccessHelper.VerifyProduct(product);
-            if (!valid) throw new InvalidDataException("Invalid product"); //TODO: throw exception 
+            if (!valid) throw new InvalidDataException("Invalid product");
 
             IEnumerable<Guid> listToCheck = new List<Guid>();
             foreach (Product currentProduct in ProductsChecked)
@@ -48,11 +39,6 @@ namespace BusinessLogic
 
         public void DoPurchase()
         {
-            //verificar que el user está loggeado y existe en la BD, si no lo está, dar error
-            //verificar productos en la bd, si algo falla, dar error
-            //crear objeto Purchase
-            //insertar objeto Purchase en la BD
-
             DataAccessHelper.VerifyUser(User);
             DataAccessHelper.VerifyProducts(ProductsChecked);
             GetTotalPrice();
@@ -62,11 +48,6 @@ namespace BusinessLogic
 
         public float GetTotalPrice()
         {
-            //esta función se llama cada vez que se agrega o elimina un producto del carrito...
-            //...así que no necesito verificar el producto, ya se hace en el Add
-            //verificar promociones en la BD, si algo falla, dar error
-            //aplicar promociones y mostrar el total
-
             float total = 0;
 
             foreach (Product product in ProductsChecked)
@@ -87,7 +68,6 @@ namespace BusinessLogic
 
         public void RemoveFromCart(Product product)
         {
-            //no necesita verificar, se elimina siempre
             ProductsChecked = ProductsChecked.Where(p => p.Id != product.Id);
         }
     }

@@ -2,10 +2,6 @@
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
-using WebApi.Models.In;
-using WebApi.Models.Out;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers
 {
@@ -20,7 +16,6 @@ namespace WebApi.Controllers
             PurchaseService = purchaseService;
         }
 
-        //get all
         [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpGet]
         public IActionResult GetAll()

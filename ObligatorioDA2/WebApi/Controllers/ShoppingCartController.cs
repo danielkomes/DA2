@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
 using WebApi.Models.Out;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace WebApi.Controllers
 {
     [Route("api/shopping-cart")]
@@ -67,7 +65,6 @@ namespace WebApi.Controllers
             return Ok(ret);
         }
 
-        //remove product from cart
         [HttpDelete("{id}")]
         public IActionResult RemoveSelectedProduct([FromRoute] Guid id, [FromBody] IEnumerable<Guid> currentProducts)
         {
@@ -95,11 +92,9 @@ namespace WebApi.Controllers
             return Ok(ret);
         }
 
-        //remove all products from cart
         [HttpDelete]
         public IActionResult RemoveAllProducts()
         {
-            //200 ok
             ShoppingCart.ProductsChecked = Enumerable.Empty<Product>();
             return Ok("All products removed");
         }

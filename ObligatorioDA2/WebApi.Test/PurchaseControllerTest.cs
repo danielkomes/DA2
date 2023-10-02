@@ -1,15 +1,8 @@
 ﻿using Domain;
-using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebApi.Controllers;
-using WebApi.Models.In;
 
 namespace WebApi.Test
 {
@@ -28,11 +21,6 @@ namespace WebApi.Test
             PurchaseController purchaseController = new PurchaseController(purchaseMock.Object);
             purchaseMock.Setup(m => m.GetAll()).Returns(purchases);
 
-            //var expectedObject = new
-            //{
-            //    result = "Logged in",
-            //    token = token
-            //};
             IActionResult actual = purchaseController.GetAll();
             IActionResult expected = new OkObjectResult(purchases);
 

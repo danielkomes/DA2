@@ -1,16 +1,8 @@
-﻿using BusinessLogic;
-using Domain;
+﻿using Domain;
 using IBusinessLogic;
-using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebApi.Controllers;
-using WebApi.Models.In;
 using WebApi.Models.Out;
 
 namespace WebApi.Test
@@ -205,8 +197,6 @@ namespace WebApi.Test
             cartMock.SetupGet(m => m.ProductsChecked).Returns(currentProducts);
             cartMock.SetupGet(m => m.PromotionApplied).Returns(promo20);
             cartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
-            //cartMock.Setup(m => m.GetTotalPrice()).Returns();
-            //cartMock.Setup(m => m.AddToCart(It.IsAny<Product>()));
 
             IEnumerable<Guid> afterProducts = new List<Guid> { p1.Id, p2.Id, p3.Id };
             var ret = new

@@ -1,14 +1,7 @@
-﻿using DataAccess;
-using Domain;
+﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
-using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Test
 {
@@ -399,7 +392,6 @@ namespace BusinessLogic.Test
             helperMock.Setup(h => h.GetProducts(productIds)).Returns(products);
             helperMock.Setup(h => h.GetPromotions()).Returns(new List<PromotionAbstract>());
 
-            //Purchase purchase = new Purchase(user, products);
             helperMock.Setup(h => h.InsertPurchase(It.IsAny<Purchase>()));
             ShoppingCart cart = new ShoppingCart(helperMock.Object);
             cart.AddToCart(p1);

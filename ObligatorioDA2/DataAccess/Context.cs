@@ -2,12 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -25,11 +20,8 @@ namespace DataAccess
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
-            //modelBuilder.Entity<User>()
-            //    .HasKey(u => u.Email);
             modelBuilder.Entity<User>().Property(p => p.Roles)
                 .HasConversion
                 (
@@ -57,7 +49,6 @@ namespace DataAccess
                         c => c.ToList()
                     )
                 );
-            //modelBuilder.Entity<Product>().HasMany<object>(/*v => v.Id*/)/*.WithMany<Product>()*/; //para setear en la bd relaciones entre tablas
 
             modelBuilder.Entity<PromotionEntity>()
                 .HasKey(p => p.Id);
@@ -77,13 +68,6 @@ namespace DataAccess
                         c => c.ToList()
                     )
                 );
-            //modelBuilder.Entity<Purchase>()
-            //    .HasMany(p => p.Products);
-            //modelBuilder.Entity<Purchase>()
-            //    .HasOne<User>();
-            //modelBuilder.Entity<Purchase>()
-            //    .HasOne<PromotionEntity>();
-
 
             modelBuilder.Entity<Session>()
                 .HasKey(p => p.Id);

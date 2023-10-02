@@ -1,12 +1,7 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Authentication;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
@@ -22,9 +17,6 @@ namespace BusinessLogic
         }
         public Guid Authenticate(User userIn)
         {
-            //get user
-            //if found, create and insert session in DB
-            //else throw exception
             User userOut = UserService.Get(userIn);
             if (userOut is null)
             {

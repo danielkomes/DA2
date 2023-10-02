@@ -2,10 +2,7 @@
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
-using WebApi.Models.In;
 using WebApi.Models.Out;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers
 {
@@ -20,14 +17,12 @@ namespace WebApi.Controllers
             ProductService = productService;
         }
 
-        //get all
         [HttpGet]
         public IActionResult GetAll(
             [FromQuery] string? name = null,
             [FromQuery] string? brand = null,
             [FromQuery] string? category = null)
         {
-            //200 ok (o 204 no content)
             IEnumerable<Product> products;
             if (name is null && brand is null && category is null)
             {
@@ -56,7 +51,6 @@ namespace WebApi.Controllers
                 Id = id
             };
             Product result = ProductService.Get(p);
-            if (result is null) return NotFound("Product not found");
             return Ok(new ProductModelOut(result));
         }
     }

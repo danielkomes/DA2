@@ -10,9 +10,6 @@ namespace BusinessLogic
         {
         }
 
-        //tener una constante de tipo Enum que será la usada para chequear
-        //si es la correcta para usar cuando me traiga las PromotionEntity
-        //tener un método de comparación con el enum
         public override PromotionResult GetTotal(IEnumerable<Product> products)
         {
             if (products.Count() == 0) return new PromotionResult(0, false, PromotionEntity.Id);

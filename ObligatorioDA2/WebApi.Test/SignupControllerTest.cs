@@ -1,13 +1,7 @@
 ﻿using Domain;
-using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebApi.Controllers;
 using WebApi.Models.In;
 
@@ -20,11 +14,6 @@ namespace WebApi.Test
         public void SignupOk()
         {
             Guid token = new Guid();
-            //User user = new User()
-            //{
-            //    Email = "user@test.com",
-            //    Address = "user address"
-            //};
             UserModelIn model = new UserModelIn()
             {
                 Email = "user@test.com",
@@ -53,11 +42,6 @@ namespace WebApi.Test
         public void SignupEmailAlreadyExists()
         {
             Guid token = new Guid();
-            //User user = new User()
-            //{
-            //    Email = "user@test.com",
-            //    Address = "user address"
-            //};
             UserModelIn model = new UserModelIn()
             {
                 Email = "user@test.com",

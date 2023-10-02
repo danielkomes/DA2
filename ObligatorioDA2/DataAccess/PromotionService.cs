@@ -1,14 +1,7 @@
-﻿using DataAccess.Exceptions;
-using Domain;
+﻿using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -49,8 +42,6 @@ namespace DataAccess
         public IEnumerable<PromotionEntity> GetAll()
         {
             return Table.ToList();
-            //var ret = Table.FromSqlInterpolated($"SELECT * FROM Promotions");
-            //return ret.ToList();
         }
 
         public void Save()

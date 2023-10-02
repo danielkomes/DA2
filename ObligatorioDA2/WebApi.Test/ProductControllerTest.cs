@@ -1,12 +1,9 @@
 using Domain;
-using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using WebApi.Controllers;
-using WebApi.Models.In;
 using WebApi.Models.Out;
 
 namespace WebApi.Test

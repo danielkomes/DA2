@@ -1,5 +1,4 @@
-﻿using System;
-using DataAccess.Exceptions;
+﻿using DataAccess.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

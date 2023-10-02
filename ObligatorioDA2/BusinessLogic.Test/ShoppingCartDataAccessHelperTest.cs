@@ -2,11 +2,6 @@
 using IBusinessLogic;
 using IDataAccess;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Test
 {
@@ -75,40 +70,6 @@ namespace BusinessLogic.Test
             bool actual = helper.VerifyUser(u);
             Assert.IsFalse(actual);
             userMock.VerifyAll();
-        }
-
-        [TestMethod]
-        public void VerifyPromotionValid()
-        {
-            PromotionEntity p = new PromotionEntity();
-            PromotionAbstract promo = new Promotion20Off(p);
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
-            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
-            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            promotionMock.Setup(m => m.Exists(promo.PromotionEntity)).Returns(true);
-            bool actual = helper.VerifyPromotion(promo.PromotionEntity);
-            Assert.IsTrue(actual);
-            promotionMock.VerifyAll();
-        }
-
-        [TestMethod]
-        public void VerifyPromotionInvalid()
-        {
-            PromotionEntity p = new PromotionEntity();
-            PromotionAbstract promo = new Promotion20Off(p);
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            var promotionMock = new Mock<IService<PromotionEntity>>(MockBehavior.Strict);
-            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
-            IShoppingCartDataAccessHelper helper = new ShoppingCartDataAccessHelper(
-                userMock.Object, productMock.Object, promotionMock.Object, purchaseMock.Object);
-            promotionMock.Setup(m => m.Exists(promo.PromotionEntity)).Returns(false);
-            bool actual = helper.VerifyPromotion(promo.PromotionEntity);
-            Assert.IsFalse(actual);
-            promotionMock.VerifyAll();
         }
 
         [TestMethod]
