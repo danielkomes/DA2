@@ -23,24 +23,15 @@ namespace BusinessLogic
             return products;
         }
 
-        public void AddToCart(Product product)
+        public void AddToCart(Guid productId)
         {
-            bool valid = DataAccessHelper.VerifyProduct(product);
-            if (!valid) throw new InvalidDataException("Invalid product");
-
-            IEnumerable<Guid> listToCheck = new List<Guid>();
-            foreach (Product currentProduct in ProductsChecked)
-            {
-                listToCheck = listToCheck.Append(currentProduct.Id);
-            }
-            listToCheck = listToCheck.Append(product.Id);
-            GetCurrentProducts(listToCheck);
+            Product productToAdd = DataAccessHelper.GetProduct(productId);
+            ProductsChecked = ProductsChecked.Append(productToAdd);
         }
 
         public void DoPurchase()
         {
-            DataAccessHelper.VerifyUser(User);
-            DataAccessHelper.VerifyProducts(ProductsChecked);
+            if (ProductsChecked.Count() == 0) throw new InvalidDataException("Shopping cart is empty");
             GetTotalPrice();
             Purchase purchase = new Purchase(User, ProductsChecked, PromotionApplied?.PromotionEntity);
             DataAccessHelper.InsertPurchase(purchase);
@@ -66,9 +57,9 @@ namespace BusinessLogic
             return total;
         }
 
-        public void RemoveFromCart(Product product)
+        public void RemoveFromCart(Guid productId)
         {
-            ProductsChecked = ProductsChecked.Where(p => p.Id != product.Id);
+            ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
         }
     }
 }

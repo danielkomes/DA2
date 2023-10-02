@@ -10,8 +10,8 @@ namespace IBusinessLogic
 
 
         public IEnumerable<Product> GetCurrentProducts(IEnumerable<Guid> productIds);
-        public void AddToCart(Product product);
-        public void RemoveFromCart(Product product);
+        public void AddToCart(Guid productId);
+        public void RemoveFromCart(Guid productId);
         public float GetTotalPrice();
         public void DoPurchase();
     }

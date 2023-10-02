@@ -6,47 +6,37 @@ namespace BusinessLogic
 {
     public class ShoppingCartDataAccessHelper : IShoppingCartDataAccessHelper
     {
-        private readonly IService<User> UserService;
         private readonly IService<Product> ProductService;
         private readonly IService<PromotionEntity> PromotionService;
         private readonly IService<Purchase> PurchaseService;
 
-        public ShoppingCartDataAccessHelper(IService<User> userService,
+        public ShoppingCartDataAccessHelper(
             IService<Product> productService,
             IService<PromotionEntity> promotionService,
             IService<Purchase> purchaseService)
         {
-            UserService = userService;
             ProductService = productService;
             PromotionService = promotionService;
             PurchaseService = purchaseService;
         }
-        public bool VerifyProduct(Product product)
-        {
-            return ProductService.Exists(product);
-        }
-        public bool VerifyProducts(IEnumerable<Product> products)
-        {
-            if (!products.Any()) throw new InvalidDataException("No products in cart");
-            return products.All(p => VerifyProduct(p));
-        }
+
         public IEnumerable<Product> GetProducts(IEnumerable<Guid> ids)
         {
             IEnumerable<Product> products = new List<Product>();
             foreach (Guid id in ids)
             {
-                Product p = new Product()
-                {
-                    Id = id
-                };
-                products = products.Append(ProductService.Get(p));
+                products = products.Append(GetProduct(id));
             }
             return products;
         }
 
-        public bool VerifyUser(User user)
+        public Product GetProduct(Guid id)
         {
-            return UserService.Exists(user);
+            Product p = new Product()
+            {
+                Id = id
+            };
+            return ProductService.Get(p);
         }
 
         public IEnumerable<PromotionAbstract> GetPromotions()

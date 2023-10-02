@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using BusinessLogic;
+using Domain;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -120,7 +121,7 @@ namespace WebApi.Test
             ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
             cartMock.Setup(m => m.GetCurrentProducts(currentProductsIds)).Returns(currentProducts);
             cartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
-            cartMock.Setup(m => m.RemoveFromCart(It.IsAny<Product>()));
+            cartMock.Setup(m => m.RemoveFromCart(It.IsAny<Guid>()));
             cartMock.Setup(m => m.ProductsChecked).Returns(currentProducts);
             cartMock.SetupGet(m => m.ProductsChecked).Returns(currentProducts);
             cartMock.SetupGet(m => m.PromotionApplied).Returns(promo20);
@@ -190,15 +191,15 @@ namespace WebApi.Test
             PromotionAbstract promo20 = new Promotion20Off(entity);
             IEnumerable<Product> currentProducts = new List<Product> { p1, p2 };
             IEnumerable<Guid> currentProductsIds = new List<Guid> { p1.Id, p2.Id };
+            IEnumerable<Guid> afterProducts = new List<Guid> { p1.Id, p2.Id, p3.Id };
             var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
             ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
-            cartMock.Setup(m => m.AddToCart(It.IsAny<Product>()));
+            cartMock.Setup(m => m.AddToCart(It.IsAny<Guid>()));
             cartMock.Setup(m => m.GetCurrentProducts(It.IsAny<IEnumerable<Guid>>())).Returns(currentProducts);
             cartMock.SetupGet(m => m.ProductsChecked).Returns(currentProducts);
             cartMock.SetupGet(m => m.PromotionApplied).Returns(promo20);
             cartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
 
-            IEnumerable<Guid> afterProducts = new List<Guid> { p1.Id, p2.Id, p3.Id };
             var ret = new
             {
                 result = "Product added to cart",
@@ -231,20 +232,36 @@ namespace WebApi.Test
             {
                 Price = 300
             };
-            IEnumerable<Product> products = new List<Product> { p1, p2, p3 };
+            PromotionEntity entity = new PromotionEntity()
+            {
+                Name = "Promotion 20% off",
+                Type = EPromotionType.Promotion20Off
+            };
+            PromotionAbstract promo20 = new Promotion20Off(entity);
+            IEnumerable<Product> currentProducts = new List<Product> { p1, p2, p3 };
             IEnumerable<Guid> currentProductsIds = new List<Guid> { p1.Id, p2.Id, p3.Id };
             var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
             ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
-            cartMock.Setup(m => m.GetCurrentProducts(currentProductsIds)).Returns(products);
+            cartMock.Setup(m => m.GetCurrentProducts(currentProductsIds)).Returns(currentProducts);
             cartMock.Setup(m => m.DoPurchase());
+            cartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
+            cartMock.SetupGet(m => m.PromotionApplied).Returns(promo20);
+            cartMock.SetupGet(m => m.ProductsChecked).Returns(currentProducts);
 
+            var ret = new
+            {
+                result = "Purchase done",
+                promotionApplied = entity.Name,
+                totalPrice = 100 + 200 - 200 * 0.2f,
+                currentProducts = currentProductsIds
+            };
             IActionResult actual = cartController.DoPurchase(currentProductsIds);
-            IActionResult expected = new OkObjectResult("Purchase done");
+            IActionResult expected = new OkObjectResult(ret);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
-            Assert.AreEqual(expectedOk.Value, actualOk.Value);
+            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
             cartMock.VerifyAll();
         }
     }

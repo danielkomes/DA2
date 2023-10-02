@@ -42,54 +42,19 @@ namespace WebApi.Controllers
         public IActionResult AddProduct([FromRoute] Guid productToAdd, [FromBody] IEnumerable<Guid> currentProducts)
         {
             ShoppingCart.GetCurrentProducts(currentProducts);
-            Product newProduct = new Product()
-            {
-                Id = productToAdd
-            };
-            ShoppingCart.AddToCart(newProduct);
-            float total = ShoppingCart.GetTotalPrice();
-            List<Guid> ids = new List<Guid>();
-            foreach (Product product in ShoppingCart.ProductsChecked)
-            {
-                ids.Add(product.Id);
-            }
-            string promotionApplied = ShoppingCart.PromotionApplied?.PromotionEntity.Name;
-            if (promotionApplied is null) promotionApplied = "None";
-            var ret = new
-            {
-                result = "Product added to cart",
-                promotionApplied = promotionApplied,
-                totalPrice = total,
-                currentProducts = ids
-            };
-            return Ok(ret);
+            ShoppingCart.AddToCart(productToAdd);
+
+            return Ok(GenerateResponseBody("Product added to cart"));
         }
 
         [HttpDelete("{id}")]
-        public IActionResult RemoveSelectedProduct([FromRoute] Guid id, [FromBody] IEnumerable<Guid> currentProducts)
+        public IActionResult RemoveSelectedProduct([FromRoute] Guid productToRemove, [FromBody] IEnumerable<Guid> currentProducts)
         {
             ShoppingCart.GetCurrentProducts(currentProducts);
-            Product p = new Product()
-            {
-                Id = id
-            };
-            ShoppingCart.RemoveFromCart(p);
-            float total = ShoppingCart.GetTotalPrice();
-            List<Guid> ids = new List<Guid>();
-            foreach (Product product in ShoppingCart.ProductsChecked)
-            {
-                ids.Add(product.Id);
-            }
-            string promotionApplied = ShoppingCart.PromotionApplied?.PromotionEntity.Name;
-            if (promotionApplied is null) promotionApplied = "None";
-            var ret = new
-            {
-                result = "Product removed from cart",
-                promotionApplied = promotionApplied,
-                totalPrice = total,
-                currentProducts = ids
-            };
-            return Ok(ret);
+            ShoppingCart.RemoveFromCart(productToRemove);
+
+
+            return Ok(GenerateResponseBody("Product removed from cart"));
         }
 
         [HttpDelete]
@@ -106,7 +71,27 @@ namespace WebApi.Controllers
         {
             ShoppingCart.GetCurrentProducts(currentProducts);
             ShoppingCart.DoPurchase();
-            return Ok("Purchase done");
+            return Ok(GenerateResponseBody("Purchase done"));
+        }
+
+        private dynamic GenerateResponseBody(string result)
+        {
+            float total = ShoppingCart.GetTotalPrice();
+            List<Guid> ids = new List<Guid>();
+            foreach (Product product in ShoppingCart.ProductsChecked)
+            {
+                ids.Add(product.Id);
+            }
+            string promotionApplied = ShoppingCart.PromotionApplied?.PromotionEntity.Name;
+            if (promotionApplied is null) promotionApplied = "None";
+            var ret = new
+            {
+                result = result,
+                promotionApplied = promotionApplied,
+                totalPrice = total,
+                currentProducts = ids
+            };
+            return ret;
         }
     }
 }
