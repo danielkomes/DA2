@@ -348,6 +348,7 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void RemoveFromCartEmpty()
         {
             Product p1 = new Product();
@@ -385,6 +386,7 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
         public void RemoveFromCart1ProductNotAdded()
         {
             Product p1 = new Product();
