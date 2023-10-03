@@ -82,6 +82,47 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        public void GetProducts3Products()
+        {
+            Product p1 = new Product()
+            {
+                Price = 100,
+                Category = "cat1",
+                Colors = new List<string> { "red" }
+            };
+            Product p2 = new Product()
+            {
+                Price = 200,
+                Category = "cat2",
+                Colors = new List<string> { "green" }
+            };
+            Product p3 = new Product()
+            {
+                Price = 300,
+                Category = "cat3",
+                Colors = new List<string> { "blue" }
+            };
+            IEnumerable<Product> currentProducts = new List<Product> { p1, p2, p3 };
+            IEnumerable<Guid> currentProductsIds = new List<Guid> { p1.Id, p2.Id, p3.Id };
+            var helperMock = new Mock<IShoppingCartDataAccessHelper>(MockBehavior.Strict);
+            IShoppingCart shoppingCart = new ShoppingCart(helperMock.Object);
+            helperMock.Setup(m => m.GetProducts(currentProductsIds)).Returns(currentProducts);
+
+
+            IEnumerable<Product> actual = shoppingCart.GetCurrentProducts(currentProductsIds);
+            IEnumerable<Product> expected = currentProducts;
+
+            Assert.AreEqual(expected.Count(), actual.Count());
+            for (int i = 0; i < expected.Count(); i++)
+            {
+                Assert.AreEqual(expected.ElementAt(i).Price, actual.ElementAt(i).Price);
+                Assert.AreEqual(expected.ElementAt(i).Category, actual.ElementAt(i).Category);
+                Assert.AreEqual(expected.ElementAt(i).Colors.First(), actual.ElementAt(i).Colors.First());
+            }
+            helperMock.VerifyAll();
+        }
+
+        [TestMethod]
         public void GetTotalPriceNoProductsNoPromotions()
         {
             var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
