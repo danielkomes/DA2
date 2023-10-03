@@ -59,6 +59,8 @@ namespace BusinessLogic
 
         public void RemoveFromCart(Guid productId)
         {
+            Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
+            if (toRemove is null) throw new InvalidDataException("Product not found in cart");
             ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
         }
     }

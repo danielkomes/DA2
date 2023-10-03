@@ -47,7 +47,7 @@ namespace WebApi.Controllers
             return Ok(GenerateResponseBody("Product added to cart"));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{productToRemove}")]
         public IActionResult RemoveSelectedProduct([FromRoute] Guid productToRemove, [FromBody] IEnumerable<Guid> currentProducts)
         {
             ShoppingCart.GetCurrentProducts(currentProducts);

@@ -45,7 +45,8 @@ namespace DataAccess
         public IEnumerable<Purchase> GetAll()
         {
             return Table
-                .Include(s => s.User)
+                .Include(p => p.User)
+                .Include(p => p.Promotion)
                 .ToList();
 
         }
