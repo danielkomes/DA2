@@ -16,8 +16,8 @@ namespace WebApi.Controllers
             SessionLogic = sessionService;
         }
 
-        [HttpPost]
-        public IActionResult Login([FromBody] string email)
+        [HttpPost("{email}")]
+        public IActionResult Login([FromRoute] string email)
         {
             User user = new User()
             {
