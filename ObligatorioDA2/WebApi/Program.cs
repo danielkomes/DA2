@@ -37,11 +37,6 @@ namespace WebApi
             builder.Services.AddScoped<ISessionLogic, SessionLogic>();
             builder.Services.AddScoped<IShoppingCart, ShoppingCart>();
             builder.Services.AddTransient<IShoppingCartDataAccessHelper, ShoppingCartDataAccessHelper>();
-            //builder.Services.AddSingleton(provider =>
-            //{
-            //    var dataAccessHelper = provider.GetRequiredService<IShoppingCartDataAccessHelper>();
-            //    return new ShoppingCart(dataAccessHelper);
-            //});
 
 
             builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
