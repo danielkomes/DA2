@@ -50,8 +50,8 @@ namespace BusinessLogic.Test
                 Price = 200,
                 Category = "cat1"
             };
-            products.Add(p1);
             products.Add(p2);
+            products.Add(p1);
             float total = 100 + 200;
             PromotionResult actual = p.GetTotal(products);
             PromotionResult expected = new PromotionResult(total, false, pEntity.Id);

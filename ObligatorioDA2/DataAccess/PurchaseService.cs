@@ -1,13 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -24,7 +18,8 @@ namespace DataAccess
 
         public void Add(Purchase entity)
         {
-            throw new NotImplementedException();
+            Table.Add(entity);
+            Save();
         }
 
         public void Delete(Purchase entity)
@@ -49,11 +44,16 @@ namespace DataAccess
 
         public IEnumerable<Purchase> GetAll()
         {
-            throw new NotImplementedException();
+            return Table
+                .Include(p => p.User)
+                .Include(p => p.Promotion)
+                .ToList();
+
         }
 
         public void Save()
         {
+            Context.SaveChanges();
         }
 
         public void Update(Purchase entity)

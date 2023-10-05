@@ -1,15 +1,14 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models.In;
+using WebApi.Filters;
 using WebApi.Models.Out;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers
 {
     [Route("api/products")]
     [ApiController]
+    [ExceptionFilter]
     public class ProductController : ControllerBase
     {
         private readonly IService<Product> ProductService;
@@ -18,14 +17,12 @@ namespace WebApi.Controllers
             ProductService = productService;
         }
 
-        //get all
         [HttpGet]
         public IActionResult GetAll(
             [FromQuery] string? name = null,
             [FromQuery] string? brand = null,
             [FromQuery] string? category = null)
         {
-            //200 ok (o 204 no content)
             IEnumerable<Product> products;
             if (name is null && brand is null && category is null)
             {
@@ -34,9 +31,9 @@ namespace WebApi.Controllers
             else
             {
                 products = ProductService.FindByCondition(
-                p => p.Name.Equals(name) ||
-                p.Brand.Equals(brand) ||
-                p.Category.Equals(category));
+                p => p.Name.Contains(name) ||
+                p.Brand.Contains(brand) ||
+                p.Category.Contains(category));
             }
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
             foreach (Product product in products)
@@ -46,11 +43,15 @@ namespace WebApi.Controllers
             return Ok(models);
         }
 
-        [HttpGet]
-        public IActionResult Get([FromBody] ProductModelIn model)
+        [HttpGet("{id}")]
+        public IActionResult Get([FromRoute] Guid id)
         {
-            Product p = ProductService.Get(model.ToEntity());
-            return Ok(new ProductModelOut(p));
+            Product p = new Product()
+            {
+                Id = id
+            };
+            Product result = ProductService.Get(p);
+            return Ok(new ProductModelOut(result));
         }
     }
 }

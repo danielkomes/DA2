@@ -22,6 +22,40 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Domain.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Colors")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
+
             modelBuilder.Entity("Domain.PromotionEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -36,9 +70,40 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Promotions");
+                });
+
+            modelBuilder.Entity("Domain.Purchase", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Products")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PromotionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PromotionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Purchase");
                 });
 
             modelBuilder.Entity("Domain.Session", b =>
@@ -71,12 +136,30 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
+                    b.Property<string>("Roles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Purchase", b =>
+                {
+                    b.HasOne("Domain.PromotionEntity", "Promotion")
+                        .WithMany()
+                        .HasForeignKey("PromotionId");
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Promotion");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Session", b =>

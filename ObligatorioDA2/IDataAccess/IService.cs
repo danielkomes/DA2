@@ -13,6 +13,5 @@ namespace IDataAccess
         public bool Exists(T entity);
 
         public void Save();
-        //ICollection<T> FindByCondition(Expression<Func<T, bool>> condition);
     }
 }

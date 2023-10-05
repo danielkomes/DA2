@@ -1,12 +1,8 @@
-﻿using Domain;
+﻿using DataAccess.Exceptions;
+using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -32,27 +28,40 @@ namespace DataAccess
 
         public bool Exists(Product entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return Get(entity) is not null;
+            }
+            catch (ResourceNotFoundException)
+            {
+                return false;
+            }
         }
 
         public IEnumerable<Product> FindByCondition(Expression<Func<Product, bool>> condition)
         {
-            throw new NotImplementedException();
+            var ret = Table
+                .Where(condition);
+            return ret;
         }
 
         public Product Get(Product entity)
         {
-            throw new NotImplementedException();
+            var ret = Table
+                .Where(s => s.Id.Equals(entity.Id));
+            if (!ret.Any()) throw new ResourceNotFoundException("Product not found");
+            return ret.First();
         }
 
         public IEnumerable<Product> GetAll()
         {
-            throw new NotImplementedException();
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Products");
+            return ret.ToList();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            Context.SaveChanges();
         }
 
         public void Update(Product entity)

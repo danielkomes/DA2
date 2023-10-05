@@ -2,9 +2,9 @@
 {
     public class PromotionResult
     {
+        public readonly Guid PromotionId;
         public readonly float Result;
         public readonly bool IsApplied;
-        public readonly Guid PromotionId;
 
         public PromotionResult(float result, bool isApplied, Guid promotionId)
         {

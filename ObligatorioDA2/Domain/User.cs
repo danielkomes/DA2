@@ -9,7 +9,14 @@
         public User()
         {
             Id = Guid.NewGuid();
-            Roles = new List<EUserRole>();
+            Roles = new List<EUserRole> { EUserRole.Customer };
+        }
+        public override bool Equals(object? obj)
+        {
+            if (obj is null) return false;
+            if (obj is not User) return false;
+            User other = obj as User;
+            return Id == other.Id;
         }
     }
 }

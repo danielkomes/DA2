@@ -1,12 +1,7 @@
 ﻿using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -15,19 +10,29 @@ namespace DataAccess
         private readonly Context Context;
         private readonly DbSet<Session> Table;
 
+        public SessionService(Context context)
+        {
+            Context = context;
+            Table = Context.Set<Session>();
+        }
+
         public void Add(Session entity)
         {
-            throw new NotImplementedException();
+            Table.Add(entity);
+            Save();
         }
 
         public void Delete(Session entity)
         {
-            throw new NotImplementedException();
+            var result = Table.FromSqlInterpolated($"SELECT * FROM Sessions")
+                .Where(s => s.User.Equals(entity.User));
+            Table.Remove(result.First());
+            Save();
         }
 
         public bool Exists(Session entity)
         {
-            throw new NotImplementedException();
+            return Get(entity) is not null;
         }
 
         public IEnumerable<Session> FindByCondition(Expression<Func<Session, bool>> condition)
@@ -37,17 +42,22 @@ namespace DataAccess
 
         public Session Get(Session entity)
         {
-            throw new NotImplementedException();
+            var ret = Table
+                .Include(s => s.User)
+                .Where(s => s.Id.Equals(entity.Id));
+            if (!ret.Any()) return null;
+            return ret.First();
         }
 
         public IEnumerable<Session> GetAll()
         {
-            throw new NotImplementedException();
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Sessions");
+            return ret.ToList();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            Context.SaveChanges();
         }
 
         public void Update(Session entity)

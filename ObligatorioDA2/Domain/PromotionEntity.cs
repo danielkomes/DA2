@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain
+﻿namespace Domain
 {
     public class PromotionEntity
     {
@@ -12,6 +6,11 @@ namespace Domain
         public string Name { get; set; }
         public string Description { get; set; }
         public EPromotionType Type { get; set; }
+
+        public PromotionEntity()
+        {
+            Id = Guid.NewGuid();
+        }
 
         public override bool Equals(object? obj)
         {

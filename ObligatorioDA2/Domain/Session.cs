@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain
+﻿namespace Domain
 {
     public class Session
     {
@@ -14,6 +8,14 @@ namespace Domain
         public Session()
         {
             Id = Guid.NewGuid();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null) return false;
+            if (obj is not Session) return false;
+            Session other = obj as Session;
+            return Id == other.Id;
         }
     }
 }

@@ -1,49 +1,42 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
     public class ShoppingCartDataAccessHelper : IShoppingCartDataAccessHelper
     {
-        private readonly IService<User> UserService;
         private readonly IService<Product> ProductService;
         private readonly IService<PromotionEntity> PromotionService;
         private readonly IService<Purchase> PurchaseService;
 
-        public ShoppingCartDataAccessHelper(IService<User> userService,
+        public ShoppingCartDataAccessHelper(
             IService<Product> productService,
             IService<PromotionEntity> promotionService,
             IService<Purchase> purchaseService)
         {
-            UserService = userService;
             ProductService = productService;
             PromotionService = promotionService;
             PurchaseService = purchaseService;
         }
-        public bool VerifyProduct(Product product)
+
+        public IEnumerable<Product> GetProducts(IEnumerable<Guid> ids)
         {
-            return ProductService.Exists(product);
-        }
-        public bool VerifyProducts(IEnumerable<Product> products)
-        {
-            if (!products.Any()) return false;
-            return products.All(p => VerifyProduct(p));
+            IEnumerable<Product> products = new List<Product>();
+            foreach (Guid id in ids)
+            {
+                products = products.Append(GetProduct(id));
+            }
+            return products;
         }
 
-        public bool VerifyPromotion(PromotionEntity promotion)
+        public Product GetProduct(Guid id)
         {
-            return PromotionService.Exists(promotion);
-        }
-
-        public bool VerifyUser(User user)
-        {
-            return UserService.Exists(user);
+            Product p = new Product()
+            {
+                Id = id
+            };
+            return ProductService.Get(p);
         }
 
         public IEnumerable<PromotionAbstract> GetPromotions()
@@ -62,9 +55,6 @@ namespace BusinessLogic
                         break;
                     case EPromotionType.PromotionTotalLook:
                         ret = ret.Append(new PromotionTotalLook(entity));
-                        break;
-                    default:
-                        //TODO: throw Exception?
                         break;
                 }
             }

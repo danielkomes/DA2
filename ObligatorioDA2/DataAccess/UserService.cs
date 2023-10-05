@@ -1,13 +1,8 @@
-﻿using Domain;
+﻿using DataAccess.Exceptions;
+using Domain;
 using IDataAccess;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess
 {
@@ -24,17 +19,26 @@ namespace DataAccess
 
         public void Add(User entity)
         {
-            throw new NotImplementedException();
+            Table.Add(entity);
+            Save();
         }
 
         public void Delete(User entity)
         {
-            throw new NotImplementedException();
+            Table.Remove(Get(entity));
+            Save();
         }
 
         public bool Exists(User entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return Get(entity) is not null;
+            }
+            catch (ResourceNotFoundException)
+            {
+                return false;
+            }
         }
 
         public IEnumerable<User> FindByCondition(Expression<Func<User, bool>> condition)
@@ -44,21 +48,30 @@ namespace DataAccess
 
         public User Get(User entity)
         {
-            throw new NotImplementedException();
+            if (entity is null) throw new ResourceNotFoundException("User not found");
+            var ret = Table.FirstOrDefault(u => u.Email.Equals(entity.Email));
+            if (ret is null) throw new ResourceNotFoundException("User not found");
+            return ret;
         }
 
         public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            var ret = Table.FromSqlInterpolated($"SELECT * FROM Users");
+            return ret.ToList();
         }
 
         public void Save()
         {
+            Context.SaveChanges();
         }
 
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            var found = Table.FirstOrDefault(u => u.Id == entity.Id);
+            if (found is null) throw new ResourceNotFoundException("User not found");
+            found.Email = entity.Email;
+            found.Address = entity.Address;
+            Save();
         }
     }
 }

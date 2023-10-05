@@ -1,18 +1,14 @@
 ﻿using Domain;
 using IBusinessLogic;
-using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
-using WebApi.Models.In;
 using WebApi.Models.Out;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApi.Controllers
 {
     [Route("api/shopping-cart")]
     [ApiController]
-    [AuthorizationFilter(RoleNeeded = EUserRole.Customer)]
+    [ExceptionFilter]
     public class ShoppingCartController : ControllerBase
     {
         private readonly IShoppingCart ShoppingCart;
@@ -22,51 +18,80 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProducts()
+        public IActionResult GetProducts([FromBody] IEnumerable<Guid> currentProducts)
         {
-            //200 ok (o 204 no content)
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
+            ShoppingCart.GetCurrentProducts(currentProducts);
             foreach (Product p in ShoppingCart.ProductsChecked)
             {
                 models = models.Append(new ProductModelOut(p));
             }
-            return Ok(models);
-        }
-
-        [HttpPost]
-        public IActionResult AddProduct([FromBody] ProductModelIn product)
-        {
-            ShoppingCart.AddToCart(product.ToEntity());
-            return Ok("Product added to cart");
-        }
-
-        //remove product from cart
-        [HttpDelete]
-        public IActionResult RemoveSelectedProducts([FromBody] IEnumerable<ProductModelIn> products)
-        {
-            //200 ok
-            foreach (ProductModelIn model in products)
+            float total = ShoppingCart.GetTotalPrice();
+            string promotionApplied = ShoppingCart.PromotionApplied?.PromotionEntity.Name;
+            if (promotionApplied is null) promotionApplied = "None";
+            var ret = new
             {
-                ShoppingCart.RemoveFromCart(model.ToEntity());
-            }
-            return Ok("Product(s) removed");
+                checkedProducts = models,
+                promotionApplied = promotionApplied,
+                totalPrice = total
+            };
+            return Ok(ret);
         }
 
-        //remove all products from cart
+        [HttpPost("{productToAdd}")]
+        public IActionResult AddProduct([FromRoute] Guid productToAdd, [FromBody] IEnumerable<Guid> currentProducts)
+        {
+            ShoppingCart.GetCurrentProducts(currentProducts);
+            ShoppingCart.AddToCart(productToAdd);
+
+            return Ok(GenerateResponseBody("Product added to cart"));
+        }
+
+        [HttpDelete("{productToRemove}")]
+        public IActionResult RemoveSelectedProduct([FromRoute] Guid productToRemove, [FromBody] IEnumerable<Guid> currentProducts)
+        {
+            ShoppingCart.GetCurrentProducts(currentProducts);
+            ShoppingCart.RemoveFromCart(productToRemove);
+
+
+            return Ok(GenerateResponseBody("Product removed from cart"));
+        }
+
         [HttpDelete]
         public IActionResult RemoveAllProducts()
         {
-            //200 ok
             ShoppingCart.ProductsChecked = Enumerable.Empty<Product>();
             return Ok("All products removed");
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]
+        [AuthorizationFilter(RoleNeeded = EUserRole.Customer)]
         [HttpPost]
-        public IActionResult DoPurchase()
+        public IActionResult DoPurchase([FromBody] IEnumerable<Guid> currentProducts)
         {
+            ShoppingCart.GetCurrentProducts(currentProducts);
             ShoppingCart.DoPurchase();
-            return Ok("Purchase done");
+            return Ok(GenerateResponseBody("Purchase done"));
+        }
+
+        private dynamic GenerateResponseBody(string result)
+        {
+            float total = ShoppingCart.GetTotalPrice();
+            List<Guid> ids = new List<Guid>();
+            foreach (Product product in ShoppingCart.ProductsChecked)
+            {
+                ids.Add(product.Id);
+            }
+            string promotionApplied = ShoppingCart.PromotionApplied?.PromotionEntity.Name;
+            if (promotionApplied is null) promotionApplied = "None";
+            var ret = new
+            {
+                result = result,
+                promotionApplied = promotionApplied,
+                totalPrice = total,
+                currentProducts = ids
+            };
+            return ret;
         }
     }
 }
