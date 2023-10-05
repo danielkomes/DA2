@@ -18,7 +18,8 @@ namespace BusinessLogic
 
         public void Add(User newUser)
         {
-            throw new NotImplementedException();
+            User current = SessionLogic.GetCurrentUser();
+            UserService.Add(newUser);
         }
 
         public void Delete(string email)
