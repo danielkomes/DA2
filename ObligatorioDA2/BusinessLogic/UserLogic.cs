@@ -1,0 +1,44 @@
+﻿
+using Domain;
+using IBusinessLogic;
+using IDataAccess;
+
+namespace BusinessLogic
+{
+    public class UserLogic : IUserLogic
+    {
+        private readonly IService<User> UserService;
+        private readonly ISessionLogic SessionLogic;
+
+        public UserLogic(IService<User> userService, ISessionLogic sessionLogic)
+        {
+            UserService = userService;
+            SessionLogic = sessionLogic;
+        }
+
+        public void Add(User newUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User Get(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<User> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(User updatedUser)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
