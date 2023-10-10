@@ -41,9 +41,12 @@ namespace BusinessLogic
                 Email = email
             };
             User current = SessionLogic.GetCurrentUser();
-            if(!current.Email.Equals(email))
+            if (!current.Roles.Contains(EUserRole.Admin))
             {
-                throw new ProfileMismatchException("Profile mismatch");
+                if (!current.Email.Equals(email))
+                {
+                    throw new ProfileMismatchException("Profile mismatch");
+                }
             }
             return UserService.Get(user);
         }
