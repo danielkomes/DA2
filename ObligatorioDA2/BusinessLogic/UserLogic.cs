@@ -47,7 +47,7 @@ namespace BusinessLogic
 
         public void Update(User updatedUser)
         {
-            throw new NotImplementedException();
+            UserService.Update(updatedUser);
         }
     }
 }
