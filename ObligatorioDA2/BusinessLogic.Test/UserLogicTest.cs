@@ -161,6 +161,28 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        public void UpdateSameEmailValid()
+        {
+            User userCurrent = new User()
+            {
+                Email = "user@test.com",
+                Address = "123"
+            };
+            User userUpdated = new User()
+            {
+                Id = userCurrent.Id,
+                Email = "user@test.com",
+                Address = "456"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Exists(userUpdated)).Returns(true);
+            UserMock.Setup(m => m.Get(userUpdated)).Returns(userCurrent);
+            UserMock.Setup(m => m.Update(userUpdated));
+
+            UserLogic.Update(userCurrent.Email, userUpdated);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(EntityAlreadyExistsException))]
         public void UpdateEmailAlreadyExists()
         {
@@ -207,6 +229,30 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ProfileMismatchException))]
+        public void UpdateEmailAlreadyExistsBeingAnotherCustomer()
+        {
+            User userCurrent = new User()
+            {
+                Email = "currentUser@test.com",
+            };
+            User userTargetOld = new User()
+            {
+                Email = "userOld@test.com",
+                Address = "123"
+            };
+            User userTargetUpdated = new User()
+            {
+                Id = userTargetOld.Id,
+                Email = "userUpdated@test.com",
+                Address = "456"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+
+            UserLogic.Update(userTargetOld.Email, userTargetUpdated);
+        }
+
+        [TestMethod]
         public void UpdateBeingAnotherAdmin()
         {
             User userCurrent = new User()
@@ -226,6 +272,33 @@ namespace BusinessLogic.Test
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
             UserMock.Setup(m => m.Exists(userTargetUpdated)).Returns(false);
             UserMock.Setup(m => m.Update(userTargetUpdated));
+
+            UserLogic.Update(userTargetOld.Email, userTargetUpdated);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EntityAlreadyExistsException))]
+        public void UpdateEmailAlreadyExistsBeingAnotherAdmin()
+        {
+            User userCurrent = new User()
+            {
+                Email = "currentUser@test.com",
+                Roles = new List<EUserRole>() { EUserRole.Admin }
+            };
+            User userTargetOld = new User()
+            {
+                Email = "userOld@test.com",
+                Address = "123"
+            };
+            User userTargetUpdated = new User()
+            {
+                Id = userTargetOld.Id,
+                Email = "userUpdated@test.com",
+                Address = "456"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Exists(userTargetUpdated)).Returns(true);
+            UserMock.Setup(m => m.Get(userTargetUpdated)).Returns(userTargetOld);
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
         }
