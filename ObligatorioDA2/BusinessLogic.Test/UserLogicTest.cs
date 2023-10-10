@@ -27,5 +27,22 @@ namespace BusinessLogic.Test
             userMock.VerifyAll();
             sessionMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void DeleteValid()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Delete(It.IsAny<User>()));
+
+            logic.Delete(user.Email);
+
+            userMock.VerifyAll();
+        }
     }
 }
