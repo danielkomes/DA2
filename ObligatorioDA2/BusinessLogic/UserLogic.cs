@@ -42,7 +42,7 @@ namespace BusinessLogic
 
         public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return UserService.GetAll();
         }
 
         public void Update(User updatedUser)
