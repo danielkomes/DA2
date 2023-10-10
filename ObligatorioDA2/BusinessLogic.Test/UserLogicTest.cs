@@ -153,6 +153,7 @@ namespace BusinessLogic.Test
                 Id = userCurrent.Id,
                 Email = "updatedUser@test.com"
             };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
             UserMock.Setup(m => m.Update(userCurrent));
 
             UserLogic.Update(userCurrent.Email, userUpdated);
