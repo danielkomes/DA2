@@ -1,4 +1,5 @@
 ﻿
+using BusinessLogic.Exceptions;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
@@ -18,7 +19,10 @@ namespace BusinessLogic
 
         public void Add(User newUser)
         {
-            User current = SessionLogic.GetCurrentUser();
+            if (UserService.Exists(newUser))
+            {
+                throw new EntityAlreadyExistsException("Email already exists");
+            }
             UserService.Add(newUser);
         }
 
