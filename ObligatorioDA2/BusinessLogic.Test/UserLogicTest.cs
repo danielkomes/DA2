@@ -90,5 +90,27 @@ namespace BusinessLogic.Test
             }
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void UpdateValid()
+        {
+            User userCurrent = new User()
+            {
+                Email = "user@test.com"
+            };
+            User userUpdated = new User()
+            {
+                Id = userCurrent.Id,
+                Email = "updatedUser@test.com"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Update(userCurrent));
+
+            logic.Update(userUpdated);
+
+            userMock.VerifyAll();
+        }
     }
 }
