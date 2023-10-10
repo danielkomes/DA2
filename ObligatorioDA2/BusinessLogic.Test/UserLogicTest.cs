@@ -1,3 +1,4 @@
+using BusinessLogic.Exceptions;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
@@ -8,6 +9,23 @@ namespace BusinessLogic.Test
     [TestClass]
     public class UserLogicTest
     {
+        private Mock<IService<User>> UserMock { get; set; }
+        private Mock<ISessionLogic> SessionMock { get; set; }
+        private UserLogic UserLogic { get; set; }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            UserMock = new Mock<IService<User>>(MockBehavior.Strict);
+            SessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserLogic = new UserLogic(UserMock.Object, SessionMock.Object);
+        }
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            UserMock.VerifyAll();
+            SessionMock.VerifyAll();
+        }
 
         [TestMethod]
         public void AddValid()
@@ -16,16 +34,22 @@ namespace BusinessLogic.Test
             {
                 Email = "user@test.com"
             };
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
-            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
-            userMock.Setup(m => m.Add(user));
-            sessionMock.Setup(m => m.GetCurrentUser(null)).Returns(user);
+            UserMock.Setup(m => m.Add(user));
 
-            logic.Add(user);
+            UserLogic.Add(user);
+        }
 
-            userMock.VerifyAll();
-            sessionMock.VerifyAll();
+        [TestMethod]
+        [ExpectedException(typeof(EntityAlreadyExistsException))]
+        public void AddEmailAlreadyExists()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            UserMock.Setup(m => m.Exists(user)).Throws(new EntityAlreadyExistsException("Email already exists"));
+
+            UserLogic.Add(user);
         }
 
         [TestMethod]
@@ -35,14 +59,9 @@ namespace BusinessLogic.Test
             {
                 Email = "user@test.com"
             };
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
-            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
-            userMock.Setup(m => m.Delete(It.IsAny<User>()));
+            UserMock.Setup(m => m.Delete(It.IsAny<User>()));
 
-            logic.Delete(user.Email);
-
-            userMock.VerifyAll();
+            UserLogic.Delete(user.Email);
         }
 
         [TestMethod]
@@ -52,15 +71,11 @@ namespace BusinessLogic.Test
             {
                 Email = "user@test.com"
             };
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
-            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
-            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user);
 
-            User actual = logic.Get(user.Email);
+            User actual = UserLogic.Get(user.Email);
 
             Assert.AreEqual(user, actual);
-            userMock.VerifyAll();
         }
 
         [TestMethod]
@@ -75,12 +90,9 @@ namespace BusinessLogic.Test
                 Email = "user@test.com"
             };
             IEnumerable<User> users = new List<User>() { user1, user2 };
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
-            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
-            userMock.Setup(m => m.GetAll()).Returns(users);
+            UserMock.Setup(m => m.GetAll()).Returns(users);
 
-            IEnumerable<User> actual = logic.GetAll();
+            IEnumerable<User> actual = UserLogic.GetAll();
 
             for (int i = 0; i < users.Count(); i++)
             {
@@ -88,7 +100,6 @@ namespace BusinessLogic.Test
                 Assert.AreEqual(users.ElementAt(i).Email, actual.ElementAt(i).Email);
                 Assert.AreEqual(users.ElementAt(i).Address, actual.ElementAt(i).Address);
             }
-            userMock.VerifyAll();
         }
 
         [TestMethod]
@@ -103,14 +114,9 @@ namespace BusinessLogic.Test
                 Id = userCurrent.Id,
                 Email = "updatedUser@test.com"
             };
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
-            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
-            userMock.Setup(m => m.Update(userCurrent));
+            UserMock.Setup(m => m.Update(userCurrent));
 
-            logic.Update(userUpdated);
-
-            userMock.VerifyAll();
+            UserLogic.Update(userUpdated);
         }
     }
 }
