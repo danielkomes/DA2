@@ -155,7 +155,8 @@ namespace BusinessLogic.Test
             };
             UserMock.Setup(m => m.Update(userCurrent));
 
-            UserLogic.Update(userUpdated);
+            UserLogic.Update(userCurrent.Email, userUpdated);
+        }
         }
     }
 }

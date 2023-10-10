@@ -56,7 +56,7 @@ namespace BusinessLogic
             return UserService.GetAll();
         }
 
-        public void Update(User updatedUser)
+        public void Update(string targetEmail, User updatedUser)
         {
             UserService.Update(updatedUser);
         }
