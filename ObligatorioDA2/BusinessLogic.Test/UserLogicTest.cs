@@ -96,6 +96,26 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        public void GetAnotherBeingAdmin()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            User admin = new User()
+            {
+                Email = "admin@admin.com",
+                Roles = new List<EUserRole>() { EUserRole.Admin }
+            };
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user);
+            SessionMock.Setup(m=>m.GetCurrentUser(null)).Returns(admin);
+
+            User actual = UserLogic.Get(user.Email);
+
+            Assert.AreEqual(user, actual);
+        }
+
+        [TestMethod]
         public void GetAllValid()
         {
             User user1 = new User()
