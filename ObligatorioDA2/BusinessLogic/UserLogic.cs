@@ -24,7 +24,11 @@ namespace BusinessLogic
 
         public void Delete(string email)
         {
-            throw new NotImplementedException();
+            User user = new User()
+            {
+                Email = email
+            };
+            UserService.Delete(user);
         }
 
         public User Get(string email)
