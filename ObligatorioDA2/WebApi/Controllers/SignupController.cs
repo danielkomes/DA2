@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Signup([FromBody] UserModelIn modelIn)
+        public IActionResult Signup([FromBody] UserModelInForCustomers modelIn)
         {
             bool exists = UserService.Exists(modelIn.ToEntity());
             if (!exists)

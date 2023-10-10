@@ -14,7 +14,7 @@ namespace WebApi.Test
         public void SignupOk()
         {
             Guid token = new Guid();
-            UserModelIn model = new UserModelIn()
+            UserModelInForCustomers model = new UserModelInForCustomers()
             {
                 Email = "user@test.com",
                 Address = "user address"
@@ -42,7 +42,7 @@ namespace WebApi.Test
         public void SignupEmailAlreadyExists()
         {
             Guid token = new Guid();
-            UserModelIn model = new UserModelIn()
+            UserModelInForCustomers model = new UserModelInForCustomers()
             {
                 Email = "user@test.com",
                 Address = "user address"

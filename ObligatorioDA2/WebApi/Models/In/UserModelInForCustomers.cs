@@ -2,7 +2,7 @@
 
 namespace WebApi.Models.In
 {
-    public class UserModelIn
+    public class UserModelInForCustomers
     {
         public string Email { get; set; }
         public string Address { get; set; }
