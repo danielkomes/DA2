@@ -157,6 +157,27 @@ namespace BusinessLogic.Test
 
             UserLogic.Update(userCurrent.Email, userUpdated);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ProfileMismatchException))]
+        public void UpdateBeingAnotherCustomer()
+        {
+            User userCurrent = new User()
+            {
+                Email = "currentUser@test.com"
+            };
+            User userTargetOld = new User()
+            {
+                Email = "oldUser@test.com"
+            };
+            User userTargetUpdated = new User()
+            {
+                Id = userTargetOld.Id,
+                Email = "updatedUser@test.com"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+
+            UserLogic.Update(userTargetOld.Email, userTargetUpdated);
         }
     }
 }
