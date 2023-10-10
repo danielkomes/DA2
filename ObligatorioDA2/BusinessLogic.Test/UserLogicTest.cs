@@ -34,6 +34,7 @@ namespace BusinessLogic.Test
             {
                 Email = "user@test.com"
             };
+            UserMock.Setup(m => m.Exists(user)).Returns(false);
             UserMock.Setup(m => m.Add(user));
 
             UserLogic.Add(user);
@@ -47,7 +48,7 @@ namespace BusinessLogic.Test
             {
                 Email = "user@test.com"
             };
-            UserMock.Setup(m => m.Exists(user)).Throws(new EntityAlreadyExistsException("Email already exists"));
+            UserMock.Setup(m => m.Exists(user)).Returns(true);
 
             UserLogic.Add(user);
         }
@@ -72,6 +73,7 @@ namespace BusinessLogic.Test
                 Email = "user@test.com"
             };
             UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user);
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(user);
 
             User actual = UserLogic.Get(user.Email);
 
@@ -108,7 +110,7 @@ namespace BusinessLogic.Test
                 Roles = new List<EUserRole>() { EUserRole.Admin }
             };
             UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user);
-            SessionMock.Setup(m=>m.GetCurrentUser(null)).Returns(admin);
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(admin);
 
             User actual = UserLogic.Get(user.Email);
 
