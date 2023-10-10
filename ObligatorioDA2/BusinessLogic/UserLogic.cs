@@ -33,7 +33,11 @@ namespace BusinessLogic
 
         public User Get(string email)
         {
-            throw new NotImplementedException();
+            User user = new User()
+            {
+                Email = email
+            };
+            return UserService.Get(user);
         }
 
         public IEnumerable<User> GetAll()
