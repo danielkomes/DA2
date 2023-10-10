@@ -66,6 +66,19 @@ namespace BusinessLogic
                     throw new ProfileMismatchException("Profile mismatch");
                 }
             }
+            bool exists = UserService.Exists(updatedUser);
+            if (exists) //email already exists
+            {
+                User userInDb = UserService.Get(updatedUser);
+
+                //check if the existing email belongs to the logged user (user is not updating the email)
+                bool sameId = userInDb.Id == current.Id;
+                if (!sameId) //existing email does not belong to the logged user
+                {
+                    throw new EntityAlreadyExistsException("Email already exists");
+                }
+
+            }
             UserService.Update(updatedUser);
         }
     }

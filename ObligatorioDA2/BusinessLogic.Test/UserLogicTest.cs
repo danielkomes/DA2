@@ -154,6 +154,7 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Exists(userUpdated)).Returns(false);
             UserMock.Setup(m => m.Update(userUpdated));
 
             UserLogic.Update(userCurrent.Email, userUpdated);
@@ -223,6 +224,7 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Exists(userTargetUpdated)).Returns(false);
             UserMock.Setup(m => m.Update(userTargetUpdated));
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
