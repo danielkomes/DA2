@@ -44,5 +44,23 @@ namespace BusinessLogic.Test
 
             userMock.VerifyAll();
         }
+
+        [TestMethod]
+        public void GetValid()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<ISessionLogic>(MockBehavior.Strict);
+            UserLogic logic = new UserLogic(userMock.Object, sessionMock.Object);
+            userMock.Setup(m => m.Get(It.IsAny<User>())).Returns(user);
+
+            User actual = logic.Get(user.Email);
+
+            Assert.AreEqual(user,actual);
+            userMock.VerifyAll();
+        }
     }
 }
