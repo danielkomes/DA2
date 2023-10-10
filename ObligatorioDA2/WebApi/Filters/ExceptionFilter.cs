@@ -21,6 +21,10 @@ namespace WebApi.Filters
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
             }
+            catch(ProfileMismatchException e)
+            {
+                context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
+            }
             catch (InvalidOperationException e)
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status500InternalServerError };

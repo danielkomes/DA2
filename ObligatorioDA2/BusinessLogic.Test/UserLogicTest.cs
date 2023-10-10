@@ -79,6 +79,23 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ProfileMismatchException))]
+        public void GetAnotherBeingCustomer()
+        {
+            User userTarget = new User()
+            {
+                Email = "userTarget@test.com"
+            };
+            User userCurrent = new User()
+            {
+                Email = "userCurrent@test.com"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+
+            User actual = UserLogic.Get(userTarget.Email);
+        }
+
+        [TestMethod]
         public void GetAllValid()
         {
             User user1 = new User()
