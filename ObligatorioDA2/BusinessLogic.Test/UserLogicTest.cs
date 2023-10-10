@@ -160,6 +160,30 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(EntityAlreadyExistsException))]
+        public void UpdateEmailAlreadyExists()
+        {
+            User userCurrent = new User()
+            {
+                Email = "user@test.com"
+            };
+            User userUpdated = new User()
+            {
+                Id = userCurrent.Id,
+                Email = "updatedUser@test.com"
+            };
+            User userAnother = new User()
+            {
+                Email = "updatedUser@test.com"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Exists(userUpdated)).Returns(true);
+            UserMock.Setup(m => m.Get(userUpdated)).Returns(userAnother);
+
+            UserLogic.Update(userCurrent.Email, userUpdated);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ProfileMismatchException))]
         public void UpdateBeingAnotherCustomer()
         {
