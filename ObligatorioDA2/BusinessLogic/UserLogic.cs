@@ -1,5 +1,4 @@
-﻿
-using BusinessLogic.Exceptions;
+﻿using BusinessLogic.Exceptions;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
@@ -41,6 +40,11 @@ namespace BusinessLogic
             {
                 Email = email
             };
+            User current = SessionLogic.GetCurrentUser();
+            if(!current.Email.Equals(email))
+            {
+                throw new ProfileMismatchException("Profile mismatch");
+            }
             return UserService.Get(user);
         }
 
