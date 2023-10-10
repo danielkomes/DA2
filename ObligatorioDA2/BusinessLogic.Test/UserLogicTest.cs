@@ -154,7 +154,7 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
-            UserMock.Setup(m => m.Update(userCurrent));
+            UserMock.Setup(m => m.Update(userUpdated));
 
             UserLogic.Update(userCurrent.Email, userUpdated);
         }
@@ -177,6 +177,29 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+
+            UserLogic.Update(userTargetOld.Email, userTargetUpdated);
+        }
+
+        [TestMethod]
+        public void UpdateBeingAnotherAdmin()
+        {
+            User userCurrent = new User()
+            {
+                Email = "currentUser@test.com",
+                Roles = new List<EUserRole>() { EUserRole.Admin }
+            };
+            User userTargetOld = new User()
+            {
+                Email = "oldUser@test.com"
+            };
+            User userTargetUpdated = new User()
+            {
+                Id = userTargetOld.Id,
+                Email = "updatedUser@test.com"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Update(userTargetUpdated));
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
         }
