@@ -19,7 +19,11 @@ namespace BusinessLogic
 
         public Product Get(Guid id)
         {
-            throw new NotImplementedException();
+            Product product = new Product()
+            {
+                Id = id
+            };
+            return ProductService.Get(product);
         }
 
         public IEnumerable<Product> GetAll()
