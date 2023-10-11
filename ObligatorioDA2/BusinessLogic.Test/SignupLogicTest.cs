@@ -31,6 +31,7 @@ namespace BusinessLogic.Test
             {
                 Email = "user@test.com"
             };
+            UserMock.Setup(m => m.Exists(user)).Returns(false);
             UserMock.Setup(m => m.Add(user));
 
             SignupLogic.Signup(user);

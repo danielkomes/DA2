@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using BusinessLogic.Exceptions;
+using Domain;
 using IBusinessLogic;
 using IDataAccess;
 
@@ -15,6 +16,10 @@ namespace BusinessLogic
 
         public void Signup(User user)
         {
+            if(UserService.Exists(user))
+            {
+                throw new EntityAlreadyExistsException("Email already exists");
+            }
             UserService.Add(user);
         }
     }
