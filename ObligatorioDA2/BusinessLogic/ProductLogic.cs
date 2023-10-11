@@ -17,6 +17,16 @@ namespace BusinessLogic
             ProductService = productService;
         }
 
+        public IEnumerable<Product> FindByCondition(string? name, string? brand, string? category)
+        {
+            return ProductService.FindByCondition
+            (
+                p => p.Name.Contains(name) ||
+                p.Brand.Contains(brand) ||
+                p.Category.Contains(category)
+            );
+        }
+
         public Product Get(Guid id)
         {
             Product product = new Product()
