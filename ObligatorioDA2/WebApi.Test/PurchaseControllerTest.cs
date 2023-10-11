@@ -1,4 +1,5 @@
 ﻿using Domain;
+using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -9,6 +10,22 @@ namespace WebApi.Test
     [TestClass]
     public class PurchaseControllerTest
     {
+        private Mock<IPurchaseLogic> PurchaseMock { get; set; }
+        private PurchaseController PurchaseController { get; set; }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            PurchaseMock = new Mock<IPurchaseLogic>(MockBehavior.Strict);
+            PurchaseController = new PurchaseController(PurchaseMock.Object);
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            PurchaseMock.VerifyAll();
+        }
+
         [TestMethod]
         public void GetPurchasesOk()
         {
@@ -17,18 +34,16 @@ namespace WebApi.Test
 
             };
             IEnumerable<Purchase> purchases = new List<Purchase>() { purchase };
-            var purchaseMock = new Mock<IService<Purchase>>(MockBehavior.Strict);
-            PurchaseController purchaseController = new PurchaseController(purchaseMock.Object);
-            purchaseMock.Setup(m => m.GetAll()).Returns(purchases);
+            PurchaseMock.Setup(m => m.GetAll()).Returns(purchases);
 
-            IActionResult actual = purchaseController.GetAll();
+            IActionResult actual = PurchaseController.GetAll();
             IActionResult expected = new OkObjectResult(purchases);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            purchaseMock.VerifyAll();
+            PurchaseMock.VerifyAll();
         }
     }
 }

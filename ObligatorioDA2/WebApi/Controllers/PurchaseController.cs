@@ -1,4 +1,5 @@
 ﻿using Domain;
+using IBusinessLogic;
 using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
@@ -10,17 +11,17 @@ namespace WebApi.Controllers
     [ExceptionFilter]
     public class PurchaseController : ControllerBase
     {
-        private readonly IService<Purchase> PurchaseService;
-        public PurchaseController(IService<Purchase> purchaseService)
+        private readonly IPurchaseLogic PurchaseLogic;
+        public PurchaseController(IPurchaseLogic purchaseLogic)
         {
-            PurchaseService = purchaseService;
+            PurchaseLogic = purchaseLogic;
         }
 
         [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpGet]
         public IActionResult GetAll()
         {
-            IEnumerable<Purchase> purchases = PurchaseService.GetAll();
+            IEnumerable<Purchase> purchases = PurchaseLogic.GetAll();
             return Ok(purchases);
         }
     }
