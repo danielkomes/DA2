@@ -148,7 +148,7 @@ namespace WebApi.Test
                 Email = "test@test.com",
                 Address = "test 123"
             };
-            UserMock.Setup(m => m.Update(It.IsAny<User>()));
+            UserMock.Setup(m => m.Update(current.Email, It.IsAny<User>()));
 
             IActionResult actual = UserController.Put(current.Email, userModel);
             IActionResult expected = new OkObjectResult("User modified");
