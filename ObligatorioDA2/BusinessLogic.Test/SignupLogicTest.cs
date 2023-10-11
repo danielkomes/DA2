@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using BusinessLogic.Exceptions;
+using Domain;
 using IDataAccess;
 using Moq;
 
@@ -31,6 +32,19 @@ namespace BusinessLogic.Test
                 Email = "user@test.com"
             };
             UserMock.Setup(m => m.Add(user));
+
+            SignupLogic.Signup(user);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EntityAlreadyExistsException))]
+        public void SignupEmailAlreadyExists()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com"
+            };
+            UserMock.Setup(m => m.Exists(user)).Returns(true);
 
             SignupLogic.Signup(user);
         }
