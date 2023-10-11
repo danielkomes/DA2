@@ -15,7 +15,7 @@ namespace BusinessLogic
 
         public void Signup(User user)
         {
-            throw new NotImplementedException();
+            UserService.Add(user);
         }
     }
 }
