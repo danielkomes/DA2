@@ -24,7 +24,7 @@ namespace BusinessLogic
 
         public IEnumerable<Product> GetAll()
         {
-            throw new NotImplementedException();
+            return ProductService.GetAll();
         }
     }
 }
