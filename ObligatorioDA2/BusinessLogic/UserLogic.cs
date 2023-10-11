@@ -59,25 +59,32 @@ namespace BusinessLogic
         public void Update(string targetEmail, User updatedUser)
         {
             User current = SessionLogic.GetCurrentUser();
-            if (!current.Roles.Contains(EUserRole.Admin))
+            if (!current.Email.Equals(targetEmail))
             {
-                if (!current.Email.Equals(targetEmail))
+                if (!current.Roles.Contains(EUserRole.Admin))
+                {
+                    throw new ProfileMismatchException("Profile mismatch");
+                }
+
+                User targetUser = new User()
+                {
+                    Email = targetEmail
+                };
+                targetUser = UserService.Get(targetUser);
+
+                if (targetUser.Roles.Contains(EUserRole.Admin))
                 {
                     throw new ProfileMismatchException("Profile mismatch");
                 }
             }
-            bool exists = UserService.Exists(updatedUser);
-            if (exists) //email already exists
+            if (!updatedUser.Email.Equals(targetEmail))
             {
-                User userInDb = UserService.Get(updatedUser);
-
-                //check if the existing email belongs to the logged user (user is not updating the email)
-                bool sameId = userInDb.Id == current.Id;
-                if (!sameId) //existing email does not belong to the logged user
+                bool exists = UserService.Exists(updatedUser);
+                if (exists)
                 {
                     throw new EntityAlreadyExistsException("Email already exists");
-                }
 
+                }
             }
             UserService.Update(updatedUser);
         }

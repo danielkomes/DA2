@@ -175,8 +175,6 @@ namespace BusinessLogic.Test
                 Address = "456"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
-            UserMock.Setup(m => m.Exists(userUpdated)).Returns(true);
-            UserMock.Setup(m => m.Get(userUpdated)).Returns(userCurrent);
             UserMock.Setup(m => m.Update(userUpdated));
 
             UserLogic.Update(userCurrent.Email, userUpdated);
@@ -201,7 +199,6 @@ namespace BusinessLogic.Test
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
             UserMock.Setup(m => m.Exists(userUpdated)).Returns(true);
-            UserMock.Setup(m => m.Get(userUpdated)).Returns(userAnother);
 
             UserLogic.Update(userCurrent.Email, userUpdated);
         }
@@ -224,6 +221,31 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+
+            UserLogic.Update(userTargetOld.Email, userTargetUpdated);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ProfileMismatchException))]
+        public void UpdateAdminBeingAnotherAdmin()
+        {
+            User userCurrent = new User()
+            {
+                Email = "currentUser@test.com",
+                Roles = new List<EUserRole>() { EUserRole.Admin }
+            };
+            User userTargetOld = new User()
+            {
+                Email = "oldUser@test.com",
+                Roles = new List<EUserRole>() { EUserRole.Admin }
+            };
+            User userTargetUpdated = new User()
+            {
+                Id = userTargetOld.Id,
+                Email = "updatedUser@test.com",
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userTargetOld);
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
         }
@@ -270,7 +292,34 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userTargetOld);
             UserMock.Setup(m => m.Exists(userTargetUpdated)).Returns(false);
+            UserMock.Setup(m => m.Update(userTargetUpdated));
+
+            UserLogic.Update(userTargetOld.Email, userTargetUpdated);
+        }
+
+        [TestMethod]
+        public void UpdateSameEmailBeingAnotherAdmin()
+        {
+            User userCurrent = new User()
+            {
+                Email = "currentUser@test.com",
+                Roles = new List<EUserRole>() { EUserRole.Admin }
+            };
+            User userTargetOld = new User()
+            {
+                Email = "user@test.com",
+                Address = "123"
+            };
+            User userTargetUpdated = new User()
+            {
+                Id = userTargetOld.Id,
+                Email = "user@test.com",
+                Address = "456"
+            };
+            SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userTargetOld);
             UserMock.Setup(m => m.Update(userTargetUpdated));
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
@@ -297,8 +346,8 @@ namespace BusinessLogic.Test
                 Address = "456"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userTargetOld);
             UserMock.Setup(m => m.Exists(userTargetUpdated)).Returns(true);
-            UserMock.Setup(m => m.Get(userTargetUpdated)).Returns(userTargetOld);
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
         }
