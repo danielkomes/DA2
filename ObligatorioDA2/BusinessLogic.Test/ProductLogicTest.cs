@@ -52,6 +52,20 @@ namespace BusinessLogic.Test
                 Assert.AreEqual(products.ElementAt(i).Name, actual.ElementAt(i).Name);
             }
         }
+
+        [TestMethod]
+        public void GetOk()
+        {
+            Product p1 = new Product()
+            {
+                Name = "p1",
+            };
+            ProductMock.Setup(m => m.Get(It.IsAny<Product>())).Returns(p1);
+
+            Product actual = ProductLogic.Get(p1.Id);
+
+            Assert.AreEqual(p1.Name, actual.Name);
+        }
     }
 
 }
