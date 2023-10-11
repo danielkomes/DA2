@@ -19,6 +19,10 @@ namespace BusinessLogic
 
         public IEnumerable<Product> FindByCondition(string? name, string? brand, string? category)
         {
+            if (name is null && brand is null && category is null)
+            {
+                return GetAll();
+            }
             return ProductService.FindByCondition
             (
                 p => p.Name.Contains(name) ||
