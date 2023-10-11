@@ -1,8 +1,7 @@
 using Domain;
-using IDataAccess;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Linq.Expressions;
 using WebApi.Controllers;
 using WebApi.Models.Out;
 
@@ -11,6 +10,21 @@ namespace WebApi.Test
     [TestClass]
     public class ProductControllerTest
     {
+        private Mock<IProductLogic> ProductMock { get; set; }
+        private ProductController ProductController { get; set; }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            ProductMock = new Mock<IProductLogic>(MockBehavior.Strict);
+            ProductController = new ProductController(ProductMock.Object);
+        }
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            ProductMock.VerifyAll();
+        }
+
         [TestMethod]
         public void GetAll3ProductsOk()
         {
@@ -24,12 +38,10 @@ namespace WebApi.Test
                 new ProductModelOut(p2),
                 new ProductModelOut(p3),
             };
-            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            ProductController productController = new ProductController(productMock.Object);
-            productMock.Setup(m => m.GetAll()).Returns(products);
+            ProductMock.Setup(m => m.FindByCondition(null, null, null)).Returns(products);
 
 
-            IActionResult actual = productController.GetAll();
+            IActionResult actual = ProductController.GetAll();
             IActionResult expected = new OkObjectResult(productModels);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -42,26 +54,22 @@ namespace WebApi.Test
                 Assert.AreEqual(expectedModels.ElementAt(i).Name, actualModels.ElementAt(i).Name);
                 Assert.AreEqual(expectedModels.ElementAt(i).Description, actualModels.ElementAt(i).Description);
             }
-            productMock.VerifyAll();
         }
 
         [TestMethod]
         public void Get1ProductOk()
         {
             Product p1 = new Product();
-            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            ProductController productController = new ProductController(productMock.Object);
-            productMock.Setup(m => m.Get(It.IsAny<Product>())).Returns(p1);
+            ProductMock.Setup(m => m.Get(p1.Id)).Returns(p1);
 
 
-            IActionResult actual = productController.Get(p1.Id);
+            IActionResult actual = ProductController.Get(p1.Id);
             IActionResult expected = new OkObjectResult(new ProductModelOut(p1));
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -85,12 +93,10 @@ namespace WebApi.Test
                 new ProductModelOut(p1),
                 new ProductModelOut(p2),
             };
-            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            ProductController productController = new ProductController(productMock.Object);
-            productMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(products);
+            ProductMock.Setup(m => m.FindByCondition("p1", null, null)).Returns(products);
 
 
-            IActionResult actual = productController.GetAll("p1");
+            IActionResult actual = ProductController.GetAll("p1");
             IActionResult expected = new OkObjectResult(productModels);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -103,7 +109,6 @@ namespace WebApi.Test
                 Assert.AreEqual(expectedModels.ElementAt(i).Name, actualModels.ElementAt(i).Name);
                 Assert.AreEqual(expectedModels.ElementAt(i).Description, actualModels.ElementAt(i).Description);
             }
-            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -127,12 +132,10 @@ namespace WebApi.Test
                 new ProductModelOut(p1),
                 new ProductModelOut(p2),
             };
-            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            ProductController productController = new ProductController(productMock.Object);
-            productMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(products);
+            ProductMock.Setup(m => m.FindByCondition("1", null, null)).Returns(products);
 
 
-            IActionResult actual = productController.GetAll("1");
+            IActionResult actual = ProductController.GetAll("1");
             IActionResult expected = new OkObjectResult(productModels);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -145,7 +148,6 @@ namespace WebApi.Test
                 Assert.AreEqual(expectedModels.ElementAt(i).Name, actualModels.ElementAt(i).Name);
                 Assert.AreEqual(expectedModels.ElementAt(i).Description, actualModels.ElementAt(i).Description);
             }
-            productMock.VerifyAll();
         }
 
         [TestMethod]
@@ -169,12 +171,10 @@ namespace WebApi.Test
                 new ProductModelOut(p1),
                 new ProductModelOut(p2),
             };
-            var productMock = new Mock<IService<Product>>(MockBehavior.Strict);
-            ProductController productController = new ProductController(productMock.Object);
-            productMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(new List<Product>());
+            ProductMock.Setup(m => m.FindByCondition("product1", null, null)).Returns(new List<Product>());
 
 
-            IActionResult actual = productController.GetAll("product1");
+            IActionResult actual = ProductController.GetAll("product1");
             IActionResult expected = new OkObjectResult(new List<ProductModelOut>());
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -184,7 +184,6 @@ namespace WebApi.Test
             IEnumerable<ProductModelOut> expectedModels = expectedOk.Value as IEnumerable<ProductModelOut>;
             Assert.AreEqual(expectedModels.Count(), actualModels.Count());
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            productMock.VerifyAll();
         }
     }
 }
