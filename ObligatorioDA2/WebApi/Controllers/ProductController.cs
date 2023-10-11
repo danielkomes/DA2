@@ -1,5 +1,5 @@
 ﻿using Domain;
-using IDataAccess;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
 using WebApi.Models.Out;
@@ -11,10 +11,10 @@ namespace WebApi.Controllers
     [ExceptionFilter]
     public class ProductController : ControllerBase
     {
-        private readonly IService<Product> ProductService;
-        public ProductController(IService<Product> productService)
+        private readonly IProductLogic ProductLogic;
+        public ProductController(IProductLogic productLogic)
         {
-            ProductService = productService;
+            ProductLogic = productLogic;
         }
 
         [HttpGet]
@@ -23,18 +23,7 @@ namespace WebApi.Controllers
             [FromQuery] string? brand = null,
             [FromQuery] string? category = null)
         {
-            IEnumerable<Product> products;
-            if (name is null && brand is null && category is null)
-            {
-                products = ProductService.GetAll();
-            }
-            else
-            {
-                products = ProductService.FindByCondition(
-                p => p.Name.Contains(name) ||
-                p.Brand.Contains(brand) ||
-                p.Category.Contains(category));
-            }
+            IEnumerable<Product> products = ProductLogic.FindByCondition(name, brand, category);
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
             foreach (Product product in products)
             {
@@ -46,11 +35,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public IActionResult Get([FromRoute] Guid id)
         {
-            Product p = new Product()
-            {
-                Id = id
-            };
-            Product result = ProductService.Get(p);
+            Product result = ProductLogic.Get(id);
             return Ok(new ProductModelOut(result));
         }
     }
