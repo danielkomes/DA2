@@ -11,6 +11,22 @@ namespace WebApi.Test
     [TestClass]
     public class ShoppingCartControllerTest
     {
+        private Mock<IShoppingCart> cartMock { get; set; }
+        private ShoppingCartController cartController;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
+            cartController = new ShoppingCartController(cartMock.Object);
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            cartMock.VerifyAll();
+        }
+
         [TestMethod]
         public void GetAll3ProductsCheckedOk()
         {
@@ -49,8 +65,6 @@ namespace WebApi.Test
                 p2.Id,
                 p3.Id,
             };
-            var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
-            ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
             cartMock.Setup(m => m.GetCurrentProducts(currentProductsIds)).Returns(currentProducts);
             cartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
             cartMock.Setup(m => m.ProductsChecked).Returns(currentProducts);
@@ -71,7 +85,6 @@ namespace WebApi.Test
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            cartMock.VerifyAll();
         }
 
         [TestMethod]
@@ -117,8 +130,6 @@ namespace WebApi.Test
                 p1.Id,
                 p2.Id,
             };
-            var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
-            ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
             cartMock.Setup(m => m.GetCurrentProducts(currentProductsIds)).Returns(currentProducts);
             cartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
             cartMock.Setup(m => m.RemoveFromCart(It.IsAny<Guid>()));
@@ -141,14 +152,11 @@ namespace WebApi.Test
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            cartMock.VerifyAll();
         }
 
         [TestMethod]
         public void RemoveAllProductsOk()
         {
-            var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
-            ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
             cartMock.SetupSet(m => m.ProductsChecked = It.IsAny<IEnumerable<Product>>());
 
 
@@ -159,7 +167,6 @@ namespace WebApi.Test
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value, actualOk.Value);
-            cartMock.VerifyAll();
         }
 
         [TestMethod]
@@ -192,8 +199,6 @@ namespace WebApi.Test
             IEnumerable<Product> currentProducts = new List<Product> { p1, p2 };
             IEnumerable<Guid> currentProductsIds = new List<Guid> { p1.Id, p2.Id };
             IEnumerable<Guid> afterProducts = new List<Guid> { p1.Id, p2.Id, p3.Id };
-            var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
-            ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
             cartMock.Setup(m => m.AddToCart(It.IsAny<Guid>()));
             cartMock.Setup(m => m.GetCurrentProducts(It.IsAny<IEnumerable<Guid>>())).Returns(currentProducts);
             cartMock.SetupGet(m => m.ProductsChecked).Returns(currentProducts);
@@ -214,7 +219,6 @@ namespace WebApi.Test
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            cartMock.VerifyAll();
         }
 
         [TestMethod]
@@ -240,8 +244,6 @@ namespace WebApi.Test
             PromotionAbstract promo20 = new Promotion20Off(entity);
             IEnumerable<Product> currentProducts = new List<Product> { p1, p2, p3 };
             IEnumerable<Guid> currentProductsIds = new List<Guid> { p1.Id, p2.Id, p3.Id };
-            var cartMock = new Mock<IShoppingCart>(MockBehavior.Strict);
-            ShoppingCartController cartController = new ShoppingCartController(cartMock.Object);
             cartMock.Setup(m => m.GetCurrentProducts(currentProductsIds)).Returns(currentProducts);
             cartMock.Setup(m => m.DoPurchase());
             cartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
@@ -262,7 +264,6 @@ namespace WebApi.Test
             OkObjectResult actualOk = actual as OkObjectResult;
             OkObjectResult expectedOk = expected as OkObjectResult;
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            cartMock.VerifyAll();
         }
     }
 }
