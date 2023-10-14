@@ -119,7 +119,7 @@ namespace WebApi.Test
         [TestMethod]
         public void PostOk()
         {
-            UserModelInForCustomers userModel = new UserModelInForCustomers()
+            UserModelInForAdmins userModel = new UserModelInForAdmins()
             {
                 Email = "user@test.com",
                 Address = "test 123"
