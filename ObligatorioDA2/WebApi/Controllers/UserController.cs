@@ -46,7 +46,7 @@ namespace WebApi.Controllers
 
         [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpPost]
-        public IActionResult Post([FromBody] UserModelInForCustomers modelIn)
+        public IActionResult Post([FromBody] UserModelInForAdmins modelIn)
         {
             UserLogic.Add(modelIn.ToEntity());
             return Created(modelIn.Email, "User created");
