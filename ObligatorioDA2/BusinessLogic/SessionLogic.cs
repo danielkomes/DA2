@@ -22,12 +22,15 @@ namespace BusinessLogic
             {
                 throw new InvalidCredentialException("Invalid credentials");
             }
+            if (!userOut.Password.Equals(userIn.Password))
+            {
+                throw new InvalidCredentialException("Invalid credentials");
+            }
             Session session = new Session()
             {
                 User = userOut
             };
             SessionService.Add(session);
-            SessionService.Save();
             return session.Id;
         }
 
