@@ -14,25 +14,23 @@ namespace BusinessLogic.Test
         {
             User user = new User()
             {
-                Email = "user@test.com"
+                Email = "user@test.com",
+                Password = "pass1"
             };
             var userMock = new Mock<IService<User>>(MockBehavior.Strict);
             var sessionMock = new Mock<IService<Session>>(MockBehavior.Strict);
             ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
             userMock.Setup(m => m.Get(user)).Returns(user);
             sessionMock.Setup(m => m.Add(It.IsAny<Session>()));
-            sessionMock.Setup(m => m.Save());
 
             Guid actual = sessionLogic.Authenticate(user);
-            Guid expected = user.Id;
 
-            Assert.AreEqual(expected.GetType(), actual.GetType());
             sessionMock.VerifyAll();
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidCredentialException))]
-        public void AuthenticateFail()
+        public void AuthenticateFailUserNotExists()
         {
             User user = new User()
             {
@@ -43,6 +41,30 @@ namespace BusinessLogic.Test
             ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
             userMock.Setup(m => m.Get(user)).Returns(value: null as User);
             sessionLogic.Authenticate(user);
+            sessionMock.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidCredentialException))]
+        public void AuthenticateFailIncorrectPassword()
+        {
+            User user = new User()
+            {
+                Email = "user@test.com",
+                Password = "pass1"
+            };
+            User userIncorrect = new User()
+            {
+                Email = "user@test.com",
+                Password = "incorrectPassword"
+            };
+            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
+            var sessionMock = new Mock<IService<Session>>(MockBehavior.Strict);
+            ISessionLogic sessionLogic = new SessionLogic(sessionMock.Object, userMock.Object);
+            userMock.Setup(m => m.Get(userIncorrect)).Returns(user);
+
+            sessionLogic.Authenticate(userIncorrect);
+
             sessionMock.VerifyAll();
         }
 
