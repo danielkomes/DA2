@@ -34,10 +34,14 @@ namespace WebApi
             builder.Services.AddTransient<IService<Purchase>, PurchaseService>();
             builder.Services.AddTransient<IService<PromotionEntity>, PromotionService>();
             builder.Services.AddTransient<IService<Session>, SessionService>();
+
+            builder.Services.AddTransient<IProductLogic, ProductLogic>();
+            builder.Services.AddTransient<IPurchaseLogic, PurchaseLogic>();
             builder.Services.AddScoped<ISessionLogic, SessionLogic>();
             builder.Services.AddScoped<IShoppingCart, ShoppingCart>();
             builder.Services.AddTransient<IShoppingCartDataAccessHelper, ShoppingCartDataAccessHelper>();
-
+            builder.Services.AddTransient<ISignupLogic, SignupLogic>();
+            builder.Services.AddTransient<IUserLogic, UserLogic>();
 
             builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
             builder.Services.AddTransient<AuthenticationFilter>();
