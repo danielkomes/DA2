@@ -17,11 +17,12 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("{email}")]
-        public IActionResult Login([FromRoute] string email)
+        public IActionResult Login([FromRoute] string email, [FromBody] string password)
         {
             User user = new User()
             {
-                Email = email
+                Email = email,
+                Password = password
             };
             Guid token = SessionLogic.Authenticate(user);
             var ret = new

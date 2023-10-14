@@ -22,7 +22,7 @@ namespace WebApi.Test
                 result = "Logged in",
                 token = token
             };
-            IActionResult actual = sessionController.Login("email@test.com");
+            IActionResult actual = sessionController.Login("email@test.com", "pass1");
             IActionResult expected = new OkObjectResult(expectedObject);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
