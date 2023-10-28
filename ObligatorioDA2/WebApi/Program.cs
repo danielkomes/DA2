@@ -47,9 +47,23 @@ namespace WebApi
             builder.Services.AddTransient<AuthenticationFilter>();
             //builder.Services.AddTransient<AuthorizationFilter>();
             builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:4200")
+                        // .WithOrigins("*")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                });
+            });
             //
 
             var app = builder.Build();
+            app.UseCors();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
