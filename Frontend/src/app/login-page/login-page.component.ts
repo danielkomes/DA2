@@ -3,8 +3,11 @@ import {
   HttpClient,
   HttpHeaders,
   HttpParamsOptions,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ApiConfig } from './../../ApiConfig';
 
 @Component({
   selector: 'app-login-page',
@@ -15,25 +18,12 @@ export class LoginPageComponent {
   response: string = '';
   emailValue: string = '';
   passwordValue: string = '';
-  @ViewChild('inputEmail') emailButton!: ElementRef;
 
-  constructor(private http: HttpClient) {}
-
-  ngAfterViewInit() {
-    //   this.emailButton.nativeElement.addEventListener('click', () => {
-    // this.login();
-    //   });
-  }
+  constructor(private http: HttpClient, private router: Router) {}
 
   login() {
-    // const postData = {
-    //   password: this.passwordValue,
-    // };
     const postData = `\"${this.passwordValue}\"`;
     console.log(postData);
-    var emailElement = document.getElementById('inputEmail');
-    const email = emailElement?.innerText;
-    const password = document.getElementById('inputPassword')?.textContent;
 
     // Define the HTTP headers if needed (e.g., for authentication)
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
@@ -41,14 +31,19 @@ export class LoginPageComponent {
 
     // Make the POST request
     this.http
-      .post('https://localhost:5001/api/session/' + this.emailValue, postData, {
-        headers,
-      })
+      .post(
+        `${ApiConfig.route}${ApiConfig.session}/${this.emailValue}`,
+        postData,
+        {
+          headers,
+          observe: 'response',
+        }
+      )
       .subscribe(
         (response: any) => {
-          console.log('POST Request Successful:', response);
-          this.response = JSON.stringify(response, null, 2);
-          // Handle the response data here
+          if (response.status == HttpStatusCode.Ok) {
+            this.router.navigate([ApiConfig.shoppingCart]);
+          }
         },
         (error) => {
           console.error('POST Request Error:', error);
