@@ -18,6 +18,8 @@ export class LoginPageComponent {
   response: string = '';
   emailValue: string = '';
   passwordValue: string = '';
+  authenticationSuccess: boolean = true;
+  errorMessage: string = 'test';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -42,12 +44,15 @@ export class LoginPageComponent {
       .subscribe(
         (response: any) => {
           if (response.status == HttpStatusCode.Ok) {
+            this.authenticationSuccess = true;
             this.router.navigate([ApiConfig.shoppingCart]);
           }
         },
         (error) => {
           console.error('POST Request Error:', error);
           // Handle any errors here
+          this.errorMessage = error.error.message;
+          this.authenticationSuccess = false;
         }
       );
   }
