@@ -19,7 +19,8 @@ export class LoginPageComponent {
   emailValue: string = '';
   passwordValue: string = '';
   authenticationSuccess: boolean = true;
-  errorMessage: string = 'test';
+  errorMessage: string = '';
+  registerUrl: string = 'register';
 
   constructor(private http: HttpClient, private router: Router) {}
 
