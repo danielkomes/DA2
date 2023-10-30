@@ -7,7 +7,9 @@ import {
 } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiConfig } from './../../ApiConfig';
+import { ApiConfig } from 'src/ApiConfig';
+import { Product } from 'src/Types/Product';
+import { Utilities } from 'src/Utilities';
 
 @Component({
   selector: 'app-products-page',
@@ -15,7 +17,7 @@ import { ApiConfig } from './../../ApiConfig';
   styleUrls: ['./products-page.component.css'],
 })
 export class ProductsPageComponent {
-  products: any;
+  products!: Product[];
   constructor(private http: HttpClient, private router: Router) {
     console.log('constructor');
     this.getProducts();

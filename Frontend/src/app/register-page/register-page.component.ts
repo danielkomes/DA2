@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiConfig } from './../../ApiConfig';
+import { ApiConfig } from 'src/ApiConfig';
 
 @Component({
   selector: 'app-register-page',
