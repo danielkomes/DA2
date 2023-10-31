@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic.Test", "Busin
 		{6DAEC473-ACAF-49CD-B70C-96A308EF9205} = {6DAEC473-ACAF-49CD-B70C-96A308EF9205}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi.Test", "WebApi.Test\WebApi.Test.csproj", "{9E96020E-B87B-4209-8C85-6991CA3072CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Test", "WebApi.Test\WebApi.Test.csproj", "{9E96020E-B87B-4209-8C85-6991CA3072CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotions", "Promotions\Promotions.csproj", "{23B50524-5A50-40F8-995C-952DD236A208}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{9E96020E-B87B-4209-8C85-6991CA3072CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E96020E-B87B-4209-8C85-6991CA3072CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E96020E-B87B-4209-8C85-6991CA3072CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23B50524-5A50-40F8-995C-952DD236A208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23B50524-5A50-40F8-995C-952DD236A208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23B50524-5A50-40F8-995C-952DD236A208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23B50524-5A50-40F8-995C-952DD236A208}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

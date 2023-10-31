@@ -1,7 +1,7 @@
 ﻿using Domain;
 using IBusinessLogic;
 
-namespace BusinessLogic
+namespace Promotions
 {
     public class Promotion3x2 : PromotionAbstract
     {

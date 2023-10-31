@@ -1,8 +1,8 @@
-﻿using BusinessLogic;
-using Domain;
+﻿using Domain;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Promotions;
 using WebApi.Controllers;
 using WebApi.Models.Out;
 

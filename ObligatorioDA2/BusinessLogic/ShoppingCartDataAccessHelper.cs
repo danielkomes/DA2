@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using Promotions;
 
 namespace BusinessLogic
 {
