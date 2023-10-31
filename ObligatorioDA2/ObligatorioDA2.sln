@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.Test", "WebApi.Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Promotions", "Promotions\Promotions.csproj", "{23B50524-5A50-40F8-995C-952DD236A208}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Importers", "Importers\Importers.csproj", "{D1F30DAA-E5BA-4978-8328-BB5EE1C14721}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{23B50524-5A50-40F8-995C-952DD236A208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23B50524-5A50-40F8-995C-952DD236A208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23B50524-5A50-40F8-995C-952DD236A208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F30DAA-E5BA-4978-8328-BB5EE1C14721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1F30DAA-E5BA-4978-8328-BB5EE1C14721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1F30DAA-E5BA-4978-8328-BB5EE1C14721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1F30DAA-E5BA-4978-8328-BB5EE1C14721}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
