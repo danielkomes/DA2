@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
-    <ProjectReference Include="..\PromotionInterface\PromotionInterface.csproj" />
-  </ItemGroup>
-
 </Project>
