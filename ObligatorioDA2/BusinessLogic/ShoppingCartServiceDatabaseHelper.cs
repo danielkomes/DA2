@@ -1,33 +1,24 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
-using IImportersServices;
-using Importers;
-using PromotionInterface;
 using Promotions;
 
 namespace BusinessLogic
 {
-    public class ShoppingCartDataAccessHelper : IShoppingCartDataAccessHelper
+    public class ShoppingCartServiceDatabaseHelper : IShoppingCartServiceDatabaseHelper
     {
         private readonly IService<Product> ProductService;
         private readonly IService<PromotionEntity> PromotionService;
         private readonly IService<Purchase> PurchaseService;
-        private readonly IPromotionImporter PromotionImporter;
-        private readonly IImporterService ImporterService;
 
-        public ShoppingCartDataAccessHelper(
+        public ShoppingCartServiceDatabaseHelper(
             IService<Product> productService,
             IService<PromotionEntity> promotionService,
-            IService<Purchase> purchaseService,
-            IPromotionImporter promotionImporter,
-            IImporterService importerService)
+            IService<Purchase> purchaseService)
         {
             ProductService = productService;
             PromotionService = promotionService;
             PurchaseService = purchaseService;
-            PromotionImporter = promotionImporter;
-            ImporterService = importerService;
         }
 
         public IEnumerable<Product> GetProducts(IEnumerable<Guid> ids)
@@ -68,12 +59,6 @@ namespace BusinessLogic
                         break;
                 }
             }
-            IEnumerable<PromotionAbstractModelIn> promotionModels = PromotionImporter.ImportPromotions();
-            foreach (PromotionAbstractModelIn model in promotionModels)
-            {
-                PromotionAbstract importedPromotion = ImporterService.CreatePromotionAbstract(model);
-                ret = ret.Append(importedPromotion);
-            }
             return ret;
         }
 
@@ -81,6 +66,5 @@ namespace BusinessLogic
         {
             PurchaseService.Add(purchase);
         }
-
     }
 }

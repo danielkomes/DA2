@@ -8,9 +8,9 @@ namespace BusinessLogic
         public User? User { get; set; }
         public IEnumerable<Product> ProductsChecked { get; set; }
         public PromotionAbstract? PromotionApplied { get; set; }
-        private readonly IShoppingCartDataAccessHelper DataAccessHelper;
+        private readonly IShoppingCartService DataAccessHelper;
 
-        public ShoppingCart(IShoppingCartDataAccessHelper dataAccessHelper)
+        public ShoppingCart(IShoppingCartService dataAccessHelper)
         {
             ProductsChecked = new List<Product>();
             DataAccessHelper = dataAccessHelper;
