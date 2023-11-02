@@ -3,6 +3,9 @@ using DataAccess;
 using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using IImportersServices;
+using Importers;
+using ImportersServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WebApi.Filters;
@@ -35,7 +38,10 @@ namespace WebApi
             builder.Services.AddTransient<IService<PromotionEntity>, PromotionService>();
             builder.Services.AddTransient<IService<Session>, SessionService>();
 
+            builder.Services.AddTransient<IImporterService, ImporterService>();
             builder.Services.AddTransient<IProductLogic, ProductLogic>();
+            builder.Services.AddTransient<IPromotionLogic, PromotionLogic>();
+            builder.Services.AddTransient<IPromotionImporter, PromotionImporter>();
             builder.Services.AddTransient<IPurchaseLogic, PurchaseLogic>();
             builder.Services.AddScoped<ISessionLogic, SessionLogic>();
             builder.Services.AddScoped<IShoppingCart, ShoppingCart>();

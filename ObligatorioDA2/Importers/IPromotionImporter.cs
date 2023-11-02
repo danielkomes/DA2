@@ -1,9 +1,9 @@
-﻿using IBusinessLogic;
+﻿using PromotionInterface;
 
 namespace Importers
 {
     public interface IPromotionImporter
     {
-        public IEnumerable<PromotionAbstract> ImportPromotions();
+        public IEnumerable<PromotionAbstractModelIn> ImportPromotions();
     }
 }

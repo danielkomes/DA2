@@ -1,7 +1,9 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using IImportersServices;
 using Importers;
+using PromotionInterface;
 using Promotions;
 
 namespace BusinessLogic
@@ -11,15 +13,21 @@ namespace BusinessLogic
         private readonly IService<Product> ProductService;
         private readonly IService<PromotionEntity> PromotionService;
         private readonly IService<Purchase> PurchaseService;
+        private readonly IPromotionImporter PromotionImporter;
+        private readonly IImporterService ImporterService;
 
         public ShoppingCartDataAccessHelper(
             IService<Product> productService,
             IService<PromotionEntity> promotionService,
-            IService<Purchase> purchaseService)
+            IService<Purchase> purchaseService,
+            IPromotionImporter promotionImporter,
+            IImporterService importerService)
         {
             ProductService = productService;
             PromotionService = promotionService;
             PurchaseService = purchaseService;
+            PromotionImporter = promotionImporter;
+            ImporterService = importerService;
         }
 
         public IEnumerable<Product> GetProducts(IEnumerable<Guid> ids)
@@ -43,25 +51,29 @@ namespace BusinessLogic
 
         public IEnumerable<PromotionAbstract> GetPromotions()
         {
-            //IEnumerable<PromotionEntity> entities = PromotionService.GetAll();
+            IEnumerable<PromotionEntity> entities = PromotionService.GetAll();
             IEnumerable<PromotionAbstract> ret = new List<PromotionAbstract>();
-            //foreach (PromotionEntity entity in entities)
-            //{
-            //    switch (entity.Type)
-            //    {
-            //        case EPromotionType.Promotion20Off:
-            //            ret = ret.Append(new Promotion20Off(entity));
-            //            break;
-            //        case EPromotionType.Promotion3x2:
-            //            ret = ret.Append(new Promotion3x2(entity));
-            //            break;
-            //        case EPromotionType.PromotionTotalLook:
-            //            ret = ret.Append(new PromotionTotalLook(entity));
-            //            break;
-            //    }
-            //}
-            IPromotionImporter p = new PromotionImporter();
-            ret = p.ImportPromotions();
+            foreach (PromotionEntity entity in entities)
+            {
+                switch (entity.Type)
+                {
+                    case EPromotionType.Promotion20Off:
+                        ret = ret.Append(new Promotion20Off(entity));
+                        break;
+                    case EPromotionType.Promotion3x2:
+                        ret = ret.Append(new Promotion3x2(entity));
+                        break;
+                    case EPromotionType.PromotionTotalLook:
+                        ret = ret.Append(new PromotionTotalLook(entity));
+                        break;
+                }
+            }
+            IEnumerable<PromotionAbstractModelIn> promotionModels = PromotionImporter.ImportPromotions();
+            foreach (PromotionAbstractModelIn model in promotionModels)
+            {
+                PromotionAbstract importedPromotion = ImporterService.CreatePromotionAbstract(model);
+                ret = ret.Append(importedPromotion);
+            }
             return ret;
         }
 

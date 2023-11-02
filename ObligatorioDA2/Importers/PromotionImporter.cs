@@ -1,14 +1,13 @@
-﻿using Domain;
-using IBusinessLogic;
+﻿using PromotionInterface;
 using System.Reflection;
 
 namespace Importers
 {
     public class PromotionImporter : IPromotionImporter
     {
-        public IEnumerable<PromotionAbstract> ImportPromotions()
+        public IEnumerable<PromotionAbstractModelIn> ImportPromotions()
         {
-            IEnumerable<PromotionAbstract> ret = new List<PromotionAbstract>();
+            IEnumerable<PromotionAbstractModelIn> ret = new List<PromotionAbstractModelIn>();
             string path = "../Importers/ImportedPromotions";
             string[] filePaths = Directory.GetFiles(path);
 
@@ -21,9 +20,9 @@ namespace Importers
 
                     foreach(Type type in assembly.GetTypes())
                     {
-                        if(typeof(PromotionAbstract).IsAssignableFrom(type) && !type.IsInterface)
+                        if(typeof(PromotionAbstractModelIn).IsAssignableFrom(type) && !type.IsInterface)
                         {
-                            PromotionAbstract promotion = (PromotionAbstract)Activator.CreateInstance(type,new PromotionEntity() { Name = "test promotion"});
+                            PromotionAbstractModelIn promotion = (PromotionAbstractModelIn)Activator.CreateInstance(type);
                             if(promotion != null)
                             {
                                 ret = ret.Append(promotion);
