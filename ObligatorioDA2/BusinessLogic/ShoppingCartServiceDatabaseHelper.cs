@@ -1,16 +1,17 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using Promotions;
 
 namespace BusinessLogic
 {
-    public class ShoppingCartDataAccessHelper : IShoppingCartDataAccessHelper
+    public class ShoppingCartServiceDatabaseHelper : IShoppingCartServiceDatabaseHelper
     {
         private readonly IService<Product> ProductService;
         private readonly IService<PromotionEntity> PromotionService;
         private readonly IService<Purchase> PurchaseService;
 
-        public ShoppingCartDataAccessHelper(
+        public ShoppingCartServiceDatabaseHelper(
             IService<Product> productService,
             IService<PromotionEntity> promotionService,
             IService<Purchase> purchaseService)
@@ -65,6 +66,5 @@ namespace BusinessLogic
         {
             PurchaseService.Add(purchase);
         }
-
     }
 }

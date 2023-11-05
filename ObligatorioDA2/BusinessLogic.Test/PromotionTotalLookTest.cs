@@ -1,5 +1,6 @@
 using Domain;
 using IBusinessLogic;
+using Promotions;
 
 namespace BusinessLogic.Test
 {
