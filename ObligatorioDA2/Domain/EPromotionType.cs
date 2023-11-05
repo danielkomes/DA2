@@ -4,6 +4,7 @@
     {
         Promotion20Off,
         Promotion3x2,
-        PromotionTotalLook
+        PromotionTotalLook,
+        PromotionImported
     }
 }

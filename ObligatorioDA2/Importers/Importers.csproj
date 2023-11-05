@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
-    <ProjectReference Include="..\IImportersServices\IImportersServices.csproj" />
-    <ProjectReference Include="..\Importers\Importers.csproj" />
-    <ProjectReference Include="..\Promotions\Promotions.csproj" />
+    <ProjectReference Include="..\PromotionInterface\PromotionInterface.csproj" />
   </ItemGroup>
 
 </Project>

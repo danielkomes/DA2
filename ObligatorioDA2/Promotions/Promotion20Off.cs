@@ -1,7 +1,7 @@
 ﻿using Domain;
 using IBusinessLogic;
 
-namespace BusinessLogic
+namespace Promotions
 {
     public class Promotion20Off : PromotionAbstract
     {
@@ -12,7 +12,7 @@ namespace BusinessLogic
 
         public override PromotionResult GetTotal(IEnumerable<Product> products)
         {
-            if (products.Count() == 0) return new PromotionResult(0, false, PromotionEntity.Id);
+            if (products.Count() == 0) return new PromotionResult(0, false);
             float total = 0;
             bool applied = false;
             float maxPrice = products.ElementAt(0).Price;
@@ -29,7 +29,7 @@ namespace BusinessLogic
                 total -= maxPrice * 0.2f;
                 applied = true;
             }
-            return new PromotionResult(total, applied, PromotionEntity.Id);
+            return new PromotionResult(total, applied);
         }
         public override bool Equals(object? obj)
         {

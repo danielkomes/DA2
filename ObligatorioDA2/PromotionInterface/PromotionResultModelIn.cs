@@ -1,11 +1,11 @@
-﻿namespace Domain
+﻿namespace PromotionInterface
 {
-    public class PromotionResult
+    public class PromotionResultModelIn
     {
         public readonly float Result;
         public readonly bool IsApplied;
 
-        public PromotionResult(float result, bool isApplied)
+        public PromotionResultModelIn(float result, bool isApplied)
         {
             Result = result;
             IsApplied = isApplied;
