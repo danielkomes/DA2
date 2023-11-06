@@ -1,36 +1,37 @@
 <!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) --><!-- Search form -->
-<ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs justify-content-end">
-  <li>
-    <form class="form-inline md-form form-sm active-cyan-2">
-      <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search product" aria-label="Search"
-        mdbInput>
+<div class="fixed-top">
+  <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs justify-content-end">
+    <li>
+      <form class="form-inline md-form form-sm active-cyan-2">
+        <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search product"
+          aria-label="Search" mdbInput>
 
-    </form>
-  </li>
-  <li [ngbNavItem]="1">
-    <button ngbNavLink>Products</button>
-    <ng-template ngbNavContent>
-      <app-products-page></app-products-page>
-    </ng-template>
-  </li>
-  <li [ngbNavItem]="2">
-    <button ngbNavLink>Shopping cart
-      <span class="badge badge-pill bg-danger">1</span>
-      <span><i class="fas fa-shopping-cart"></i></span>
-    </button>
-    <ng-template ngbNavContent>
-      <app-shopping-cart-page></app-shopping-cart-page>
-    </ng-template>
-  </li>
-  <li ngbDropdown class="nav-item" role="presentation">
-    <button type="button" class="nav-link" ngbDropdownToggle>Account</button>
-    <div ngbDropdownMenu>
-      <button ngbDropdownItem>Profile</button>
-      <div class="dropdown-divider"></div>
-      <button ngbDropdownItem>Logout</button>
-    </div>
-  </li>
-  <!-- <li ngbNavItem [disabled]="true" class="ms-auto">
+      </form>
+    </li>
+    <li [ngbNavItem]="1">
+      <button ngbNavLink>Products</button>
+      <ng-template ngbNavContent>
+        <app-products-page></app-products-page>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <button ngbNavLink>Shopping cart
+        <span class="badge badge-pill bg-danger">1</span>
+        <span><i class="fas fa-shopping-cart"></i></span>
+      </button>
+      <ng-template ngbNavContent>
+        <app-shopping-cart-page></app-shopping-cart-page>
+      </ng-template>
+    </li>
+    <li ngbDropdown class="nav-item" role="presentation">
+      <button type="button" class="nav-link" ngbDropdownToggle>Account</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem>Profile</button>
+        <div class="dropdown-divider"></div>
+        <button ngbDropdownItem>Logout</button>
+      </div>
+    </li>
+    <!-- <li ngbNavItem [disabled]="true" class="ms-auto">
       <button ngbNavLink>Disabled</button>
       <ng-template ngbNavContent>
         <p>
@@ -47,6 +48,8 @@
         </p>
       </ng-template>
     </li> -->
-</ul>
+  </ul>
+</div>
+<div class="content-divider"></div>
 <div [ngbNavOutlet]="nav" class="mt-2"></div>
 <router-outlet></router-outlet>
