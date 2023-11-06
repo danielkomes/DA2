@@ -5,4 +5,5 @@ export class Product {
   price: number = 0;
   category: string = '';
   colors: string[] = [];
+  brand: string = '';
 }

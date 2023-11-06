@@ -1,3 +1,4 @@
-<div *ngFor="let product of products">
+<app-sidebar (OnFilterUpdate)="updateFilter($event)"></app-sidebar>
+<div class="content" *ngFor="let product of products">
     <app-product [receivedProduct]=product></app-product>
 </div>

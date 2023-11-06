@@ -1,24 +1,6 @@
 <!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) --><!-- Search form -->
 <div class="fixed-top">
     <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs justify-content-end">
-        <li>
-            <form class="form-inline md-form form-sm active-cyan-2">
-                <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Filter by name"
-                    aria-label="Search" mdbInput>
-            </form>
-        </li>
-        <li>
-            <form class="form-inline md-form form-sm active-cyan-2">
-                <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Filter by brand"
-                    aria-label="Search" mdbInput>
-            </form>
-        </li>
-        <li>
-            <form class="form-inline md-form form-sm active-cyan-2">
-                <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Filter by category"
-                    aria-label="Search" mdbInput>
-            </form>
-        </li>
         <li [ngbNavItem]="1">
             <button ngbNavLink>Products</button>
             <ng-template ngbNavContent>
@@ -61,5 +43,5 @@
     </li> -->
     </ul>
 </div>
-<div class="content-divider"></div>
+<!-- <div class="content-divider"></div> -->
 <div [ngbNavOutlet]="nav" class="mt-2"></div>
