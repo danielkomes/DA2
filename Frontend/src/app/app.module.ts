@@ -15,6 +15,8 @@ import { UserPageComponent } from './user-page/user-page.component';
 import { UserPageAdminComponent } from './user-page-admin/user-page-admin.component';
 import { ShoppingCartPageComponent } from './shopping-cart-page/shopping-cart-page.component';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { TopbarComponent } from './topbar/topbar.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { LoginPageComponent } from './login-page/login-page.component';
     UserPageAdminComponent,
     ShoppingCartPageComponent,
     LoginPageComponent,
+    SidebarComponent,
+    TopbarComponent,
   ],
   imports: [
     CommonModule,

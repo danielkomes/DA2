@@ -1,0 +1,12 @@
+* {
+  box-sizing: unset;
+}
+.content-divider {
+  margin-top: 40px;
+}
+.fixed-top {
+  background: white;
+}
+.mt-2 {
+  margin-left: 250px;
+}
