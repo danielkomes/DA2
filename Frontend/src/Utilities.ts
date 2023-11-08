@@ -20,6 +20,16 @@ export class Utilities {
     if (currentProductsJson) {
       currentProducts = JSON.parse(currentProductsJson);
     }
-    return currentProducts;
+    let ret: string;
+    ret = `[`;
+    currentProducts.forEach((product) => {
+      ret += `\"`;
+      ret += product;
+      ret += `\"`;
+      ret += `,`;
+    });
+    ret = ret.substring(0, ret.length - 1);
+    ret += `]`;
+    return ret;
   }
 }

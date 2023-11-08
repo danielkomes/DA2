@@ -3,17 +3,15 @@
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col">
                 <p><span class="h2">Shopping Cart </span><span class="h4">(1 item in your cart)</span></p>
-                <div *ngFor="let product of products">
-                    <app-product [receivedProduct]=product></app-product>
-                </div>
-
                 <div class="card mb-5">
                     <div class="card-body p-4">
-
+                        <div *ngFor="let product of products">
+                            <app-product [receivedProduct]=product></app-product>
+                        </div>
                         <div class="float-end">
                             <p class="mb-0 me-5 d-flex align-items-center">
                                 <span class="small text-muted me-2">Order total:</span> <span
-                                    class="lead fw-normal">$799</span>
+                                    class="lead fw-normal">{{total}}</span>
                             </p>
                         </div>
 
