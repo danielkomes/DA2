@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Product } from 'src/Types/Product';
 import { LocalStorageOperations } from 'src/LocalStorageOperations';
@@ -11,10 +11,28 @@ import { ApiConfig } from 'src/ApiConfig';
 })
 export class ShoppingCartPageComponent {
   products: Product[] = [];
-  total: number = 0;
+  totalPrice: number = 0;
+  productCount: number = 0;
+  productsInCartText!: string;
+
+  @Output() OnAddOrRemoveFromCart: EventEmitter<void> =
+    new EventEmitter<void>();
 
   constructor(private http: HttpClient) {
     this.getCart();
+  }
+
+  onSuccess() {
+    this.productCount = this.products.length;
+    if (this.productCount == 1) {
+      this.productsInCartText = ' product in your cart';
+    } else {
+      this.productsInCartText = ' products in your cart';
+    }
+  }
+
+  onProductCountChanged() {
+    this.OnAddOrRemoveFromCart.emit();
   }
 
   getCart() {
@@ -32,8 +50,8 @@ export class ShoppingCartPageComponent {
         (response: any) => {
           if (response.status == HttpStatusCode.Ok) {
             this.products = response.body.checkedProducts;
-            this.total = response.body.totalPrice;
-            console.log(response.body);
+            this.totalPrice = response.body.totalPrice;
+            this.onSuccess();
           }
         },
         (error) => {

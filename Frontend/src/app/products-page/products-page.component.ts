@@ -1,4 +1,11 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import {
   HttpClient,
   HttpHeaders,
@@ -24,8 +31,10 @@ export class ProductsPageComponent {
   brandFilter!: string;
   categoryFilter!: string;
 
+  @Output() OnAddOrRemoveFromCart: EventEmitter<void> =
+    new EventEmitter<void>();
+
   constructor(private http: HttpClient, private router: Router) {
-    console.log('constructor');
     this.getProducts();
   }
 
@@ -34,6 +43,10 @@ export class ProductsPageComponent {
     this.brandFilter = filters.brandFilter;
     this.categoryFilter = filters.categoryFilter;
     this.getProducts();
+  }
+
+  onAddOrRemoveFromCart() {
+    this.OnAddOrRemoveFromCart.emit();
   }
 
   getProducts() {

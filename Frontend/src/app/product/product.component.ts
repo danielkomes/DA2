@@ -30,7 +30,10 @@ export class ProductComponent {
 
   @Input() receivedProduct?: Product;
   @Input() showRemoveFromCartButton?: boolean;
+  @Output() OnAddToCart: EventEmitter<void> = new EventEmitter<void>();
   @Output() OnRemoveFromCart: EventEmitter<void> = new EventEmitter<void>();
+  @Output() OnAddOrRemoveFromCart: EventEmitter<void> =
+    new EventEmitter<void>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -40,10 +43,13 @@ export class ProductComponent {
 
   addToCart() {
     LocalStorageOperations.addProductToStorage(this.product);
+    this.OnAddToCart.emit();
+    this.OnAddOrRemoveFromCart.emit();
   }
 
   removeFromCart() {
     LocalStorageOperations.removeProductFromStorage(this.product);
     this.OnRemoveFromCart.emit();
+    this.OnAddOrRemoveFromCart.emit();
   }
 }

@@ -31,7 +31,6 @@ export class RegisterPageComponent {
       address: this.addressValue,
       password: this.passwordValue,
     };
-    console.log(postData);
 
     // Define the HTTP headers if needed (e.g., for authentication)
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
