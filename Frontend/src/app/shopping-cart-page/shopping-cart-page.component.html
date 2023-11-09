@@ -13,7 +13,11 @@
                         </div>
                         <div class="float-end">
                             <p class="mb-0 me-5 d-flex align-items-center">
-                                <span class="small text-muted me-2">Order total:</span> <span
+                                <span class="small text-muted me-2">Promotion applied: </span> <span
+                                    class="lead fw-normal">{{promotionApplied}}</span>
+                            </p>
+                            <p class="mb-0 me-5 d-flex align-items-center">
+                                <span class="small text-muted me-2">Order total: </span> <span
                                     class="lead fw-normal">{{totalPrice}}</span>
                             </p>
                         </div>
@@ -22,7 +26,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-light btn-lg me-2">Continue shopping</button>
+                    <!-- <button type="button" class="btn btn-light btn-lg me-2">Continue shopping</button> -->
                     <button type="button" class="btn btn-primary btn-lg" (click)="doPurchase()">Confirm
                         purchase</button>
                 </div>

@@ -12,6 +12,7 @@ import { ApiConfig } from 'src/ApiConfig';
 export class ShoppingCartPageComponent {
   products: Product[] = [];
   totalPrice: number = 0;
+  promotionApplied: string = 'None';
   productCount: number = 0;
   productsInCartText!: string;
 
@@ -22,7 +23,10 @@ export class ShoppingCartPageComponent {
     this.getCart();
   }
 
-  onSuccess() {
+  onSuccess(response: any) {
+    this.products = response.checkedProducts;
+    this.totalPrice = response.totalPrice;
+    this.promotionApplied = response.promotionApplied;
     this.productCount = this.products.length;
     if (this.productCount == 1) {
       this.productsInCartText = ' product in your cart';
@@ -51,7 +55,7 @@ export class ShoppingCartPageComponent {
           if (response.status == HttpStatusCode.Ok) {
             this.products = response.body.checkedProducts;
             this.totalPrice = response.body.totalPrice;
-            this.onSuccess();
+            this.onSuccess(response.body);
           }
         },
         (error) => {
