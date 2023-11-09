@@ -43,4 +43,30 @@ export class ShoppingCartPageComponent {
         }
       );
   }
+
+  doPurchase() {
+    const data = Utilities.getProductsFromStorage();
+    // Define the HTTP headers if needed (e.g., for authentication)
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', '518F02A4-9F50-48DA-8363-141B64DD6318');
+    // Make the POST request
+    this.http
+      .post(`${ApiConfig.route}${ApiConfig.purhcases}`, data, {
+        headers: headers,
+        observe: 'response',
+      })
+      .subscribe(
+        (response: any) => {
+          if (response.status == HttpStatusCode.Ok) {
+            console.log('PURCHASE DONE', response.body);
+          }
+        },
+        (error) => {
+          console.error('POST Request Error:', error);
+          // Handle any errors here
+          // this.errorMessage = error.error.message;
+        }
+      );
+  }
 }

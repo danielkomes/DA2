@@ -8,7 +8,7 @@ export enum ApiConfig {
 
   //endpoints
   products = 'products',
-  purhcases = 'purhcases',
+  purhcases = 'purchases',
   session = 'session',
   shoppingCart = 'shopping-cart',
   signup = 'signup',
