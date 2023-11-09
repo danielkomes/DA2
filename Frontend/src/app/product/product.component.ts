@@ -1,4 +1,11 @@
-import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import {
   HttpClient,
   HttpHeaders,
@@ -9,7 +16,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiConfig } from 'src/ApiConfig';
 import { Product } from 'src/Types/Product';
-import { Utilities } from 'src/Utilities';
+import { LocalStorageOperations } from 'src/LocalStorageOperations';
 
 @Component({
   selector: 'app-product',
@@ -19,8 +26,11 @@ import { Utilities } from 'src/Utilities';
 export class ProductComponent {
   response: string = '';
   product!: Product;
+  // removeFromCartButton!: boolean;
 
   @Input() receivedProduct?: Product;
+  @Input() showRemoveFromCartButton?: boolean;
+  @Output() OnRemoveFromCart: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -29,33 +39,11 @@ export class ProductComponent {
   }
 
   addToCart() {
-    Utilities.addProductToStorage(this.product);
-    // const postData = this.product.id;
-    // console.log(postData);
+    LocalStorageOperations.addProductToStorage(this.product);
+  }
 
-    // // Define the HTTP headers if needed (e.g., for authentication)
-    // const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    // headers.set('Access-Control-Allow-Origin', 'true');
-
-    // // Make the POST request
-    // this.http
-    //   .post(
-    //     `${ApiConfig.route}${ApiConfig.shoppingCart}/${this.product.id}`,
-    //     postData,
-    //     {
-    //       headers,
-    //       observe: 'response',
-    //     }
-    //   )
-    //   .subscribe(
-    //     (response: any) => {
-    //       Utilities.addProductToStorage(this.product);
-    //     },
-    //     (error) => {
-    //       console.error('POST Request Error:', error);
-    //       // Handle any errors here
-    //       // this.errorMessage = error.error.message;
-    //     }
-    //   );
+  removeFromCart() {
+    LocalStorageOperations.removeProductFromStorage(this.product);
+    this.OnRemoveFromCart.emit();
   }
 }

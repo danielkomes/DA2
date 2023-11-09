@@ -10,7 +10,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiConfig } from 'src/ApiConfig';
 import { Product } from 'src/Types/Product';
-import { Utilities } from 'src/Utilities';
+import { LocalStorageOperations } from 'src/LocalStorageOperations';
 import { Filters } from 'src/Types/Filters';
 
 @Component({

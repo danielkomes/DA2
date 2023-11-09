@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
 import { Product } from 'src/Types/Product';
-import { Utilities } from 'src/Utilities';
+import { LocalStorageOperations } from 'src/LocalStorageOperations';
 import { ApiConfig } from 'src/ApiConfig';
 
 @Component({
@@ -18,7 +18,7 @@ export class ShoppingCartPageComponent {
   }
 
   getCart() {
-    const data = Utilities.getProductsFromStorage();
+    const data = LocalStorageOperations.getProductsFromStorage();
     // Define the HTTP headers if needed (e.g., for authentication)
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     headers.set('Access-Control-Allow-Origin', 'true');
@@ -45,7 +45,7 @@ export class ShoppingCartPageComponent {
   }
 
   doPurchase() {
-    const data = Utilities.getProductsFromStorage();
+    const data = LocalStorageOperations.getProductsFromStorage();
     // Define the HTTP headers if needed (e.g., for authentication)
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')

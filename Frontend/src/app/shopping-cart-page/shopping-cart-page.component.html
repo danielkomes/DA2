@@ -1,4 +1,4 @@
-<section class="vh-100" style="background-color: #fdccbc;">
+<section class="vh-100%" style="background-color: #fdccbc;">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col">
@@ -6,7 +6,8 @@
                 <div class="card mb-5">
                     <div class="card-body p-4">
                         <div *ngFor="let product of products">
-                            <app-product [receivedProduct]=product></app-product>
+                            <app-product [receivedProduct]="product" [showRemoveFromCartButton]="true"
+                                (OnRemoveFromCart)="getCart()"></app-product>
                         </div>
                         <div class="float-end">
                             <p class="mb-0 me-5 d-flex align-items-center">

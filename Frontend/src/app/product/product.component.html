@@ -37,7 +37,10 @@
             </div>
             <div class="col-md-2 d-flex justify-content-start">
                 <div>
-                    <button type="button" class="btn btn-primary" (click)=addToCart()>Add to cart</button>
+                    <button *ngIf="!showRemoveFromCartButton" type="button" class="btn btn-primary"
+                        (click)="addToCart()">Add to cart</button>
+                    <button *ngIf="showRemoveFromCartButton" type="button" class="btn btn-danger"
+                        (click)="removeFromCart()">Remove from cart</button>
                 </div>
             </div>
         </div>
