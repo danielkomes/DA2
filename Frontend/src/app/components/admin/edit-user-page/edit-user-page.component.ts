@@ -121,4 +121,30 @@ export class EditUserPageComponent {
         }
       );
   }
+
+  deleteUser() {
+    // Define the HTTP headers if needed (e.g., for authentication)
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `${localStorage.getItem('token')}`);
+
+    this.http
+      .delete(`${environment.API_HOST}${endpoints.users}/${this.user.email}`, {
+        headers,
+      })
+      .subscribe(
+        (response: any) => {
+          console.log(`USER DELETED: ${this.user.email}`);
+          this.router.navigateByUrl('admin/users');
+        },
+        (error: HttpErrorResponse) => {
+          console.error('POST Request Error:', error);
+          // Handle any errors here
+          error = JSON.parse(error.error);
+          this.errorMessage = error.message;
+          this.success = false;
+          this.showOutput = true;
+        }
+      );
+  }
 }
