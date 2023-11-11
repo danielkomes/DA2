@@ -108,7 +108,6 @@ export class EditUserPageComponent {
         (response: any) => {
           if (response.status == HttpStatusCode.Ok) {
             this.success = true;
-            localStorage.setItem('email', this.emailValue);
             this.showOutput = true;
           }
         },
