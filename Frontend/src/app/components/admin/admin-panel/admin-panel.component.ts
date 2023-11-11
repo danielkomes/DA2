@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment.development';
   styleUrls: ['./admin-panel.component.css'],
 })
 export class AdminPanelComponent {
+  addUserUrl: string = 'admin/add-user';
   usersUrl: string = 'admin/users';
   purchasesUrl: string = 'admin/purchases';
 

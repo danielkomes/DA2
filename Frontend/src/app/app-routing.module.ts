@@ -9,6 +9,7 @@ import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.
 import { UsersListComponent } from './components/admin/users-list/users-list.component';
 import { PurchasesListComponent } from './components/admin/purchases-list/purchases-list.component';
 import { EditUserPageComponent } from './components/admin/edit-user-page/edit-user-page.component';
+import { AddUserPageComponent } from './components/admin/add-user-page/add-user-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent, pathMatch: 'full' },
@@ -28,6 +29,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'admin/users/:email', component: EditUserPageComponent },
+  {
+    path: 'admin/add-user',
+    component: AddUserPageComponent,
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

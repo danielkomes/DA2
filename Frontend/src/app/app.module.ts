@@ -22,6 +22,7 @@ import { PurchasesListComponent } from './components/admin/purchases-list/purcha
 import { UserItemComponent } from './components/admin/user-item/user-item.component';
 import { PurchaseItemComponent } from './components/admin/purchase-item/purchase-item.component';
 import { EditUserPageComponent } from './components/admin/edit-user-page/edit-user-page.component';
+import { AddUserPageComponent } from './components/admin/add-user-page/add-user-page.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { EditUserPageComponent } from './components/admin/edit-user-page/edit-us
     UserItemComponent,
     PurchaseItemComponent,
     EditUserPageComponent,
+    AddUserPageComponent,
   ],
   imports: [
     CommonModule,

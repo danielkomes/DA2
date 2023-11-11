@@ -3,6 +3,11 @@
     <div class="fixed-top">
         <ul ngbNav #nav="ngbNav" class="nav-tabs justify-content-end">
             <li [ngbNavItem]="1">
+                <a [href]="addUserUrl">
+                    <button ngbNavLink>Add user</button>
+                </a>
+            </li>
+            <li [ngbNavItem]="1">
                 <a [href]="usersUrl">
                     <button ngbNavLink>Users</button>
                 </a>
