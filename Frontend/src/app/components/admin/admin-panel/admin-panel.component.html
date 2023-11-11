@@ -1,0 +1,20 @@
+<!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) --><!-- Search form -->
+<section>
+    <div class="fixed-top">
+        <ul ngbNav #nav="ngbNav" class="nav-tabs justify-content-end">
+            <li [ngbNavItem]="1">
+                <a [href]="usersUrl">
+                    <button ngbNavLink>Users</button>
+                </a>
+            </li>
+            <li [ngbNavItem]="1"><a [href]="purchasesUrl">
+                    <button ngbNavLink>Purchases
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+<!-- <div class="content-divider"></div> -->
+<!-- <div [ngbNavOutlet]="nav" class="mt-2"></div> -->
+<router-outlet></router-outlet>

@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { endpoints } from 'src/app/networking/endpoints';
 import { environment } from 'src/environments/environment.development';
 import { UserInfo } from 'src/app/models/user-info';
+import { EUserRole } from 'src/app/types/EUserRole';
 
 @Component({
   selector: 'app-user-page',
@@ -24,10 +25,12 @@ export class UserPageComponent {
   emailValue: string = '';
   addressValue: string = '';
   passwordValue: string = '';
+  isAdmin: boolean = false;
   success: boolean = true;
   errorMessage: string = '';
   showOutput: boolean = false;
   loginUrl: string = 'login';
+  adminUrl: string = 'admin';
 
   constructor(private http: HttpClient, private router: Router) {
     const token: string | null = localStorage.getItem('token');
@@ -57,11 +60,13 @@ export class UserPageComponent {
           this.user = new UserInfo(
             response.body.email,
             response.body.address,
-            response.body.password
+            response.body.password,
+            response.body.roles
           );
           this.emailValue = this.user.email;
           this.addressValue = this.user.address;
           this.passwordValue = this.user.password;
+          this.isAdmin = this.user.roles.includes(EUserRole.Admin);
         },
         (error) => {
           console.error('POST Request Error:', error);
