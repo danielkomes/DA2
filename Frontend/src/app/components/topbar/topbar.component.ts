@@ -8,6 +8,8 @@ import { LocalStorageOperations } from 'src/LocalStorageOperations';
 })
 export class TopbarComponent {
   productsUrl: string = 'products';
+  shoppingCartUrl: string = 'shopping-cart';
+  accountUrl: string = 'users';
   productCount: number = 0;
 
   constructor() {

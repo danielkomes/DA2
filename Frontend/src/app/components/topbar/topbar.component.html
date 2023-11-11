@@ -1,48 +1,35 @@
 <!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) --><!-- Search form -->
 <div class="fixed-top">
-    <ul ngbNav #nav="ngbNav" [activeId]="1" class="nav-tabs justify-content-end">
+    <ul ngbNav #nav="ngbNav" class="nav-tabs justify-content-end">
         <li [ngbNavItem]="1">
-            <button ngbNavLink>Products</button>
+            <a [href]="productsUrl">
+                <button ngbNavLink>Products</button>
+            </a>
             <ng-template ngbNavContent>
                 <app-products-page class="content" (OnAddOrRemoveFromCart)="OnProductCountChange()"></app-products-page>
             </ng-template>
         </li>
-        <li [ngbNavItem]="2">
-            <button ngbNavLink>Shopping cart
-                <span class="badge badge-pill bg-danger">{{productCount}}</span>
-                <span><i class="fas fa-shopping-cart"></i></span>
-            </button>
+        <li [ngbNavItem]="1"><a [href]="shoppingCartUrl">
+                <button ngbNavLink>Shopping cart
+                    <span class="badge badge-pill bg-danger">{{productCount}}</span>
+                </button>
+            </a>
             <ng-template ngbNavContent>
                 <app-shopping-cart-page class="content"
                     (OnAddOrRemoveFromCart)="OnProductCountChange()"></app-shopping-cart-page>
             </ng-template>
         </li>
-        <li ngbDropdown class="nav-item" role="presentation">
-            <button type="button" class="nav-link" ngbDropdownToggle>Account</button>
-            <div ngbDropdownMenu>
-                <button ngbDropdownItem>Profile</button>
-                <div class="dropdown-divider"></div>
-                <button ngbDropdownItem>Logout</button>
-            </div>
+        <li [ngbNavItem]="1"><a [href]="accountUrl">
+                <button ngbNavLink>Account
+                </button>
+            </a>
+            <ng-template ngbNavContent>
+                <app-shopping-cart-page class="content"
+                    (OnAddOrRemoveFromCart)="OnProductCountChange()"></app-shopping-cart-page>
+            </ng-template>
         </li>
-        <!-- <li ngbNavItem [disabled]="true" class="ms-auto">
-      <button ngbNavLink>Disabled</button>
-      <ng-template ngbNavContent>
-        <p>
-          Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla
-          facilisi.
-          Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et
-          odio.
-          Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam
-          urna,
-          egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec
-          tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et
-          magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget
-          neque. Phasellus nec tortor vel tellus pulvinar feugiat.
-        </p>
-      </ng-template>
-    </li> -->
     </ul>
 </div>
 <!-- <div class="content-divider"></div> -->
-<div [ngbNavOutlet]="nav" class="mt-2"></div>
+<!-- <div [ngbNavOutlet]="nav" class="mt-2"></div> -->
+<router-outlet></router-outlet>

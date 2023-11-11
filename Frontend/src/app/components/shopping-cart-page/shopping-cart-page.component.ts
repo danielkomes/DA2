@@ -4,6 +4,7 @@ import { Product } from 'src/app/types/Product';
 import { LocalStorageOperations } from 'src/LocalStorageOperations';
 import { endpoints } from 'src/app/networking/endpoints';
 import { environment } from 'src/environments/environment.development';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-shopping-cart-page',
@@ -20,7 +21,7 @@ export class ShoppingCartPageComponent {
   @Output() OnAddOrRemoveFromCart: EventEmitter<void> =
     new EventEmitter<void>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.getCart();
   }
 
@@ -68,11 +69,15 @@ export class ShoppingCartPageComponent {
   }
 
   doPurchase() {
+    const token: string | null = localStorage.getItem('token');
+    if (token == null) {
+      this.router.navigateByUrl('users');
+    }
     const data = LocalStorageOperations.getProductsFromStorage();
     // Define the HTTP headers if needed (e.g., for authentication)
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Authorization', '518F02A4-9F50-48DA-8363-141B64DD6318');
+      .set('Authorization', token!);
     // Make the POST request
     this.http
       .post(`${environment.API_HOST}${endpoints.purhcases}`, data, {
@@ -83,10 +88,12 @@ export class ShoppingCartPageComponent {
         (response: any) => {
           if (response.status == HttpStatusCode.Ok) {
             console.log('PURCHASE DONE', response.body);
+            localStorage.removeItem('products');
           }
         },
         (error) => {
           console.error('POST Request Error:', error);
+          this.router.navigateByUrl('users');
           // Handle any errors here
           // this.errorMessage = error.error.message;
         }
