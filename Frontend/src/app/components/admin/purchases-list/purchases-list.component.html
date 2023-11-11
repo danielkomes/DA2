@@ -1,1 +1,4 @@
-<p>purchases-list works!</p>
+<app-admin-panel></app-admin-panel>
+<div *ngFor="let purchase of purchases">
+    <app-purchase-item [purchaseReceived]="purchase"></app-purchase-item>
+</div>

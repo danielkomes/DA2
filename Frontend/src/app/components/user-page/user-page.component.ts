@@ -11,7 +11,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { endpoints } from 'src/app/networking/endpoints';
 import { environment } from 'src/environments/environment.development';
-import { UserInfo } from 'src/app/models/user-info';
+import { User } from 'src/app/models/user';
 import { EUserRole } from 'src/app/types/EUserRole';
 
 @Component({
@@ -21,7 +21,7 @@ import { EUserRole } from 'src/app/types/EUserRole';
 })
 export class UserPageComponent {
   // response: string = '';
-  user?: UserInfo;
+  user?: User;
   emailValue: string = '';
   addressValue: string = '';
   passwordValue: string = '';
@@ -57,7 +57,7 @@ export class UserPageComponent {
       })
       .subscribe(
         (response: any) => {
-          this.user = new UserInfo(
+          this.user = new User(
             response.body.email,
             response.body.address,
             response.body.password,

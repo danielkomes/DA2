@@ -1,6 +1,6 @@
 import { EUserRole } from '../types/EUserRole';
 
-export class UserInfo {
+export class User {
   email: string;
   address: string;
   password: string;

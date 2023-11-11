@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserInfo } from 'src/app/models/user-info';
+import { User } from 'src/app/models/user';
 import { endpoints } from 'src/app/networking/endpoints';
 import { environment } from 'src/environments/environment.development';
 
@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment.development';
   styleUrls: ['./users-list.component.css'],
 })
 export class UsersListComponent {
-  users!: UserInfo[];
+  users!: User[];
 
   constructor(private http: HttpClient, private router: Router) {
     this.getUsers();

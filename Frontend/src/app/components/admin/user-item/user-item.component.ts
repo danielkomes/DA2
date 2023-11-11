@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserInfo } from 'src/app/models/user-info';
+import { User } from 'src/app/models/user';
 import { EUserRole } from 'src/app/types/EUserRole';
 
 @Component({
@@ -9,13 +9,13 @@ import { EUserRole } from 'src/app/types/EUserRole';
   styleUrls: ['./user-item.component.css'],
 })
 export class UserItemComponent {
-  user!: UserInfo;
+  user!: User;
   email!: string;
   address!: string;
   password!: string;
   roles: string[] = [];
 
-  @Input() userReceived!: UserInfo;
+  @Input() userReceived!: User;
 
   constructor(private router: Router) {}
 
