@@ -8,6 +8,7 @@ import { ProductsPageComponent } from './components/products-page/products-page.
 import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { UsersListComponent } from './components/admin/users-list/users-list.component';
 import { PurchasesListComponent } from './components/admin/purchases-list/purchases-list.component';
+import { EditUserPageComponent } from './components/admin/edit-user-page/edit-user-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent, pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
     component: PurchasesListComponent,
     pathMatch: 'full',
   },
+  { path: 'admin/users/:email', component: EditUserPageComponent },
 ];
 
 @NgModule({

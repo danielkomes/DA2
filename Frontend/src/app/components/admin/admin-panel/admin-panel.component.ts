@@ -30,7 +30,7 @@ export class AdminPanelComponent {
       })
       .subscribe(
         (response) => {
-          this.router.navigateByUrl('admin/users');
+          // this.router.navigateByUrl('admin/users');
         },
         (error) => {
           console.log(error);
