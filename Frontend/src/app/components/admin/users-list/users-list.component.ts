@@ -20,7 +20,7 @@ export class UsersListComponent {
   getUsers() {
     const token: string | null = localStorage.getItem('token');
     if (token == null) {
-      this.router.navigateByUrl('prouducts');
+      this.router.navigateByUrl('products');
     }
     const headers = new HttpHeaders().set('Authorization', token!);
     this.http
@@ -33,7 +33,7 @@ export class UsersListComponent {
         },
         (error) => {
           console.log(error);
-          this.router.navigateByUrl('prouducts');
+          this.router.navigateByUrl('products');
         }
       );
   }

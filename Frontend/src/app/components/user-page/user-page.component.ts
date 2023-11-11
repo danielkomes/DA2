@@ -137,7 +137,7 @@ export class UserPageComponent {
           this.router.navigateByUrl('login');
         },
         (error: HttpErrorResponse) => {
-          // console.error('POST Request Error:', error);
+          console.error('POST Request Error:', error);
           // // Handle any errors here
           // error = JSON.parse(error.error);
           this.errorMessage = error.message;

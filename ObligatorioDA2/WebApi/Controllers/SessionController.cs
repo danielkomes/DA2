@@ -38,7 +38,7 @@ namespace WebApi.Controllers
         public IActionResult Logout()
         {
             SessionLogic.Logout();
-            return Ok("Logged out");
+            return Ok();
         }
     }
 }

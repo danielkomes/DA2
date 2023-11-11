@@ -13,13 +13,15 @@ export class AdminPanelComponent {
   usersUrl: string = 'admin/users';
   purchasesUrl: string = 'admin/purchases';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.confirmAdminRole();
+  }
 
   confirmAdminRole() {
     const token: string | null = localStorage.getItem('token');
     const email: string | null = localStorage.getItem('email');
     if (token == null || email == null) {
-      this.router.navigateByUrl('prouducts');
+      this.router.navigateByUrl('products');
     }
     const headers = new HttpHeaders().set('Authorization', token!);
     this.http
@@ -27,10 +29,12 @@ export class AdminPanelComponent {
         headers: headers,
       })
       .subscribe(
-        (response) => {},
+        (response) => {
+          this.router.navigateByUrl('admin/users');
+        },
         (error) => {
           console.log(error);
-          this.router.navigateByUrl('prouducts');
+          this.router.navigateByUrl('products');
         }
       );
   }
