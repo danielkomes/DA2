@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 // import { NgModel } from '@angular/forms';
-import { Filters } from 'src/Types/Filters';
+import { Filters } from 'src/app/types/Filters';
 
 @Component({
   selector: 'app-sidebar',

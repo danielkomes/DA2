@@ -1,5 +1,5 @@
 import { JsonPipe } from '@angular/common';
-import { Product } from './Types/Product';
+import { Product } from './app/types/Product';
 
 export class LocalStorageOperations {
   static addProductToStorage(product: Product) {

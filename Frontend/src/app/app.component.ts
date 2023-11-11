@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiConfig } from 'src/ApiConfig';
+import { endpoints } from 'src/app/networking/endpoints';
 
 @Component({
   selector: 'app-root',

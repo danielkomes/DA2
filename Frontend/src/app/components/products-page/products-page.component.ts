@@ -15,10 +15,11 @@ import {
 } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiConfig } from 'src/ApiConfig';
-import { Product } from 'src/Types/Product';
+import { endpoints } from 'src/app/networking/endpoints';
+import { Product } from 'src/app/types/Product';
 import { LocalStorageOperations } from 'src/LocalStorageOperations';
-import { Filters } from 'src/Types/Filters';
+import { Filters } from 'src/app/types/Filters';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-products-page',
@@ -64,7 +65,7 @@ export class ProductsPageComponent {
 
     // Make the POST request
     this.http
-      .get(`${ApiConfig.route}${ApiConfig.products}`, {
+      .get(`${environment.API_HOST}${endpoints.products}`, {
         headers,
         observe: 'response',
         params: params,

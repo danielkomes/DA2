@@ -7,6 +7,7 @@ import { LocalStorageOperations } from 'src/LocalStorageOperations';
   styleUrls: ['./topbar.component.css'],
 })
 export class TopbarComponent {
+  productsUrl: string = 'products';
   productCount: number = 0;
 
   constructor() {

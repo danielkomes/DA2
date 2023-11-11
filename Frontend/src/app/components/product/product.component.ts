@@ -14,8 +14,8 @@ import {
 } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiConfig } from 'src/ApiConfig';
-import { Product } from 'src/Types/Product';
+import { endpoints } from 'src/app/networking/endpoints';
+import { Product } from 'src/app/types/Product';
 import { LocalStorageOperations } from 'src/LocalStorageOperations';
 
 @Component({

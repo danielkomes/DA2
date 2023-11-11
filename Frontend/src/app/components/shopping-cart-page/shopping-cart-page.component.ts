@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
-import { Product } from 'src/Types/Product';
+import { Product } from 'src/app/types/Product';
 import { LocalStorageOperations } from 'src/LocalStorageOperations';
-import { ApiConfig } from 'src/ApiConfig';
+import { endpoints } from 'src/app/networking/endpoints';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-shopping-cart-page',
@@ -46,7 +47,7 @@ export class ShoppingCartPageComponent {
     headers.set('Access-Control-Allow-Origin', 'true');
     // Make the POST request
     this.http
-      .post(`${ApiConfig.route}${ApiConfig.shoppingCart}`, data, {
+      .post(`${environment.API_HOST}${endpoints.shoppingCart}`, data, {
         headers: headers,
         observe: 'response',
       })
@@ -74,7 +75,7 @@ export class ShoppingCartPageComponent {
       .set('Authorization', '518F02A4-9F50-48DA-8363-141B64DD6318');
     // Make the POST request
     this.http
-      .post(`${ApiConfig.route}${ApiConfig.purhcases}`, data, {
+      .post(`${environment.API_HOST}${endpoints.purhcases}`, data, {
         headers: headers,
         observe: 'response',
       })

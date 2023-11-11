@@ -7,14 +7,15 @@ import {
 } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiConfig } from 'src/ApiConfig';
+import { endpoints } from 'src/app/networking/endpoints';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
-  selector: 'app-user-page',
-  templateUrl: './user-page.component.html',
-  styleUrls: ['./user-page.component.css'],
+  selector: 'app-register-page',
+  templateUrl: './register-page.component.html',
+  styleUrls: ['./register-page.component.css'],
 })
-export class UserPageComponent {
+export class RegisterPageComponent {
   response: string = '';
   emailValue: string = '';
   addressValue: string = '';
@@ -25,7 +26,7 @@ export class UserPageComponent {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  save() {
+  signup() {
     const postData = {
       email: this.emailValue,
       address: this.addressValue,
@@ -38,16 +39,16 @@ export class UserPageComponent {
 
     // Make the POST request
     this.http
-      .post(`${ApiConfig.route}${ApiConfig.signup}`, postData, {
+      .post(`${environment.API_HOST}${endpoints.signup}`, postData, {
         headers,
         observe: 'response',
         responseType: 'text' as 'json',
       })
       .subscribe(
         (response: any) => {
-          if (response.status == HttpStatusCode.Ok) {
+          if (response.status == HttpStatusCode.Created) {
             this.success = true;
-            this.router.navigate([ApiConfig.shoppingCart]);
+            this.router.navigate([endpoints.shoppingCart]);
           }
         },
         (error) => {
