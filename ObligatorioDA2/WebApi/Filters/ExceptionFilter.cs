@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Exceptions;
+﻿using System.Security.Authentication;
+using BusinessLogic.Exceptions;
 using DataAccess.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -17,11 +18,11 @@ namespace WebApi.Filters
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status404NotFound };
             }
-            catch(EntityAlreadyExistsException e)
+            catch (EntityAlreadyExistsException e)
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
             }
-            catch(ProfileMismatchException e)
+            catch (ProfileMismatchException e)
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
             }
@@ -30,6 +31,10 @@ namespace WebApi.Filters
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
             }
             catch (InvalidDataException e)
+            {
+                context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
+            }
+            catch (InvalidCredentialException e)
             {
                 context.Result = new ObjectResult(new { e.Message }) { StatusCode = StatusCodes.Status403Forbidden };
             }
@@ -47,7 +52,7 @@ namespace WebApi.Filters
                     Environment.NewLine +
                     e.StackTrace
                 })
-                { StatusCode = 500 };
+                { StatusCode = StatusCodes.Status500InternalServerError };
             }
         }
     }

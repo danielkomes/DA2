@@ -1,0 +1,6 @@
+* {
+  box-sizing: unset;
+}
+.fixed-top {
+  background: white;
+}

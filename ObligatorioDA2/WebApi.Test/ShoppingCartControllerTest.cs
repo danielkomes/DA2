@@ -78,7 +78,7 @@ namespace WebApi.Test
                 promotionApplied = entity.Name,
                 totalPrice = 100 + 200 - 200 * 0.2f,
             };
-            IActionResult actual = cartController.GetProducts(currentProductsIds);
+            IActionResult actual = cartController.CalculateTotal(currentProductsIds);
             IActionResult expected = new OkObjectResult(ret);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
