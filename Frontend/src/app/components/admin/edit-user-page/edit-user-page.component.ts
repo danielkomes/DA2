@@ -18,7 +18,6 @@ import { environment } from 'src/environments/environment.development';
   styleUrls: ['./edit-user-page.component.css'],
 })
 export class EditUserPageComponent {
-  // response: string = '';
   user!: User;
   emailValue: string = '';
   addressValue: string = '';
@@ -45,42 +44,6 @@ export class EditUserPageComponent {
     this.emailValue = this.user.email;
     this.addressValue = this.user.address;
     this.passwordValue = this.user.password;
-  }
-
-  getUserData() {
-    // Make the POST request
-    const email: string | null = localStorage.getItem('email');
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      `${localStorage.getItem('token')!}`
-    );
-    this.http
-      .get(`${environment.API_HOST}${endpoints.users}/${email}`, {
-        headers: headers,
-        observe: 'response',
-      })
-      .subscribe(
-        (response: any) => {
-          this.user = new User(
-            response.body.email,
-            response.body.address,
-            response.body.password,
-            response.body.roles
-          );
-          this.emailValue = this.user.email;
-          this.addressValue = this.user.address;
-          this.passwordValue = this.user.password;
-          this.isAdmin = this.user.roles.includes(EUserRole.Admin);
-        },
-        (error) => {
-          console.error('POST Request Error:', error);
-          // Handle any errors here
-          this.errorMessage = error.error.message;
-          this.success = false;
-          this.showOutput = true;
-          this.router.navigateByUrl('login');
-        }
-      );
   }
 
   save() {

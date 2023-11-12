@@ -33,40 +33,29 @@ export class UserPageComponent {
   adminUrl: string = 'admin';
 
   constructor(private http: HttpClient, private router: Router) {
-    const token: string | null = localStorage.getItem('token');
-    if (token != null) {
-      this.getUserData();
-    } else {
-      this.router.navigateByUrl(this.loginUrl);
-    }
+    this.getUserData();
   }
 
   getUserData() {
     // Make the POST request
+    const token: string | null = localStorage.getItem('token');
     const email: string | null = localStorage.getItem('email');
-    const headers = new HttpHeaders().set(
-      'Authorization',
-      `${localStorage.getItem('token')!}`
-      // '8f1b6599-ce6e-41c0-b9e8-2806d7205b79'
-    );
+    if (token == null || email == null || email == '') {
+      this.router.navigateByUrl(this.loginUrl);
+      return;
+    }
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
     this.http
-      .get(`${environment.API_HOST}${endpoints.users}/${email}`, {
+      .get<User>(`${environment.API_HOST}${endpoints.users}/${email}`, {
         headers: headers,
-        observe: 'response',
-        // responseType: 'text' as 'json',
       })
       .subscribe(
-        (response: any) => {
-          this.user = new User(
-            response.body.email,
-            response.body.address,
-            response.body.password,
-            response.body.roles
-          );
-          this.emailValue = this.user.email;
-          this.addressValue = this.user.address;
-          this.passwordValue = this.user.password;
-          this.isAdmin = this.user.roles.includes(EUserRole.Admin);
+        (response: User) => {
+          this.user = response;
+          this.emailValue = this.user!.email;
+          this.addressValue = this.user!.address;
+          this.passwordValue = this.user!.password;
+          this.isAdmin = this.user!.roles.includes(EUserRole.Admin);
         },
         (error) => {
           console.error('POST Request Error:', error);
@@ -128,7 +117,6 @@ export class UserPageComponent {
     this.http
       .delete(`${environment.API_HOST}${endpoints.session}`, {
         headers,
-        // observe: 'response',
       })
       .subscribe(
         (response: any) => {
@@ -139,7 +127,6 @@ export class UserPageComponent {
         (error: HttpErrorResponse) => {
           console.error('POST Request Error:', error);
           // // Handle any errors here
-          // error = JSON.parse(error.error);
           this.errorMessage = error.message;
           this.success = false;
           this.showOutput = true;
