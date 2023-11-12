@@ -18,6 +18,17 @@ export class ShoppingCartPageComponent {
   productCount: number = 0;
   productsInCartText!: string;
 
+  paymentMethodValue: string = 'Visa';
+  paymentMethods: string[] = [
+    'Visa',
+    'MasterCard',
+    'Santander',
+    'ITAU',
+    'BBVA',
+    'Paypal',
+    'Paganza',
+  ];
+
   @Output() OnAddOrRemoveFromCart: EventEmitter<void> =
     new EventEmitter<void>();
 

@@ -20,18 +20,27 @@
                                 <span class="small text-muted me-2">Order total: </span> <span
                                     class="lead fw-normal">{{totalPrice}}</span>
                             </p>
-                        </div>
 
+
+                            <p class="mb-0 me-5 d-flex align-items-center">
+                                <span class="small text-muted me-2">Payment method: </span>
+                                <select name="cars" id="cars" [(ngModel)]="paymentMethodValue">
+                                    <option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</option>
+                                </select>
+                            </p>
+
+
+                        </div>
                     </div>
                 </div>
-
-                <div class="d-flex justify-content-end">
-                    <!-- <button type="button" class="btn btn-light btn-lg me-2">Continue shopping</button> -->
-                    <button type="button" class="btn btn-primary btn-lg" (click)="doPurchase()">Confirm
-                        purchase</button>
-                </div>
-
             </div>
+
+            <div class="d-flex justify-content-end">
+                <!-- <button type="button" class="btn btn-light btn-lg me-2">Continue shopping</button> -->
+                <button type="button" class="btn btn-primary btn-lg" (click)="doPurchase()">Confirm
+                    purchase</button>
+            </div>
+
         </div>
     </div>
 </section>
