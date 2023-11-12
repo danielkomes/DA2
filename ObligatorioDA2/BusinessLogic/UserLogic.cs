@@ -59,6 +59,12 @@ namespace BusinessLogic
         public void Update(string targetEmail, User updatedUser)
         {
             User current = SessionLogic.GetCurrentUser();
+            User targetUser = new User()
+            {
+                Email = targetEmail
+            };
+            targetUser = UserService.Get(targetUser);
+            updatedUser.Id = targetUser.Id;
             if (!current.Email.Equals(targetEmail))
             {
                 if (!current.Roles.Contains(EUserRole.Admin))
@@ -66,11 +72,6 @@ namespace BusinessLogic
                     throw new ProfileMismatchException("Profile mismatch");
                 }
 
-                User targetUser = new User()
-                {
-                    Email = targetEmail
-                };
-                targetUser = UserService.Get(targetUser);
 
                 if (targetUser.Roles.Contains(EUserRole.Admin))
                 {

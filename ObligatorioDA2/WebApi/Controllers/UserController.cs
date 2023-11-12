@@ -46,10 +46,10 @@ namespace WebApi.Controllers
 
         [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpPost]
-        public IActionResult Post([FromBody] UserModelInForCustomers modelIn)
+        public IActionResult Post([FromBody] UserModelInForAdmins modelIn)
         {
             UserLogic.Add(modelIn.ToEntity());
-            return Created(modelIn.Email, "User created");
+            return Created(modelIn.Email, modelIn);
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]
@@ -57,7 +57,7 @@ namespace WebApi.Controllers
         public IActionResult Put([FromRoute] string email, [FromBody] UserModelInForCustomers modelIn)
         {
             UserLogic.Update(email, modelIn.ToEntity());
-            return Ok("User modified");
+            return Ok();
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]
@@ -66,7 +66,7 @@ namespace WebApi.Controllers
         public IActionResult Delete([FromRoute] string email)
         {
             UserLogic.Delete(email);
-            return Ok("User deleted");
+            return Ok();
         }
     }
 }

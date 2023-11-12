@@ -22,7 +22,7 @@ namespace WebApi.Controllers
         public IActionResult Signup([FromBody] UserModelInForCustomers modelIn)
         {
             SignupLogic.Signup(modelIn.ToEntity());
-            return Created(modelIn.Email, "User created");
+            return Created(modelIn.Email, modelIn);
         }
     }
 }

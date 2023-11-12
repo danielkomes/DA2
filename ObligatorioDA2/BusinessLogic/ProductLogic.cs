@@ -1,6 +1,7 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IDataAccess;
+using PromotionInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,17 @@ namespace BusinessLogic
         public IEnumerable<Product> GetAll()
         {
             return ProductService.GetAll();
+        }
+
+        public ProductModelIn CreateProductModelIn(Product product)
+        {
+            return new ProductModelIn()
+            {
+                Price = product.Price,
+                Category = product.Category,
+                Brand = product.Brand,
+                Colors = product.Colors,
+            };
         }
     }
 }

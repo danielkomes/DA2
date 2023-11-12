@@ -17,8 +17,8 @@ namespace WebApi.Controllers
             ShoppingCart = shoppingCart;
         }
 
-        [HttpGet]
-        public IActionResult GetProducts([FromBody] IEnumerable<Guid> currentProducts)
+        [HttpPost]
+        public IActionResult CalculateTotal([FromBody] IEnumerable<Guid> currentProducts)
         {
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
             ShoppingCart.GetCurrentProducts(currentProducts);
@@ -38,41 +38,41 @@ namespace WebApi.Controllers
             return Ok(ret);
         }
 
-        [HttpPost("{productToAdd}")]
-        public IActionResult AddProduct([FromRoute] Guid productToAdd, [FromBody] IEnumerable<Guid> currentProducts)
-        {
-            ShoppingCart.GetCurrentProducts(currentProducts);
-            ShoppingCart.AddToCart(productToAdd);
+        // [HttpPost("{productToAdd}")]
+        // public IActionResult AddProduct([FromRoute] Guid productToAdd, [FromBody] IEnumerable<Guid> currentProducts)
+        // {
+        //     ShoppingCart.GetCurrentProducts(currentProducts);
+        //     ShoppingCart.AddToCart(productToAdd);
 
-            return Ok(GenerateResponseBody("Product added to cart"));
-        }
+        //     return Ok(GenerateResponseBody("Product added to cart"));
+        // }
 
-        [HttpDelete("{productToRemove}")]
-        public IActionResult RemoveSelectedProduct([FromRoute] Guid productToRemove, [FromBody] IEnumerable<Guid> currentProducts)
-        {
-            ShoppingCart.GetCurrentProducts(currentProducts);
-            ShoppingCart.RemoveFromCart(productToRemove);
+        // [HttpDelete("{productToRemove}")]
+        // public IActionResult RemoveSelectedProduct([FromRoute] Guid productToRemove, [FromBody] IEnumerable<Guid> currentProducts)
+        // {
+        //     ShoppingCart.GetCurrentProducts(currentProducts);
+        //     ShoppingCart.RemoveFromCart(productToRemove);
 
 
-            return Ok(GenerateResponseBody("Product removed from cart"));
-        }
+        //     return Ok(GenerateResponseBody("Product removed from cart"));
+        // }
 
-        [HttpDelete]
-        public IActionResult RemoveAllProducts()
-        {
-            ShoppingCart.ProductsChecked = Enumerable.Empty<Product>();
-            return Ok("All products removed");
-        }
+        // [HttpDelete]
+        // public IActionResult RemoveAllProducts()
+        // {
+        //     ShoppingCart.ProductsChecked = Enumerable.Empty<Product>();
+        //     return Ok("All products removed");
+        // }
 
-        [ServiceFilter(typeof(AuthenticationFilter))]
-        [AuthorizationFilter(RoleNeeded = EUserRole.Customer)]
-        [HttpPost]
-        public IActionResult DoPurchase([FromBody] IEnumerable<Guid> currentProducts)
-        {
-            ShoppingCart.GetCurrentProducts(currentProducts);
-            ShoppingCart.DoPurchase();
-            return Ok(GenerateResponseBody("Purchase done"));
-        }
+        // [ServiceFilter(typeof(AuthenticationFilter))]
+        // [AuthorizationFilter(RoleNeeded = EUserRole.Customer)]
+        // [HttpPost("purchase")]
+        // public IActionResult DoPurchase([FromBody] IEnumerable<Guid> currentProducts)
+        // {
+        //     ShoppingCart.GetCurrentProducts(currentProducts);
+        //     ShoppingCart.DoPurchase();
+        //     return Ok(GenerateResponseBody("Purchase done"));
+        // }
 
         private dynamic GenerateResponseBody(string result)
         {

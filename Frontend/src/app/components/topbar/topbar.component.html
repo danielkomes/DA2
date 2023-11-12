@@ -1,0 +1,35 @@
+<!-- This nav gives you links to click, which tells the router which route to use (defined in the routes constant in  AppRoutingModule) --><!-- Search form -->
+<div class="fixed-top">
+    <ul ngbNav #nav="ngbNav" class="nav-tabs justify-content-end">
+        <li [ngbNavItem]="1">
+            <a [href]="productsUrl">
+                <button ngbNavLink>Products</button>
+            </a>
+            <ng-template ngbNavContent>
+                <app-products-page class="content" (OnAddOrRemoveFromCart)="OnProductCountChange()"></app-products-page>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="1"><a [href]="shoppingCartUrl">
+                <button ngbNavLink>Shopping cart
+                    <span class="badge badge-pill bg-danger">{{productCount}}</span>
+                </button>
+            </a>
+            <ng-template ngbNavContent>
+                <app-shopping-cart-page class="content"
+                    (OnAddOrRemoveFromCart)="OnProductCountChange()"></app-shopping-cart-page>
+            </ng-template>
+        </li>
+        <li [ngbNavItem]="1"><a [href]="accountUrl">
+                <button ngbNavLink>Account
+                </button>
+            </a>
+            <ng-template ngbNavContent>
+                <app-shopping-cart-page class="content"
+                    (OnAddOrRemoveFromCart)="OnProductCountChange()"></app-shopping-cart-page>
+            </ng-template>
+        </li>
+    </ul>
+</div>
+<!-- <div class="content-divider"></div> -->
+<!-- <div [ngbNavOutlet]="nav" class="mt-2"></div> -->
+<router-outlet></router-outlet>
