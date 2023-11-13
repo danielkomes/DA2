@@ -1,4 +1,8 @@
 ﻿using Domain;
+using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
+using Domain.PaymentMethods.CreditCards;
+using Domain.PaymentMethods.DebitCards;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
@@ -10,9 +14,10 @@ namespace DataAccess
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Purchase> Purchase { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
         public DbSet<PromotionEntity> Promotions { get; set; }
         public DbSet<Session> Sessions { get; set; }
+        public DbSet<PaymentMethodEntity> PaymentMethods { get; set; }
         public Context() { }
         public Context(DbContextOptions builder) : base(builder)
         {
@@ -70,6 +75,9 @@ namespace DataAccess
                 );
 
             modelBuilder.Entity<Session>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<PaymentMethodEntity>()
                 .HasKey(p => p.Id);
         }
 

@@ -1,7 +1,10 @@
 ﻿using Domain;
+using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
+using WebApi.Models.In;
 using WebApi.Models.Out;
 
 namespace WebApi.Controllers
@@ -18,14 +21,18 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CalculateTotal([FromBody] IEnumerable<Guid> currentProducts)
+        public IActionResult CalculateTotal([FromBody] ShoppingCartModelIn model)
         {
+            IEnumerable<Guid> currentProducts = model.Products;
+            EPaymentMethodType paymentMethod = model.PaymentMethod.Type;
+
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
             ShoppingCart.GetCurrentProducts(currentProducts);
             foreach (Product p in ShoppingCart.ProductsChecked)
             {
                 models = models.Append(new ProductModelOut(p));
             }
+            ShoppingCart.PaymentMethod = paymentMethod;
             float total = ShoppingCart.GetTotalPrice();
             string promotionApplied = ShoppingCart.PromotionApplied?.PromotionEntity.Name;
             if (promotionApplied is null) promotionApplied = "None";
