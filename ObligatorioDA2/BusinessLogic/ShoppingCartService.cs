@@ -1,6 +1,9 @@
 ﻿using DataAccess.Exceptions;
 using Domain;
 using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
+using Domain.PaymentMethods.CreditCards;
+using Domain.PaymentMethods.DebitCards;
 using IBusinessLogic;
 
 namespace BusinessLogic
@@ -43,60 +46,58 @@ namespace BusinessLogic
             return ret;
         }
 
-        public PaymentMethodEntity GetPaymentMethod(User user, EPaymentMethodType paymentMethod)
+        public PaymentMethod GetPaymentMethod(User user, EPaymentMethodType paymentMethod)
         {
-            //PaymentMethod selectedMethod = null;
-            //switch (paymentMethod)
-            //{
-            //    case EPaymentMethodType.MasterCard:
-            //        {
-            //            selectedMethod = new MasterCard(user);
-            //            break;
-            //        }
-            //    case EPaymentMethodType.Visa:
-            //        {
-            //            selectedMethod = new Visa(user);
-            //            break;
-            //        }
-            //    case EPaymentMethodType.Bbva:
-            //        {
-            //            selectedMethod = new Bbva(user);
-            //            break;
-            //        }
-            //    case EPaymentMethodType.Itau:
-            //        {
-            //            selectedMethod = new Itau(user);
-            //            break;
-            //        }
-            //    case EPaymentMethodType.Santander:
-            //        {
-            //            selectedMethod = new Santander(user);
-            //            break;
-            //        }
-            //    case EPaymentMethodType.Paganza:
-            //        {
-            //            selectedMethod = new Paganza(user);
-            //            break;
-            //        }
-            //    case EPaymentMethodType.Paypal:
-            //        {
-            //            selectedMethod = new Paypal(user);
-            //            break;
-            //        }
-            //    default:
-            //        {
-            //            throw new InvalidDataException("Invalid payment method");
-            //        }
-            //}
+            PaymentMethod ret = null;
             PaymentMethodEntity selectedMethod = new PaymentMethodEntity(user, paymentMethod);
             try
             {
-                return DatabaseHelper.GetPaymentMethod(selectedMethod);
+                selectedMethod = DatabaseHelper.GetPaymentMethod(selectedMethod);
             }
-            catch (ResourceNotFoundException)
+            catch (ResourceNotFoundException) { };
+            switch (selectedMethod.Type)
             {
-                return selectedMethod;
+                case EPaymentMethodType.MasterCard:
+                    {
+                        ret = new MasterCard(selectedMethod);
+                        break;
+                    }
+                case EPaymentMethodType.Visa:
+                    {
+                        ret = new Visa(selectedMethod);
+                        break;
+                    }
+                case EPaymentMethodType.Bbva:
+                    {
+                        ret = new Bbva(selectedMethod);
+                        break;
+                    }
+                case EPaymentMethodType.Itau:
+                    {
+                        ret = new Itau(selectedMethod);
+                        break;
+                    }
+                case EPaymentMethodType.Santander:
+                    {
+                        ret = new Santander(selectedMethod);
+                        break;
+                    }
+                case EPaymentMethodType.Paganza:
+                    {
+                        ret = new Paganza(selectedMethod);
+                        break;
+                    }
+                case EPaymentMethodType.Paypal:
+                    {
+                        ret = new Paypal(selectedMethod);
+                        break;
+                    }
+                default:
+                    {
+                        throw new InvalidDataException("Invalid payment method");
+                    }
             }
+            return ret;
         }
 
         public void InsertPurchase(Purchase purchase)
