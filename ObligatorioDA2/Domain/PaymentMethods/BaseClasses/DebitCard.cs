@@ -8,7 +8,7 @@ namespace Domain.PaymentMethods.BaseClasses
 {
     public abstract class DebitCard : PaymentMethod
     {
-        protected DebitCard(User user) : base(user)
+        protected DebitCard(PaymentMethodEntity entity) : base(entity)
         {
         }
     }

@@ -9,7 +9,7 @@ namespace Domain.PaymentMethods.DebitCards
 {
     public class Bbva : DebitCard
     {
-        public Bbva(User user) : base(user)
+        public Bbva(PaymentMethodEntity entity) : base(entity)
         {
         }
     }

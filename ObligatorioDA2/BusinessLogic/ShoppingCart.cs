@@ -1,5 +1,8 @@
 ﻿using Domain;
+using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
 using IBusinessLogic;
+using System.Data;
 
 namespace BusinessLogic
 {
@@ -8,6 +11,7 @@ namespace BusinessLogic
         public User? User { get; set; }
         public IEnumerable<Product> ProductsChecked { get; set; }
         public PromotionAbstract? PromotionApplied { get; set; }
+        public EPaymentMethodType PaymentMethod { get; set; }
         private readonly IShoppingCartService DataAccessHelper;
 
         public ShoppingCart(IShoppingCartService dataAccessHelper)
@@ -32,8 +36,9 @@ namespace BusinessLogic
         public void DoPurchase()
         {
             if (ProductsChecked.Count() == 0) throw new InvalidDataException("Shopping cart is empty");
-            GetTotalPrice();
-            Purchase purchase = new Purchase(User, ProductsChecked, PromotionApplied?.PromotionEntity);
+            float total = GetTotalPrice();
+            PaymentMethodEntity paymentMethod = DataAccessHelper.GetPaymentMethod(User, PaymentMethod);
+            Purchase purchase = new Purchase(User, ProductsChecked, paymentMethod, total, PromotionApplied?.PromotionEntity);
             DataAccessHelper.InsertPurchase(purchase);
         }
 
@@ -54,7 +59,16 @@ namespace BusinessLogic
                 if (result.Result < total) total = result.Result;
                 if (result.IsApplied) PromotionApplied = promotion;
             }
+            if (PaymentMethod == EPaymentMethodType.Paganza)
+            {
+                total = ApplyPaganzaDiscount(total);
+            }
             return total;
+        }
+
+        public float ApplyPaganzaDiscount(float total)
+        {
+            return total - total * 0.1f;
         }
 
         public void RemoveFromCart(Guid productId)

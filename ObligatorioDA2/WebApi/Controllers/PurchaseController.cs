@@ -1,7 +1,9 @@
 ﻿using Domain;
+using Domain.PaymentMethods;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
+using WebApi.Models.In;
 
 namespace WebApi.Controllers
 {
@@ -29,8 +31,11 @@ namespace WebApi.Controllers
         [ServiceFilter(typeof(AuthenticationFilter))]
         [AuthorizationFilter(RoleNeeded = EUserRole.Customer)]
         [HttpPost]
-        public IActionResult DoPurchase([FromBody] IEnumerable<Guid> currentProducts)
+        public IActionResult DoPurchase([FromBody] ShoppingCartModelIn model)
         {
+            IEnumerable<Guid> currentProducts = model.Products;
+            EPaymentMethodType paymentMethod = model.PaymentMethod.Type;
+            ShoppingCart.PaymentMethod = paymentMethod;
             ShoppingCart.GetCurrentProducts(currentProducts);
             ShoppingCart.DoPurchase();
             return Ok();

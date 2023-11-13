@@ -1,4 +1,7 @@
-﻿namespace Domain
+﻿using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
+
+namespace Domain
 {
     public class Purchase
     {
@@ -6,16 +9,20 @@
         public User User { get; set; }
         public IEnumerable<Product> Products { get; set; }
         public PromotionEntity? Promotion { get; set; }
+        public PaymentMethodEntity PaymentMethod { get; set; }
+        public float Total { get; set; }
         public DateTime Date { get; set; }
 
         public Purchase() { }
 
-        public Purchase(User user, IEnumerable<Product> products, PromotionEntity? promotion = null)
+        public Purchase(User user, IEnumerable<Product> products, PaymentMethodEntity paymentMethod, float total, PromotionEntity? promotion = null)
         {
             Id = new Guid();
             User = user;
             Products = products;
             Promotion = promotion;
+            PaymentMethod = paymentMethod;
+            Total = total;
             Date = DateTime.Now;
         }
 

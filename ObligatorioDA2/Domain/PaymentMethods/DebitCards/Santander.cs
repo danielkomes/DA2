@@ -9,7 +9,7 @@ namespace Domain.PaymentMethods.DebitCards
 {
     public class Santander : DebitCard
     {
-        public Santander(User user) : base(user)
+        public Santander(PaymentMethodEntity entity) : base(entity)
         {
         }
     }

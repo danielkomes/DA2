@@ -9,7 +9,7 @@ namespace Domain.PaymentMethods.DebitCards
 {
     public class Itau : DebitCard
     {
-        public Itau(User user) : base(user)
+        public Itau(PaymentMethodEntity entity) : base(entity)
         {
         }
     }

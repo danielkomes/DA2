@@ -9,7 +9,7 @@ namespace Domain.PaymentMethods
 {
     public class Paypal : PaymentMethod
     {
-        public Paypal(User user) : base(user)
+        public Paypal(PaymentMethodEntity entity) : base(entity)
         {
         }
     }

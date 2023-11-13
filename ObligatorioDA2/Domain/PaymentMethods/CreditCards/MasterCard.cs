@@ -9,7 +9,7 @@ namespace Domain.PaymentMethods.CreditCards
 {
     public class MasterCard : CreditCard
     {
-        public MasterCard(User user) : base(user)
+        public MasterCard(PaymentMethodEntity entity) : base(entity)
         {
         }
     }

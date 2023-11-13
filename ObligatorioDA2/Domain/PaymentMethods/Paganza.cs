@@ -9,7 +9,7 @@ namespace Domain.PaymentMethods
 {
     public class Paganza : PaymentMethod
     {
-        public Paganza(User user) : base(user)
+        public Paganza(PaymentMethodEntity entity) : base(entity)
         {
         }
     }
