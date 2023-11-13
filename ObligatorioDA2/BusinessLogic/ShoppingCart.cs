@@ -27,11 +27,11 @@ namespace BusinessLogic
             return products;
         }
 
-        public void AddToCart(Guid productId)
-        {
-            Product productToAdd = Helper.GetProduct(productId);
-            ProductsChecked = ProductsChecked.Append(productToAdd);
-        }
+        //public void AddToCart(Guid productId)
+        //{
+        //    Product productToAdd = Helper.GetProduct(productId);
+        //    ProductsChecked = ProductsChecked.Append(productToAdd);
+        //}
 
         public void DoPurchase()
         {
@@ -71,11 +71,11 @@ namespace BusinessLogic
             return total - total * 0.1f;
         }
 
-        public void RemoveFromCart(Guid productId)
-        {
-            Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
-            if (toRemove is null) throw new InvalidDataException("Product not found in cart");
-            ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
-        }
+        //public void RemoveFromCart(Guid productId)
+        //{
+        //    Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
+        //    if (toRemove is null) throw new InvalidDataException("Product not found in cart");
+        //    ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
+        //}
     }
 }

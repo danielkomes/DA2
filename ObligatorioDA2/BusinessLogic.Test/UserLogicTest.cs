@@ -154,6 +154,7 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userCurrent);
             UserMock.Setup(m => m.Exists(userUpdated)).Returns(false);
             UserMock.Setup(m => m.Update(userUpdated));
 
@@ -175,6 +176,7 @@ namespace BusinessLogic.Test
                 Address = "456"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userCurrent);
             UserMock.Setup(m => m.Update(userUpdated));
 
             UserLogic.Update(userCurrent.Email, userUpdated);
@@ -198,6 +200,7 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userCurrent);
             UserMock.Setup(m => m.Exists(userUpdated)).Returns(true);
 
             UserLogic.Update(userCurrent.Email, userUpdated);
@@ -221,6 +224,7 @@ namespace BusinessLogic.Test
                 Email = "updatedUser@test.com"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userTargetOld);
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
         }
@@ -270,6 +274,7 @@ namespace BusinessLogic.Test
                 Address = "456"
             };
             SessionMock.Setup(m => m.GetCurrentUser(null)).Returns(userCurrent);
+            UserMock.Setup(m => m.Get(It.IsAny<User>())).Returns(userTargetOld);
 
             UserLogic.Update(userTargetOld.Email, userTargetUpdated);
         }
