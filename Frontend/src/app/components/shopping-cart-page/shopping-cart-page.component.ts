@@ -5,6 +5,7 @@ import { LocalStorageOperations } from 'src/LocalStorageOperations';
 import { endpoints } from 'src/app/networking/endpoints';
 import { environment } from 'src/environments/environment.development';
 import { Router } from '@angular/router';
+import { EPaymentMethodType } from 'src/app/types/EPaymentMethodType';
 
 @Component({
   selector: 'app-shopping-cart-page',
@@ -28,12 +29,46 @@ export class ShoppingCartPageComponent {
     'Paypal',
     'Paganza',
   ];
+  paymentMethod!: EPaymentMethodType;
 
   @Output() OnAddOrRemoveFromCart: EventEmitter<void> =
     new EventEmitter<void>();
 
   constructor(private http: HttpClient, private router: Router) {
     this.getCart();
+  }
+
+  convertPaymentMethod() {
+    switch (this.paymentMethodValue) {
+      case 'Visa': {
+        this.paymentMethod = EPaymentMethodType.Visa;
+        break;
+      }
+      case 'MasterCard': {
+        this.paymentMethod = EPaymentMethodType.MasterCard;
+        break;
+      }
+      case 'Santander': {
+        this.paymentMethod = EPaymentMethodType.Santander;
+        break;
+      }
+      case 'ITAU': {
+        this.paymentMethod = EPaymentMethodType.Itau;
+        break;
+      }
+      case 'BBVA': {
+        this.paymentMethod = EPaymentMethodType.Bbva;
+        break;
+      }
+      case 'Paypal': {
+        this.paymentMethod = EPaymentMethodType.Paypal;
+        break;
+      }
+      case 'Paganza': {
+        this.paymentMethod = EPaymentMethodType.Paganza;
+        break;
+      }
+    }
   }
 
   onSuccess(response: any) {
@@ -53,7 +88,14 @@ export class ShoppingCartPageComponent {
   }
 
   getCart() {
-    const data = LocalStorageOperations.getProductsFromStorage();
+    // console.log('getCart');
+    this.convertPaymentMethod();
+    const data = {
+      products: LocalStorageOperations.getProductsFromStorage(),
+      paymentMethod: {
+        type: this.paymentMethod,
+      },
+    };
     // Define the HTTP headers if needed (e.g., for authentication)
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     headers.set('Access-Control-Allow-Origin', 'true');
@@ -80,11 +122,17 @@ export class ShoppingCartPageComponent {
   }
 
   doPurchase() {
+    this.convertPaymentMethod();
     const token: string | null = localStorage.getItem('token');
     if (token == null) {
       this.router.navigateByUrl('users');
     }
-    const data = LocalStorageOperations.getProductsFromStorage();
+    const data = {
+      products: LocalStorageOperations.getProductsFromStorage(),
+      paymentMethod: {
+        type: this.paymentMethod,
+      },
+    };
     // Define the HTTP headers if needed (e.g., for authentication)
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -99,7 +147,8 @@ export class ShoppingCartPageComponent {
         (response: any) => {
           if (response.status == HttpStatusCode.Ok) {
             console.log('PURCHASE DONE', response.body);
-            localStorage.removeItem('products');
+            LocalStorageOperations.removeProductsKey();
+            this.router.navigateByUrl('products');
           }
         },
         (error) => {

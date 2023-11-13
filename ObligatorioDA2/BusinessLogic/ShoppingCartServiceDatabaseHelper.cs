@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.PaymentMethods;
 using IBusinessLogic;
 using IDataAccess;
 using Promotions;
@@ -10,15 +11,19 @@ namespace BusinessLogic
         private readonly IService<Product> ProductService;
         private readonly IService<PromotionEntity> PromotionService;
         private readonly IService<Purchase> PurchaseService;
+        private readonly IService<PaymentMethodEntity> PaymentMethodService;
 
         public ShoppingCartServiceDatabaseHelper(
             IService<Product> productService,
             IService<PromotionEntity> promotionService,
-            IService<Purchase> purchaseService)
+            IService<Purchase> purchaseService,
+            IService<PaymentMethodEntity> paymentMethodService
+            )
         {
             ProductService = productService;
             PromotionService = promotionService;
             PurchaseService = purchaseService;
+            PaymentMethodService = paymentMethodService;
         }
 
         public IEnumerable<Product> GetProducts(IEnumerable<Guid> ids)
@@ -62,9 +67,19 @@ namespace BusinessLogic
             return ret;
         }
 
+        public PaymentMethodEntity GetPaymentMethod(PaymentMethodEntity paymentMethod)
+        {
+            return PaymentMethodService.Get(paymentMethod);
+        }
+
         public void InsertPurchase(Purchase purchase)
         {
             PurchaseService.Add(purchase);
+            bool paymentMethodExists = PaymentMethodService.Exists(purchase.PaymentMethod);
+            if (!paymentMethodExists)
+            {
+                PaymentMethodService.Add(purchase.PaymentMethod);
+            }
         }
     }
 }

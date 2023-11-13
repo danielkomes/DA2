@@ -15,9 +15,17 @@ export class TopbarComponent {
   constructor() {
     this.OnProductCountChange();
   }
+
+  ngOnInit() {
+    LocalStorageOperations.OnProductCountChange.subscribe((count: number) =>
+      this.OnProductCountChange()
+    );
+  }
+
   OnProductCountChange() {
-    let productsString = localStorage.getItem('products') || '';
-    let productsList = JSON.parse(productsString);
+    // let productsString = localStorage.getItem('products') || '';
+    // let productsList = JSON.parse(productsString);
+    let productsList = LocalStorageOperations.getProductsFromStorage();
     this.productCount = productsList.length;
   }
 }

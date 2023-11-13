@@ -38,7 +38,7 @@ namespace WebApi.Test
             SignupMock.Setup(m => m.Signup(It.IsAny<User>()));
 
             IActionResult actual = SignupController.Signup(model);
-            IActionResult expected = new CreatedResult(model.Email, "User created");
+            IActionResult expected = new CreatedResult(model.Email, model);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             CreatedResult actualOk = actual as CreatedResult;

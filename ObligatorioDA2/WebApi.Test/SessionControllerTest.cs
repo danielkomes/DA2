@@ -51,12 +51,9 @@ namespace WebApi.Test
             SessionMock.Setup(m => m.Logout());
 
             IActionResult actual = SessionController.Logout();
-            IActionResult expected = new OkObjectResult("Logged out");
+            IActionResult expected = new OkResult();
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
-            OkObjectResult actualOk = actual as OkObjectResult;
-            OkObjectResult expectedOk = expected as OkObjectResult;
-            Assert.AreEqual(expectedOk.Value, actualOk.Value);
         }
 
     }

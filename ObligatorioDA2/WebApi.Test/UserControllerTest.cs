@@ -127,7 +127,7 @@ namespace WebApi.Test
             UserMock.Setup(m => m.Add(It.IsAny<User>()));
 
             IActionResult actual = UserController.Post(userModel);
-            IActionResult expected = new CreatedResult(userModel.Email, "User created");
+            IActionResult expected = new CreatedResult(userModel.Email, userModel);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             CreatedResult actualOk = actual as CreatedResult;
@@ -151,12 +151,9 @@ namespace WebApi.Test
             UserMock.Setup(m => m.Update(current.Email, It.IsAny<User>()));
 
             IActionResult actual = UserController.Put(current.Email, userModel);
-            IActionResult expected = new OkObjectResult("User modified");
+            IActionResult expected = new OkResult();
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
-            OkObjectResult actualOk = actual as OkObjectResult;
-            OkObjectResult expectedOk = expected as OkObjectResult;
-            Assert.AreEqual(expectedOk.Value, actualOk.Value);
         }
 
         [TestMethod]
@@ -170,12 +167,9 @@ namespace WebApi.Test
             UserMock.Setup(m => m.Delete("test@test.com"));
 
             IActionResult actual = UserController.Delete(userModel.Email);
-            IActionResult expected = new OkObjectResult("User deleted");
+            IActionResult expected = new OkResult();
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
-            OkObjectResult actualOk = actual as OkObjectResult;
-            OkObjectResult expectedOk = expected as OkObjectResult;
-            Assert.AreEqual(expectedOk.Value, actualOk.Value);
         }
     }
 }

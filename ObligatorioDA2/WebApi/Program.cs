@@ -1,6 +1,8 @@
 using BusinessLogic;
 using DataAccess;
 using Domain;
+using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
 using IBusinessLogic;
 using IDataAccess;
 using IImportersServices;
@@ -37,6 +39,7 @@ namespace WebApi
             builder.Services.AddTransient<IService<Purchase>, PurchaseService>();
             builder.Services.AddTransient<IService<PromotionEntity>, PromotionService>();
             builder.Services.AddTransient<IService<Session>, SessionService>();
+            builder.Services.AddTransient<IService<PaymentMethodEntity>, PaymentMethodService>();
 
 
             builder.Services.AddTransient<IProductLogic, ProductLogic>();

@@ -1,5 +1,8 @@
 ﻿using Domain;
+using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
 using IBusinessLogic;
+using System.Data;
 
 namespace BusinessLogic
 {
@@ -8,33 +11,35 @@ namespace BusinessLogic
         public User? User { get; set; }
         public IEnumerable<Product> ProductsChecked { get; set; }
         public PromotionAbstract? PromotionApplied { get; set; }
-        private readonly IShoppingCartService DataAccessHelper;
+        public EPaymentMethodType PaymentMethod { get; set; }
+        private readonly IShoppingCartService Helper;
 
         public ShoppingCart(IShoppingCartService dataAccessHelper)
         {
             ProductsChecked = new List<Product>();
-            DataAccessHelper = dataAccessHelper;
+            Helper = dataAccessHelper;
         }
 
         public IEnumerable<Product> GetCurrentProducts(IEnumerable<Guid> productIds)
         {
-            IEnumerable<Product> products = DataAccessHelper.GetProducts(productIds);
+            IEnumerable<Product> products = Helper.GetProducts(productIds);
             ProductsChecked = products;
             return products;
         }
 
-        public void AddToCart(Guid productId)
-        {
-            Product productToAdd = DataAccessHelper.GetProduct(productId);
-            ProductsChecked = ProductsChecked.Append(productToAdd);
-        }
+        //public void AddToCart(Guid productId)
+        //{
+        //    Product productToAdd = Helper.GetProduct(productId);
+        //    ProductsChecked = ProductsChecked.Append(productToAdd);
+        //}
 
         public void DoPurchase()
         {
             if (ProductsChecked.Count() == 0) throw new InvalidDataException("Shopping cart is empty");
-            GetTotalPrice();
-            Purchase purchase = new Purchase(User, ProductsChecked, PromotionApplied?.PromotionEntity);
-            DataAccessHelper.InsertPurchase(purchase);
+            float total = GetTotalPrice();
+            PaymentMethod paymentMethod = Helper.GetPaymentMethod(User, PaymentMethod);
+            Purchase purchase = new Purchase(User, ProductsChecked, paymentMethod.Entity, total, PromotionApplied?.PromotionEntity);
+            Helper.InsertPurchase(purchase);
         }
 
         public float GetTotalPrice()
@@ -47,21 +52,32 @@ namespace BusinessLogic
             }
             PromotionApplied = null;
 
-            IEnumerable<PromotionAbstract> promotions = DataAccessHelper.GetPromotions();
+            IEnumerable<PromotionAbstract> promotions = Helper.GetPromotions();
             foreach (PromotionAbstract promotion in promotions)
             {
                 PromotionResult result = promotion.GetTotal(ProductsChecked);
                 if (result.Result < total) total = result.Result;
                 if (result.IsApplied) PromotionApplied = promotion;
             }
+            total = ApplyPaymentMethodDiscount(total);
             return total;
         }
 
-        public void RemoveFromCart(Guid productId)
+        public float ApplyPaymentMethodDiscount(float total)
         {
-            Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
-            if (toRemove is null) throw new InvalidDataException("Product not found in cart");
-            ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
+            float ret = total;
+            if (PaymentMethod == EPaymentMethodType.Paganza)
+            {
+                ret = total - total * 0.1f;
+            }
+            return ret;
         }
+
+        //public void RemoveFromCart(Guid productId)
+        //{
+        //    Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
+        //    if (toRemove is null) throw new InvalidDataException("Product not found in cart");
+        //    ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
+        //}
     }
 }
