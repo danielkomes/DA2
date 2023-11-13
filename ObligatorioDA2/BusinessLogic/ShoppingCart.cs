@@ -27,11 +27,11 @@ namespace BusinessLogic
             return products;
         }
 
-        public void AddToCart(Guid productId)
-        {
-            Product productToAdd = Helper.GetProduct(productId);
-            ProductsChecked = ProductsChecked.Append(productToAdd);
-        }
+        //public void AddToCart(Guid productId)
+        //{
+        //    Product productToAdd = Helper.GetProduct(productId);
+        //    ProductsChecked = ProductsChecked.Append(productToAdd);
+        //}
 
         public void DoPurchase()
         {
@@ -59,23 +59,25 @@ namespace BusinessLogic
                 if (result.Result < total) total = result.Result;
                 if (result.IsApplied) PromotionApplied = promotion;
             }
-            if (PaymentMethod == EPaymentMethodType.Paganza)
-            {
-                total = ApplyPaganzaDiscount(total);
-            }
+            total = ApplyPaymentMethodDiscount(total);
             return total;
         }
 
-        public float ApplyPaganzaDiscount(float total)
+        public float ApplyPaymentMethodDiscount(float total)
         {
-            return total - total * 0.1f;
+            float ret = total;
+            if (PaymentMethod == EPaymentMethodType.Paganza)
+            {
+                ret = total - total * 0.1f;
+            }
+            return ret;
         }
 
-        public void RemoveFromCart(Guid productId)
-        {
-            Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
-            if (toRemove is null) throw new InvalidDataException("Product not found in cart");
-            ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
-        }
+        //public void RemoveFromCart(Guid productId)
+        //{
+        //    Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
+        //    if (toRemove is null) throw new InvalidDataException("Product not found in cart");
+        //    ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
+        //}
     }
 }

@@ -39,12 +39,12 @@ namespace Promotions
             }
             return new PromotionResult(total, applied);
         }
-        public override bool Equals(object? obj)
-        {
-            if (obj is null) return false;
-            if (obj is not Promotion20Off) return false;
-            Promotion3x2 other = obj as Promotion3x2;
-            return PromotionEntity.Equals(other.PromotionEntity);
-        }
+        //public override bool Equals(object? obj)
+        //{
+        //    if (obj is null) return false;
+        //    if (obj is not Promotion3x2) return false;
+        //    Promotion3x2 other = obj as Promotion3x2;
+        //    return PromotionEntity.Equals(other.PromotionEntity);
+        //}
     }
 }
