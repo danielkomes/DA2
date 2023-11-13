@@ -2,6 +2,7 @@
 using IBusinessLogic;
 using IDataAccess;
 using Moq;
+using PromotionInterface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,6 +123,39 @@ namespace BusinessLogic.Test
             Product actual = ProductLogic.Get(p1.Id);
 
             Assert.AreEqual(p1.Name, actual.Name);
+        }
+
+        [TestMethod]
+        public void CreateProductModelInOk()
+        {
+            Product p1 = new Product()
+            {
+                Name = "p1",
+                Description = "desc1",
+                Brand = "brand1",
+                Category = "cat1",
+                Colors = new List<string>() { "red", "blue" },
+                Price = 10,
+            };
+
+            ProductModelIn model = new ProductModelIn()
+            {
+                Brand = "brand1",
+                Category = "cat1",
+                Colors = new List<string>() { "red", "blue" },
+                Price = 10
+            };
+
+            ProductModelIn actual = ProductLogic.CreateProductModelIn(p1);
+            ProductModelIn expected = model;
+
+            Assert.AreEqual(expected.Brand, actual.Brand);
+            Assert.AreEqual(expected.Category, actual.Category);
+            for (int i = 0; i < model.Colors.Count(); i++)
+            {
+                Assert.AreEqual(model.Colors.ElementAt(i), actual.Colors.ElementAt(i));
+            }
+            Assert.AreEqual(expected.Price, actual.Price);
         }
     }
 

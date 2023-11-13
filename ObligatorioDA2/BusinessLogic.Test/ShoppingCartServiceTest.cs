@@ -1,5 +1,8 @@
 ﻿using Domain;
 using Domain.PaymentMethods;
+using Domain.PaymentMethods.BaseClasses;
+using Domain.PaymentMethods.CreditCards;
+using Domain.PaymentMethods.DebitCards;
 using IBusinessLogic;
 using Moq;
 using Promotions;
@@ -9,8 +12,8 @@ namespace BusinessLogic.Test
     [TestClass]
     public class ShoppingCartServiceTest
     {
-        Mock<IShoppingCartServiceDatabaseHelper> DatabaseHelperMock { get; set; }
-        Mock<IShoppingCartServiceReflectionHelper> ReflectionHelperMock { get; set; }
+        private Mock<IShoppingCartServiceDatabaseHelper> DatabaseHelperMock { get; set; }
+        private Mock<IShoppingCartServiceReflectionHelper> ReflectionHelperMock { get; set; }
         private IShoppingCartService ShoppingCartService { get; set; }
 
         [TestInitialize]
@@ -55,7 +58,7 @@ namespace BusinessLogic.Test
             };
 
             DatabaseHelperMock.Setup(m => m.GetPromotions()).Returns(promotions);
-            ReflectionHelperMock.Setup(m=>m.GetPromotions()).Returns(new List<PromotionAbstract>());
+            ReflectionHelperMock.Setup(m => m.GetPromotions()).Returns(new List<PromotionAbstract>());
 
             IEnumerable<PromotionAbstract> actual = ShoppingCartService.GetPromotions();
             for (int i = 0; i < actual.Count(); i++)
@@ -73,26 +76,27 @@ namespace BusinessLogic.Test
             };
             PromotionEntity p2 = new PromotionEntity()
             {
-                Type = EPromotionType.Promotion3x2
+                Type = EPromotionType.PromotionImported
             };
             PromotionAbstract promo1 = new Promotion20Off(p1);
-            PromotionAbstract promo2 = new Promotion3x2(p2);
+            PromotionAbstract promo2 = new PromotionImported(null, p2, null, null);
             IEnumerable<PromotionEntity> promotionEntities = new List<PromotionEntity>
             {
                 p1, p2
             };
-            IEnumerable<PromotionAbstract> promotions = new List<PromotionAbstract>
-            {
-                promo1, promo2
-            };
+            IEnumerable<PromotionAbstract> promotionsDb = new List<PromotionAbstract> { promo1 };
+            IEnumerable<PromotionAbstract> promotionsReflection = new List<PromotionAbstract> { promo2 };
 
-            DatabaseHelperMock.Setup(m => m.GetPromotions()).Returns(promotions);
-            ReflectionHelperMock.Setup(m => m.GetPromotions()).Returns(new List<PromotionAbstract>());
+            DatabaseHelperMock.Setup(m => m.GetPromotions()).Returns(promotionsDb);
+            ReflectionHelperMock.Setup(m => m.GetPromotions()).Returns(promotionsReflection);
 
             IEnumerable<PromotionAbstract> actual = ShoppingCartService.GetPromotions();
+            IEnumerable<PromotionAbstract> expected = new List<PromotionAbstract>() { promo1, promo2 };
+
+            Assert.AreEqual(expected.Count(), actual.Count());
             for (int i = 0; i < actual.Count(); i++)
             {
-                Assert.AreEqual(actual.ElementAt(i).GetType(), promotions.ElementAt(i).GetType());
+                Assert.AreEqual(expected.ElementAt(i).GetType(), actual.ElementAt(i).GetType());
             }
         }
 
@@ -171,6 +175,111 @@ namespace BusinessLogic.Test
                 Assert.AreEqual(expected.ElementAt(i).Description, actual.ElementAt(i).Description);
                 Assert.AreEqual(expected.ElementAt(i).Price, actual.ElementAt(i).Price);
             }
+        }
+
+        [TestMethod]
+        public void GetPaymentMethodVisa()
+        {
+            User user = new User();
+            EPaymentMethodType type = EPaymentMethodType.Visa;
+            PaymentMethodEntity entity = new PaymentMethodEntity(user, type);
+
+            DatabaseHelperMock.Setup(m => m.GetPaymentMethod(entity)).Returns(entity);
+
+            PaymentMethod actual = ShoppingCartService.GetPaymentMethod(user, type);
+            PaymentMethod expected = new Visa(entity);
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+        }
+
+        [TestMethod]
+        public void GetPaymentMethodMasterCard()
+        {
+            User user = new User();
+            EPaymentMethodType type = EPaymentMethodType.MasterCard;
+            PaymentMethodEntity entity = new PaymentMethodEntity(user, type);
+
+            DatabaseHelperMock.Setup(m => m.GetPaymentMethod(entity)).Returns(entity);
+
+            PaymentMethod actual = ShoppingCartService.GetPaymentMethod(user, type);
+            PaymentMethod expected = new MasterCard(entity);
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+        }
+
+        [TestMethod]
+        public void GetPaymentMethodBbva()
+        {
+            User user = new User();
+            EPaymentMethodType type = EPaymentMethodType.Bbva;
+            PaymentMethodEntity entity = new PaymentMethodEntity(user, type);
+
+            DatabaseHelperMock.Setup(m => m.GetPaymentMethod(entity)).Returns(entity);
+
+            PaymentMethod actual = ShoppingCartService.GetPaymentMethod(user, type);
+            PaymentMethod expected = new Bbva(entity);
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+        }
+
+        [TestMethod]
+        public void GetPaymentMethodItau()
+        {
+            User user = new User();
+            EPaymentMethodType type = EPaymentMethodType.Itau;
+            PaymentMethodEntity entity = new PaymentMethodEntity(user, type);
+
+            DatabaseHelperMock.Setup(m => m.GetPaymentMethod(entity)).Returns(entity);
+
+            PaymentMethod actual = ShoppingCartService.GetPaymentMethod(user, type);
+            PaymentMethod expected = new Itau(entity);
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+        }
+
+        [TestMethod]
+        public void GetPaymentMethodSantander()
+        {
+            User user = new User();
+            EPaymentMethodType type = EPaymentMethodType.Santander;
+            PaymentMethodEntity entity = new PaymentMethodEntity(user, type);
+
+            DatabaseHelperMock.Setup(m => m.GetPaymentMethod(entity)).Returns(entity);
+
+            PaymentMethod actual = ShoppingCartService.GetPaymentMethod(user, type);
+            PaymentMethod expected = new Santander(entity);
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+        }
+
+        [TestMethod]
+        public void GetPaymentMethodPaganza()
+        {
+            User user = new User();
+            EPaymentMethodType type = EPaymentMethodType.Paganza;
+            PaymentMethodEntity entity = new PaymentMethodEntity(user, type);
+
+            DatabaseHelperMock.Setup(m => m.GetPaymentMethod(entity)).Returns(entity);
+
+            PaymentMethod actual = ShoppingCartService.GetPaymentMethod(user, type);
+            PaymentMethod expected = new Paganza(entity);
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+        }
+
+        [TestMethod]
+        public void GetPaymentMethodPaypal()
+        {
+            User user = new User();
+            EPaymentMethodType type = EPaymentMethodType.Paypal;
+            PaymentMethodEntity entity = new PaymentMethodEntity(user, type);
+
+            DatabaseHelperMock.Setup(m => m.GetPaymentMethod(entity)).Returns(entity);
+
+            PaymentMethod actual = ShoppingCartService.GetPaymentMethod(user, type);
+            PaymentMethod expected = new Paypal(entity);
+
+            Assert.AreEqual(expected.GetType(), actual.GetType());
         }
     }
 }

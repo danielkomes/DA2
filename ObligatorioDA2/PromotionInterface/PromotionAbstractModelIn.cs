@@ -9,6 +9,7 @@
             Name = name;
             Description = description;
         }
+        public PromotionAbstractModelIn() { }
 
         public abstract PromotionResultModelIn GetTotal(IEnumerable<ProductModelIn> products);
     }

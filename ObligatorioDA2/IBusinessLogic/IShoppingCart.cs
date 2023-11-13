@@ -17,5 +17,6 @@ namespace IBusinessLogic
         //public void RemoveFromCart(Guid productId);
         public float GetTotalPrice();
         public void DoPurchase();
+        public float ApplyPaymentMethodDiscount(float total);
     }
 }

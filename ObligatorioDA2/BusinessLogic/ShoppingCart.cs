@@ -59,16 +59,18 @@ namespace BusinessLogic
                 if (result.Result < total) total = result.Result;
                 if (result.IsApplied) PromotionApplied = promotion;
             }
-            if (PaymentMethod == EPaymentMethodType.Paganza)
-            {
-                total = ApplyPaganzaDiscount(total);
-            }
+            total = ApplyPaymentMethodDiscount(total);
             return total;
         }
 
-        public float ApplyPaganzaDiscount(float total)
+        public float ApplyPaymentMethodDiscount(float total)
         {
-            return total - total * 0.1f;
+            float ret = total;
+            if (PaymentMethod == EPaymentMethodType.Paganza)
+            {
+                ret = total - total * 0.1f;
+            }
+            return ret;
         }
 
         //public void RemoveFromCart(Guid productId)

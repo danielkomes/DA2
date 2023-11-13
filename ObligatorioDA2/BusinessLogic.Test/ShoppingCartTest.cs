@@ -60,6 +60,38 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        public void ApplyPaymentMethodDiscountOk()
+        {
+            float total = 100;
+            ShoppingCart.PaymentMethod = EPaymentMethodType.Paganza;
+
+            float actual = ShoppingCart.ApplyPaymentMethodDiscount(total);
+            float expected = 100 - 100 * 0.1f;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetTotalPrice1ProductPaymentMethodDiscount()
+        {
+            Product p = new Product()
+            {
+                Price = 100
+            };
+            IEnumerable<Product> products = new List<Product>() { p };
+            IEnumerable<Guid> productIds = new List<Guid>() { p.Id };
+
+            ServiceMock.Setup(sp => sp.GetPromotions())
+                .Returns(new List<PromotionAbstract>());
+            ShoppingCart.ProductsChecked = products;
+            ShoppingCart.PaymentMethod = EPaymentMethodType.Paganza;
+
+            float actual = ShoppingCart.GetTotalPrice();
+            float expected = 100 - 100 * 0.1f;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void GetTotalPrice2ProductPromotion20Off()
         {
             Product p1 = new Product()
@@ -192,6 +224,13 @@ namespace BusinessLogic.Test
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidDataException))]
+        public void DoPurchaseNoProducts()
+        {
+            ShoppingCart.DoPurchase();
+        }
+
+        [TestMethod]
         public void DoPurchase1Product()
         {
             User user = new User();
@@ -208,6 +247,49 @@ namespace BusinessLogic.Test
             ShoppingCart.PaymentMethod = paymentMethodType;
 
             ShoppingCart.DoPurchase();
+        }
+
+        [TestMethod]
+        public void DoPurchase2ProductsPromotionApplied()
+        {
+            User user = new User();
+            Product p1 = new Product();
+            EPaymentMethodType paymentMethodType = EPaymentMethodType.Visa;
+            List<Product> products = new List<Product> { p1 };
+            List<Guid> productIds = new List<Guid> { p1.Id };
+            PromotionEntity promotionEntity = new PromotionEntity()
+            {
+                Type = EPromotionType.Promotion20Off
+            };
+            ServiceMock.Setup(h => h.GetPromotions()).Returns(new List<PromotionAbstract>());
+            ServiceMock.Setup(h => h.GetPaymentMethod(user, paymentMethodType)).Returns(new Visa(new PaymentMethodEntity(user, paymentMethodType)));
+            ServiceMock.Setup(h => h.InsertPurchase(It.IsAny<Purchase>()));
+            ShoppingCart.ProductsChecked = products;
+            ShoppingCart.User = user;
+            ShoppingCart.PaymentMethod = paymentMethodType;
+            ShoppingCart.PromotionApplied = new Promotion20Off(promotionEntity);
+
+            ShoppingCart.DoPurchase();
+        }
+
+        [TestMethod]
+        public void GetCurrentProductsOk()
+        {
+            Product p1 = new Product();
+            Product p2 = new Product();
+
+            IEnumerable<Guid> productIds = new List<Guid> { p1.Id, p2.Id };
+            IEnumerable<Product> products = new List<Product>() { p1, p2 };
+
+            ServiceMock.Setup(m => m.GetProducts(productIds)).Returns(products);
+
+            IEnumerable<Product> actual = ShoppingCart.GetCurrentProducts(productIds);
+            IEnumerable<Product> expected = products;
+
+            for (int i = 0; i < expected.Count(); i++)
+            {
+                Assert.AreEqual(expected.ElementAt(i), actual.ElementAt(i));
+            }
         }
     }
 }
