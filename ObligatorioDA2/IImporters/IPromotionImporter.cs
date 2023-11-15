@@ -1,6 +1,6 @@
 ﻿using PromotionInterface;
 
-namespace Importers
+namespace IImporters
 {
     public interface IPromotionImporter
     {

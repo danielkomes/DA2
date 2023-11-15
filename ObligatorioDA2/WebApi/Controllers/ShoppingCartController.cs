@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Domain.PaymentMethods;
-using Domain.PaymentMethods.BaseClasses;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;

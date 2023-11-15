@@ -1,7 +1,7 @@
 ﻿using Domain;
 using IBusinessLogic;
 using IImportersServices;
-using Importers;
+using IImporters;
 using Moq;
 using PromotionInterface;
 using Promotions;

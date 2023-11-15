@@ -1,6 +1,4 @@
 ﻿using Domain.PaymentMethods;
-using Domain.PaymentMethods.BaseClasses;
-using Domain.PaymentMethods.CreditCards;
 
 namespace WebApi.Models.In
 {

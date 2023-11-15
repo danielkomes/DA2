@@ -1,6 +1,5 @@
 ﻿using Domain;
 using IBusinessLogic;
-using IImportersServices;
 using PromotionInterface;
 
 namespace BusinessLogic

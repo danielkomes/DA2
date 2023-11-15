@@ -1,6 +1,4 @@
-﻿using Domain.PaymentMethods.BaseClasses;
-
-namespace WebApi.Models.In
+﻿namespace WebApi.Models.In
 {
     public class ShoppingCartModelIn
     {

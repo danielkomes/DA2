@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
     <ProjectReference Include="..\ImportersServices\ImportersServices.csproj" />
+    <ProjectReference Include="..\Importers\Importers.csproj" />
   </ItemGroup>
 
 </Project>
