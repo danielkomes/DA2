@@ -12,5 +12,7 @@
             Brand = brand;
             Category = category;
         }
+
+        public ProductFilterModelIn() { }
     }
 }

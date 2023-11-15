@@ -19,10 +19,13 @@ namespace BusinessLogic
             {
                 return GetAll();
             }
+            if (name is null) name = "";
+            if (brand is null) brand = "";
+            if (category is null) category = "";
             return ProductService.FindByCondition
             (
-                p => p.Name.Contains(name) ||
-                p.Brand.Contains(brand) ||
+                p => p.Name.Contains(name) &&
+                p.Brand.Contains(brand) &&
                 p.Category.Contains(category)
             );
         }
