@@ -1,0 +1,255 @@
+USE [master]
+GO
+/****** Object:  Database [obligatorioDB]    Script Date: 15/11/2023 21:39:54 ******/
+CREATE DATABASE [obligatorioDB]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'obligatorioDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\DATA\obligatorioDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'obligatorioDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL14.SQLEXPRESS\MSSQL\DATA\obligatorioDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+ALTER DATABASE [obligatorioDB] SET COMPATIBILITY_LEVEL = 140
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [obligatorioDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [obligatorioDB] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [obligatorioDB] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [obligatorioDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [obligatorioDB] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [obligatorioDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [obligatorioDB] SET READ_COMMITTED_SNAPSHOT ON 
+GO
+ALTER DATABASE [obligatorioDB] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [obligatorioDB] SET  MULTI_USER 
+GO
+ALTER DATABASE [obligatorioDB] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [obligatorioDB] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [obligatorioDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [obligatorioDB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [obligatorioDB] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [obligatorioDB] SET QUERY_STORE = OFF
+GO
+USE [obligatorioDB]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 15/11/2023 21:39:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PaymentMethods]    Script Date: 15/11/2023 21:39:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PaymentMethods](
+	[Id] [uniqueidentifier] NOT NULL,
+	[UserId] [uniqueidentifier] NOT NULL,
+	[Type] [int] NOT NULL,
+ CONSTRAINT [PK_PaymentMethods] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Products]    Script Date: 15/11/2023 21:39:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Products](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Price] [real] NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Brand] [nvarchar](max) NOT NULL,
+	[Category] [nvarchar](max) NOT NULL,
+	[Colors] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Promotions]    Script Date: 15/11/2023 21:39:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Promotions](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Type] [int] NOT NULL,
+ CONSTRAINT [PK_Promotions] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Purchases]    Script Date: 15/11/2023 21:39:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Purchases](
+	[Id] [uniqueidentifier] NOT NULL,
+	[UserId] [uniqueidentifier] NOT NULL,
+	[Products] [nvarchar](max) NOT NULL,
+	[PromotionId] [uniqueidentifier] NULL,
+	[PaymentMethodId] [uniqueidentifier] NOT NULL,
+	[Total] [real] NOT NULL,
+	[Date] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Purchases] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Sessions]    Script Date: 15/11/2023 21:39:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Sessions](
+	[Id] [uniqueidentifier] NOT NULL,
+	[UserId] [uniqueidentifier] NOT NULL,
+ CONSTRAINT [PK_Sessions] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 15/11/2023 21:39:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[Id] [uniqueidentifier] NOT NULL,
+	[Email] [nvarchar](max) NOT NULL,
+	[Password] [nvarchar](max) NOT NULL,
+	[Address] [nvarchar](max) NOT NULL,
+	[Roles] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Index [IX_PaymentMethods_UserId]    Script Date: 15/11/2023 21:39:55 ******/
+CREATE NONCLUSTERED INDEX [IX_PaymentMethods_UserId] ON [dbo].[PaymentMethods]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Purchases_PaymentMethodId]    Script Date: 15/11/2023 21:39:55 ******/
+CREATE NONCLUSTERED INDEX [IX_Purchases_PaymentMethodId] ON [dbo].[Purchases]
+(
+	[PaymentMethodId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Purchases_PromotionId]    Script Date: 15/11/2023 21:39:55 ******/
+CREATE NONCLUSTERED INDEX [IX_Purchases_PromotionId] ON [dbo].[Purchases]
+(
+	[PromotionId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Purchases_UserId]    Script Date: 15/11/2023 21:39:55 ******/
+CREATE NONCLUSTERED INDEX [IX_Purchases_UserId] ON [dbo].[Purchases]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Sessions_UserId]    Script Date: 15/11/2023 21:39:55 ******/
+CREATE NONCLUSTERED INDEX [IX_Sessions_UserId] ON [dbo].[Sessions]
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[PaymentMethods]  WITH CHECK ADD  CONSTRAINT [FK_PaymentMethods_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[PaymentMethods] CHECK CONSTRAINT [FK_PaymentMethods_Users_UserId]
+GO
+ALTER TABLE [dbo].[Purchases]  WITH CHECK ADD  CONSTRAINT [FK_Purchases_PaymentMethods_PaymentMethodId] FOREIGN KEY([PaymentMethodId])
+REFERENCES [dbo].[PaymentMethods] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Purchases] CHECK CONSTRAINT [FK_Purchases_PaymentMethods_PaymentMethodId]
+GO
+ALTER TABLE [dbo].[Purchases]  WITH CHECK ADD  CONSTRAINT [FK_Purchases_Promotions_PromotionId] FOREIGN KEY([PromotionId])
+REFERENCES [dbo].[Promotions] ([Id])
+GO
+ALTER TABLE [dbo].[Purchases] CHECK CONSTRAINT [FK_Purchases_Promotions_PromotionId]
+GO
+ALTER TABLE [dbo].[Purchases]  WITH CHECK ADD  CONSTRAINT [FK_Purchases_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+GO
+ALTER TABLE [dbo].[Purchases] CHECK CONSTRAINT [FK_Purchases_Users_UserId]
+GO
+ALTER TABLE [dbo].[Sessions]  WITH CHECK ADD  CONSTRAINT [FK_Sessions_Users_UserId] FOREIGN KEY([UserId])
+REFERENCES [dbo].[Users] ([Id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Sessions] CHECK CONSTRAINT [FK_Sessions_Users_UserId]
+GO
+USE [master]
+GO
+ALTER DATABASE [obligatorioDB] SET  READ_WRITE 
+GO
