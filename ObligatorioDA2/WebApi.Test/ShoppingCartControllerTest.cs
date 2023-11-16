@@ -3,7 +3,6 @@ using Domain.PaymentMethods;
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Promotions;
 using WebApi.Controllers;
 using WebApi.Models.In;
 using WebApi.Models.Out;
@@ -55,7 +54,6 @@ namespace WebApi.Test
                 Name = "Promotion 20% off",
                 Type = EPromotionType.Promotion20Off
             };
-            PromotionAbstract promo20 = new Promotion20Off(entity);
             IEnumerable<Product> currentProducts = new List<Product> { p1, p2, p3 };
             IEnumerable<ProductModelOut> productModels = new List<ProductModelOut>();
             productModels = productModels.Append(new ProductModelOut(p1));
@@ -78,18 +76,18 @@ namespace WebApi.Test
                 PaymentMethod = paymentMethodModelIn
             };
             CartMock.Setup(m => m.GetCurrentProducts(currentProductsIds)).Returns(currentProducts);
-            CartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200 - 200 * 0.2f);
+            CartMock.Setup(m => m.GetTotalPrice()).Returns(100 + 200);
             CartMock.Setup(m => m.ProductsChecked).Returns(currentProducts);
             CartMock.SetupGet(m => m.ProductsChecked).Returns(currentProducts);
-            CartMock.SetupGet(m => m.PromotionApplied).Returns(promo20);
+            CartMock.SetupGet(m => m.PromotionApplied).Returns((PromotionAbstract)null);
             CartMock.SetupSet(m => m.PaymentMethod);
 
 
             var ret = new
             {
                 checkedProducts = productModels,
-                promotionApplied = entity.Name,
-                totalPrice = 100 + 200 - 200 * 0.2f,
+                promotionApplied = "None",
+                totalPrice = 100 + 200,
             };
             IActionResult actual = cartController.CalculateTotal(model);
             IActionResult expected = new OkObjectResult(ret);

@@ -5,7 +5,6 @@ using Domain.PaymentMethods.CreditCards;
 using Domain.PaymentMethods.DebitCards;
 using IBusinessLogic;
 using Moq;
-using Promotions;
 
 namespace BusinessLogic.Test
 {
@@ -36,7 +35,6 @@ namespace BusinessLogic.Test
             IEnumerable<PromotionEntity> promotionEntities = new List<PromotionEntity>();
             IEnumerable<PromotionAbstract> promotions = new List<PromotionAbstract>();
 
-            DatabaseHelperMock.Setup(m => m.GetPromotions()).Returns(promotions);
             ReflectionHelperMock.Setup(m => m.GetPromotions()).Returns(new List<PromotionAbstract>());
 
             IEnumerable<PromotionAbstract> actual = ShoppingCartService.GetPromotions();
@@ -47,17 +45,14 @@ namespace BusinessLogic.Test
         public void GetPromotions1Promotion()
         {
             PromotionEntity p1 = new PromotionEntity();
-            PromotionAbstract promo1 = new Promotion20Off(p1);
             IEnumerable<PromotionEntity> promotionEntities = new List<PromotionEntity>
             {
                 p1
             };
             IEnumerable<PromotionAbstract> promotions = new List<PromotionAbstract>
             {
-                promo1
             };
 
-            DatabaseHelperMock.Setup(m => m.GetPromotions()).Returns(promotions);
             ReflectionHelperMock.Setup(m => m.GetPromotions()).Returns(new List<PromotionAbstract>());
 
             IEnumerable<PromotionAbstract> actual = ShoppingCartService.GetPromotions();
@@ -78,20 +73,17 @@ namespace BusinessLogic.Test
             {
                 Type = EPromotionType.PromotionImported
             };
-            PromotionAbstract promo1 = new Promotion20Off(p1);
             PromotionAbstract promo2 = new PromotionImported(null, p2, null, null);
             IEnumerable<PromotionEntity> promotionEntities = new List<PromotionEntity>
             {
                 p1, p2
             };
-            IEnumerable<PromotionAbstract> promotionsDb = new List<PromotionAbstract> { promo1 };
             IEnumerable<PromotionAbstract> promotionsReflection = new List<PromotionAbstract> { promo2 };
 
-            DatabaseHelperMock.Setup(m => m.GetPromotions()).Returns(promotionsDb);
             ReflectionHelperMock.Setup(m => m.GetPromotions()).Returns(promotionsReflection);
 
             IEnumerable<PromotionAbstract> actual = ShoppingCartService.GetPromotions();
-            IEnumerable<PromotionAbstract> expected = new List<PromotionAbstract>() { promo1, promo2 };
+            IEnumerable<PromotionAbstract> expected = new List<PromotionAbstract>() { promo2 };
 
             Assert.AreEqual(expected.Count(), actual.Count());
             for (int i = 0; i < actual.Count(); i++)
@@ -115,19 +107,14 @@ namespace BusinessLogic.Test
             {
                 Type = EPromotionType.PromotionTotalLook
             };
-            PromotionAbstract promo1 = new Promotion20Off(p1);
-            PromotionAbstract promo2 = new Promotion3x2(p2);
-            PromotionAbstract promo3 = new PromotionTotalLook(p3);
             IEnumerable<PromotionEntity> promotionEntities = new List<PromotionEntity>
             {
                 p1, p2, p3
             };
             IEnumerable<PromotionAbstract> promotions = new List<PromotionAbstract>
             {
-                promo1, promo2, promo3
             };
 
-            DatabaseHelperMock.Setup(m => m.GetPromotions()).Returns(promotions);
             ReflectionHelperMock.Setup(m => m.GetPromotions()).Returns(new List<PromotionAbstract>());
 
             IEnumerable<PromotionAbstract> actual = ShoppingCartService.GetPromotions();

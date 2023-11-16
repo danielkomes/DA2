@@ -30,10 +30,10 @@ namespace BusinessLogic
         public IEnumerable<PromotionAbstract> GetPromotions()
         {
             IEnumerable<PromotionAbstract> ret = new List<PromotionAbstract>();
-            foreach (PromotionAbstract promotion in DatabaseHelper.GetPromotions())
-            {
-                ret = ret.Append(promotion);
-            }
+            //foreach (PromotionAbstract promotion in DatabaseHelper.GetPromotions())
+            //{
+            //    ret = ret.Append(promotion);
+            //}
             foreach (PromotionAbstract promotion in ReflectionHelper.GetPromotions())
             {
                 ret = ret.Append(promotion);

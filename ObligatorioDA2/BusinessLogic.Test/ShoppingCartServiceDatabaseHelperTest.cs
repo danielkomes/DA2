@@ -5,7 +5,6 @@ using Domain.PaymentMethods.CreditCards;
 using IBusinessLogic;
 using IDataAccess;
 using Moq;
-using Promotions;
 
 namespace BusinessLogic.Test
 {
@@ -106,42 +105,6 @@ namespace BusinessLogic.Test
             Product expected = p1;
 
             Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void GetPromotionsNoPromotions()
-        {
-            IEnumerable<PromotionEntity> promotions = new List<PromotionEntity>();
-            PromotionMock.Setup(m => m.GetAll()).Returns(promotions);
-
-            IEnumerable<PromotionAbstract> actual = Helper.GetPromotions();
-            IEnumerable<PromotionAbstract> expected = new List<PromotionAbstract>();
-
-            Assert.AreEqual(expected.Count(), actual.Count());
-            for (int i = 0; i < expected.Count(); i++)
-            {
-                Assert.AreEqual(expected.ElementAt(i).PromotionEntity, actual.ElementAt(i).PromotionEntity);
-            }
-        }
-
-        [TestMethod]
-        public void GetPromotions3Promotions()
-        {
-            PromotionAbstract p1 = new Promotion20Off(new PromotionEntity() { Type = EPromotionType.Promotion20Off });
-            PromotionAbstract p2 = new Promotion3x2(new PromotionEntity() { Type = EPromotionType.Promotion3x2 });
-            PromotionAbstract p3 = new PromotionTotalLook(new PromotionEntity() { Type = EPromotionType.PromotionTotalLook });
-            IEnumerable<PromotionAbstract> promotions = new List<PromotionAbstract> { p1, p2, p3 };
-            IEnumerable<PromotionEntity> entities = new List<PromotionEntity>() { p1.PromotionEntity, p2.PromotionEntity, p3.PromotionEntity };
-            PromotionMock.Setup(m => m.GetAll()).Returns(entities);
-
-            IEnumerable<PromotionAbstract> actual = Helper.GetPromotions();
-            IEnumerable<PromotionAbstract> expected = promotions;
-
-            Assert.AreEqual(expected.Count(), actual.Count());
-            for (int i = 0; i < expected.Count(); i++)
-            {
-                Assert.AreEqual(expected.ElementAt(i).PromotionEntity, actual.ElementAt(i).PromotionEntity);
-            }
         }
 
         [TestMethod]
