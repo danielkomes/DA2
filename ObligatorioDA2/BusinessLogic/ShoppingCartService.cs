@@ -27,18 +27,13 @@ namespace BusinessLogic
             return DatabaseHelper.GetProducts(ids);
         }
 
-        //public Product GetProduct(Guid id)
-        //{
-        //    return DatabaseHelper.GetProduct(id);
-        //}
-
         public IEnumerable<PromotionAbstract> GetPromotions()
         {
             IEnumerable<PromotionAbstract> ret = new List<PromotionAbstract>();
-            foreach (PromotionAbstract promotion in DatabaseHelper.GetPromotions())
-            {
-                ret = ret.Append(promotion);
-            }
+            //foreach (PromotionAbstract promotion in DatabaseHelper.GetPromotions())
+            //{
+            //    ret = ret.Append(promotion);
+            //}
             foreach (PromotionAbstract promotion in ReflectionHelper.GetPromotions())
             {
                 ret = ret.Append(promotion);

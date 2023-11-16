@@ -1,5 +1,4 @@
 ﻿using Domain.PaymentMethods;
-using Domain.PaymentMethods.BaseClasses;
 
 namespace Domain
 {

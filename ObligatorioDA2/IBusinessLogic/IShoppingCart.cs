@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Domain.PaymentMethods;
-using Domain.PaymentMethods.BaseClasses;
 
 namespace IBusinessLogic
 {
@@ -13,8 +12,6 @@ namespace IBusinessLogic
 
 
         public IEnumerable<Product> GetCurrentProducts(IEnumerable<Guid> productIds);
-        //public void AddToCart(Guid productId);
-        //public void RemoveFromCart(Guid productId);
         public float GetTotalPrice();
         public void DoPurchase();
         public float ApplyPaymentMethodDiscount(float total);

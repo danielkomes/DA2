@@ -25,13 +25,28 @@ namespace BusinessLogic
             UserService.Add(newUser);
         }
 
-        public void Delete(string email)
+        public void Delete(string targetEmail)
         {
-            User user = new User()
+            User current = SessionLogic.GetCurrentUser();
+            User targetUser = new User()
             {
-                Email = email
+                Email = targetEmail
             };
-            UserService.Delete(user);
+            targetUser = UserService.Get(targetUser);
+            if (!current.Email.Equals(targetEmail))
+            {
+                if (!current.Roles.Contains(EUserRole.Admin))
+                {
+                    throw new ProfileMismatchException("Profile mismatch");
+                }
+
+
+                if (targetUser.Roles.Contains(EUserRole.Admin))
+                {
+                    throw new ProfileMismatchException("Profile mismatch");
+                }
+            }
+            UserService.Delete(targetUser);
         }
 
         public User Get(string email)

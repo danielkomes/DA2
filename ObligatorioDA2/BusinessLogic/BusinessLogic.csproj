@@ -10,8 +10,7 @@
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\IBusinessLogic\IBusinessLogic.csproj" />
     <ProjectReference Include="..\IImportersServices\IImportersServices.csproj" />
-    <ProjectReference Include="..\Importers\Importers.csproj" />
-    <ProjectReference Include="..\Promotions\Promotions.csproj" />
+    <ProjectReference Include="..\IImporters\IImporters.csproj" />
   </ItemGroup>
 
 </Project>

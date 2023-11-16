@@ -1,8 +1,8 @@
-﻿using System.Security.Authentication;
-using BusinessLogic.Exceptions;
+﻿using BusinessLogic.Exceptions;
 using DataAccess.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Authentication;
 
 namespace WebApi.Filters
 {

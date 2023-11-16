@@ -1,10 +1,9 @@
 ﻿using Domain;
 using IBusinessLogic;
+using IImporters;
 using IImportersServices;
-using Importers;
 using Moq;
 using PromotionInterface;
-using Promotions;
 
 namespace BusinessLogic.Test
 {

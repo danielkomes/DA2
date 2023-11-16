@@ -1,6 +1,4 @@
-﻿using Domain;
-using IBusinessLogic;
-using IDataAccess;
+﻿using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
 using WebApi.Models.In;

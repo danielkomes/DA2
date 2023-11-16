@@ -2,7 +2,6 @@
 using Domain.PaymentMethods;
 using Domain.PaymentMethods.BaseClasses;
 using IBusinessLogic;
-using System.Data;
 
 namespace BusinessLogic
 {
@@ -26,12 +25,6 @@ namespace BusinessLogic
             ProductsChecked = products;
             return products;
         }
-
-        //public void AddToCart(Guid productId)
-        //{
-        //    Product productToAdd = Helper.GetProduct(productId);
-        //    ProductsChecked = ProductsChecked.Append(productToAdd);
-        //}
 
         public void DoPurchase()
         {
@@ -72,12 +65,5 @@ namespace BusinessLogic
             }
             return ret;
         }
-
-        //public void RemoveFromCart(Guid productId)
-        //{
-        //    Product toRemove = ProductsChecked.Where(p => p.Id == productId).FirstOrDefault();
-        //    if (toRemove is null) throw new InvalidDataException("Product not found in cart");
-        //    ProductsChecked = ProductsChecked.Where(p => p.Id != productId);
-        //}
     }
 }

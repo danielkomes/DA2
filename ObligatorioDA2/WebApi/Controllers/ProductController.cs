@@ -2,6 +2,7 @@
 using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
+using WebApi.Models.In;
 using WebApi.Models.Out;
 
 namespace WebApi.Controllers
@@ -18,11 +19,17 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(
-            [FromQuery] string? name = null,
-            [FromQuery] string? brand = null,
-            [FromQuery] string? category = null)
+        public IActionResult GetAll([FromQuery] ProductFilterModelIn? filter = null)
         {
+            string name = null;
+            string brand = null;
+            string category = null;
+            if (filter != null)
+            {
+                name = filter.Name;
+                brand = filter.Brand;
+                category = filter.Category;
+            }
             IEnumerable<Product> products = ProductLogic.FindByCondition(name, brand, category);
             IEnumerable<ProductModelOut> models = new List<ProductModelOut>();
             foreach (Product product in products)

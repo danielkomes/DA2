@@ -20,6 +20,7 @@ import { Product } from 'src/app/types/Product';
 import { LocalStorageOperations } from 'src/LocalStorageOperations';
 import { Filters } from 'src/app/types/Filters';
 import { environment } from 'src/environments/environment.development';
+import { ProductFilter } from 'src/app/models/productFilter';
 
 @Component({
   selector: 'app-products-page',
@@ -57,11 +58,11 @@ export class ProductsPageComponent {
 
     let params = new HttpParams();
     if (this.nameFilter != undefined)
-      params = params.set('name', this.nameFilter);
+      params = params.set('Name', this.nameFilter);
     if (this.brandFilter != undefined)
-      params = params.set('brand', this.brandFilter);
+      params = params.set('Brand', this.brandFilter);
     if (this.categoryFilter != undefined)
-      params = params.set('category', this.categoryFilter);
+      params = params.set('Category', this.categoryFilter);
 
     // Make the POST request
     this.http

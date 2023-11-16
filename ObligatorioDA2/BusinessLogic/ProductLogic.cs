@@ -2,11 +2,6 @@
 using IBusinessLogic;
 using IDataAccess;
 using PromotionInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic
 {
@@ -24,10 +19,13 @@ namespace BusinessLogic
             {
                 return GetAll();
             }
+            if (name is null) name = "";
+            if (brand is null) brand = "";
+            if (category is null) category = "";
             return ProductService.FindByCondition
             (
-                p => p.Name.Contains(name) ||
-                p.Brand.Contains(brand) ||
+                p => p.Name.Contains(name) &&
+                p.Brand.Contains(brand) &&
                 p.Category.Contains(category)
             );
         }

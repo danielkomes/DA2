@@ -1,8 +1,5 @@
 ﻿using Domain;
 using Domain.PaymentMethods;
-using Domain.PaymentMethods.BaseClasses;
-using Domain.PaymentMethods.CreditCards;
-using Domain.PaymentMethods.DebitCards;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;

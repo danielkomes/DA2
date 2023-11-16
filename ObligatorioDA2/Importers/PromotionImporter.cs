@@ -1,4 +1,5 @@
-﻿using PromotionInterface;
+﻿using IImporters;
+using PromotionInterface;
 using System.Reflection;
 
 namespace Importers
@@ -18,12 +19,12 @@ namespace Importers
                     FileInfo fileInfo = new FileInfo(filePath);
                     Assembly assembly = Assembly.LoadFile(fileInfo.FullName);
 
-                    foreach(Type type in assembly.GetTypes())
+                    foreach (Type type in assembly.GetTypes())
                     {
-                        if(typeof(PromotionAbstractModelIn).IsAssignableFrom(type) && !type.IsInterface)
+                        if (typeof(PromotionAbstractModelIn).IsAssignableFrom(type) && !type.IsInterface)
                         {
                             PromotionAbstractModelIn promotion = (PromotionAbstractModelIn)Activator.CreateInstance(type);
-                            if(promotion != null)
+                            if (promotion != null)
                             {
                                 ret = ret.Append(promotion);
                             }

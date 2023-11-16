@@ -7,7 +7,9 @@ namespace BusinessLogic
     public class PromotionLogic : IPromotionLogic
     {
         private readonly IProductLogic ProductLogic;
+
         public PromotionLogic(IProductLogic productLogic) { }
+
         public PromotionEntity CreatePromotionEntity(PromotionAbstractModelIn model)
         {
             return new PromotionEntity()

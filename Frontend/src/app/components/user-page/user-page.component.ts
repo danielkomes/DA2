@@ -102,7 +102,7 @@ export class UserPageComponent {
         (error: HttpErrorResponse) => {
           console.error('POST Request Error:', error);
           // Handle any errors here
-          error = JSON.parse(error.error);
+          error = error.error;
           this.errorMessage = error.message;
           this.success = false;
           this.showOutput = true;

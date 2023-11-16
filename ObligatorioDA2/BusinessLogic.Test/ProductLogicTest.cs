@@ -1,15 +1,8 @@
 ﻿using Domain;
-using IBusinessLogic;
 using IDataAccess;
 using Moq;
 using PromotionInterface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace BusinessLogic.Test
 {
@@ -72,10 +65,69 @@ namespace BusinessLogic.Test
             {
                 Name = "p3",
             };
+            IEnumerable<Product> allProducts = new List<Product>() { p1, p2, p3 };
             IEnumerable<Product> products = new List<Product>() { p1 };
-            ProductMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(products);
+            ProductMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(allProducts);
 
             IEnumerable<Product> actual = ProductLogic.FindByCondition("1", null, null);
+            IEnumerable<Product> expected = products;
+
+            for (int i = 0; i < expected.Count(); i++)
+            {
+                Assert.AreEqual(expected.ElementAt(i).Name, actual.ElementAt(i).Name);
+            }
+        }
+
+        [TestMethod]
+        public void FindWithName2Results()
+        {
+            Product p1 = new Product()
+            {
+                Name = "p1",
+            };
+            Product p2 = new Product()
+            {
+                Name = "p1",
+            };
+            Product p3 = new Product()
+            {
+                Name = "p3",
+            };
+            IEnumerable<Product> allProducts = new List<Product>() { p1, p2, p3 };
+            IEnumerable<Product> products = new List<Product>() { p1, p2 };
+            ProductMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(allProducts);
+
+            IEnumerable<Product> actual = ProductLogic.FindByCondition("1", null, null);
+            IEnumerable<Product> expected = products;
+
+            for (int i = 0; i < expected.Count(); i++)
+            {
+                Assert.AreEqual(expected.ElementAt(i).Name, actual.ElementAt(i).Name);
+            }
+        }
+
+        [TestMethod]
+        public void FindWithNameAndCategory1Result()
+        {
+            Product p1 = new Product()
+            {
+                Name = "p1",
+                Category = "cat1"
+            };
+            Product p2 = new Product()
+            {
+                Name = "p1",
+                Category = "cat2"
+            };
+            Product p3 = new Product()
+            {
+                Name = "p3",
+            };
+            IEnumerable<Product> allProducts = new List<Product>() { p1, p2, p3 };
+            IEnumerable<Product> products = new List<Product>() { p1 };
+            ProductMock.Setup(m => m.FindByCondition(It.IsAny<Expression<Func<Product, bool>>>())).Returns(allProducts);
+
+            IEnumerable<Product> actual = ProductLogic.FindByCondition("p1", null, "cat1");
             IEnumerable<Product> expected = products;
 
             for (int i = 0; i < expected.Count(); i++)

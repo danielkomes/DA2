@@ -3,6 +3,7 @@ using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebApi.Controllers;
+using WebApi.Models.In;
 using WebApi.Models.Out;
 
 namespace WebApi.Test
@@ -94,9 +95,9 @@ namespace WebApi.Test
                 new ProductModelOut(p2),
             };
             ProductMock.Setup(m => m.FindByCondition("p1", null, null)).Returns(products);
+            ProductFilterModelIn filter = new ProductFilterModelIn(name: "p1");
 
-
-            IActionResult actual = ProductController.GetAll("p1");
+            IActionResult actual = ProductController.GetAll(filter);
             IActionResult expected = new OkObjectResult(productModels);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -133,9 +134,49 @@ namespace WebApi.Test
                 new ProductModelOut(p2),
             };
             ProductMock.Setup(m => m.FindByCondition("1", null, null)).Returns(products);
+            ProductFilterModelIn filter = new ProductFilterModelIn(name: "1");
 
+            IActionResult actual = ProductController.GetAll(filter);
+            IActionResult expected = new OkObjectResult(productModels);
 
-            IActionResult actual = ProductController.GetAll("1");
+            Assert.AreEqual(expected.GetType(), actual.GetType());
+            OkObjectResult actualOk = actual as OkObjectResult;
+            IEnumerable<ProductModelOut> actualModels = actualOk.Value as IEnumerable<ProductModelOut>;
+            OkObjectResult expectedOk = expected as OkObjectResult;
+            IEnumerable<ProductModelOut> expectedModels = expectedOk.Value as IEnumerable<ProductModelOut>;
+            for (int i = 0; i < productModels.Count(); i++)
+            {
+                Assert.AreEqual(expectedModels.ElementAt(i).Name, actualModels.ElementAt(i).Name);
+                Assert.AreEqual(expectedModels.ElementAt(i).Description, actualModels.ElementAt(i).Description);
+            }
+        }
+
+        [TestMethod]
+        public void GetProductsByNameAndCategoryOk()
+        {
+            Product p1 = new Product()
+            {
+                Name = "p1",
+                Category = "cat1"
+            };
+            Product p2 = new Product()
+            {
+                Name = "p1",
+                Category = "cat2"
+            };
+            Product p3 = new Product()
+            {
+                Name = "p2"
+            };
+            IEnumerable<Product> products = new List<Product> { p1, p2, p3 };
+            IEnumerable<ProductModelOut> productModels = new List<ProductModelOut>
+            {
+                new ProductModelOut(p1),
+            };
+            ProductMock.Setup(m => m.FindByCondition("p1", null, "cat1")).Returns(products);
+            ProductFilterModelIn filter = new ProductFilterModelIn(name: "p1", category: "cat1");
+
+            IActionResult actual = ProductController.GetAll(filter);
             IActionResult expected = new OkObjectResult(productModels);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
@@ -171,10 +212,10 @@ namespace WebApi.Test
                 new ProductModelOut(p1),
                 new ProductModelOut(p2),
             };
-            ProductMock.Setup(m => m.FindByCondition("product1", null, null)).Returns(new List<Product>());
+            ProductMock.Setup(m => m.FindByCondition("non-matching product", null, null)).Returns(new List<Product>());
+            ProductFilterModelIn filter = new ProductFilterModelIn(name: "non-matching product");
 
-
-            IActionResult actual = ProductController.GetAll("product1");
+            IActionResult actual = ProductController.GetAll(filter);
             IActionResult expected = new OkObjectResult(new List<ProductModelOut>());
 
             Assert.AreEqual(expected.GetType(), actual.GetType());

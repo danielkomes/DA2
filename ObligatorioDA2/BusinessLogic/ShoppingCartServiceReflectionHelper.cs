@@ -1,6 +1,6 @@
 ﻿using IBusinessLogic;
+using IImporters;
 using IImportersServices;
-using Importers;
 using PromotionInterface;
 
 namespace BusinessLogic

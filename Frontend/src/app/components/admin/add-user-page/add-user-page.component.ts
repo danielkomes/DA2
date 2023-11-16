@@ -55,11 +55,13 @@ export class AddUserPageComponent {
     };
 
     // Define the HTTP headers if needed (e.g., for authentication)
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `${localStorage.getItem('token')}`);
 
     // Make the POST request
     this.http
-      .post(`${environment.API_HOST}${endpoints.signup}`, postData, {
+      .post(`${environment.API_HOST}${endpoints.users}`, postData, {
         headers,
       })
       .subscribe(
