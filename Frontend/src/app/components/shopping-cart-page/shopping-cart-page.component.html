@@ -1,0 +1,47 @@
+<section class="vh-100%" style="background-color: #fdccbc;">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <p><span class="h2">Shopping Cart </span><span class="h4">({{productCount}}
+                        {{productsInCartText}})</span></p>
+                <div class="card mb-5">
+                    <div class="card-body p-4">
+                        <div *ngFor="let product of products">
+                            <app-product [receivedProduct]="product" [showRemoveFromCartButton]="true"
+                                (OnRemoveFromCart)="getCart()"
+                                (OnAddOrRemoveFromCart)="onProductCountChanged()"></app-product>
+                        </div>
+                        <div class="float-end">
+                            <p class="mb-0 me-5 d-flex align-items-center">
+                                <span class="small text-muted me-2">Promotion applied: </span> <span
+                                    class="lead fw-normal">{{promotionApplied}}</span>
+                            </p>
+                            <p class="mb-0 me-5 d-flex align-items-center">
+                                <span class="small text-muted me-2">Order total: </span> <span
+                                    class="lead fw-normal">{{totalPrice}}</span>
+                            </p>
+
+
+                            <p class="mb-0 me-5 d-flex align-items-center">
+                                <span class="small text-muted me-2">Payment method: </span>
+                                <select name="cars" id="cars" [(ngModel)]="paymentMethodValue" (change)="getCart()">
+                                    <option *ngFor="let method of paymentMethods" [value]="method">{{ method }}</option>
+                                </select>
+                            </p>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <!-- <button type="button" class="btn btn-light btn-lg me-2">Continue shopping</button> -->
+                <button [disabled]="productCount==0" type="button" class="btn btn-primary btn-lg"
+                    (click)="doPurchase()">Confirm
+                    purchase</button>
+            </div>
+
+        </div>
+    </div>
+</section>

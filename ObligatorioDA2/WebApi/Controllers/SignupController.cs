@@ -1,5 +1,4 @@
-﻿using Domain;
-using IDataAccess;
+﻿using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
 using WebApi.Models.In;
@@ -11,25 +10,17 @@ namespace WebApi.Controllers
     [ExceptionFilter]
     public class SignupController : ControllerBase
     {
-        private readonly IService<User> UserService;
-        public SignupController(IService<User> userService)
+        private readonly ISignupLogic SignupLogic;
+        public SignupController(ISignupLogic signupLogic)
         {
-            UserService = userService;
+            SignupLogic = signupLogic;
         }
 
         [HttpPost]
-        public IActionResult Signup([FromBody] UserModelIn modelIn)
+        public IActionResult Signup([FromBody] UserModelInForCustomers modelIn)
         {
-            bool exists = UserService.Exists(modelIn.ToEntity());
-            if (!exists)
-            {
-                UserService.Add(modelIn.ToEntity());
-                return Created(modelIn.Email, "User created");
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
-            }
+            SignupLogic.Signup(modelIn.ToEntity());
+            return Created(modelIn.Email, modelIn);
         }
     }
 }

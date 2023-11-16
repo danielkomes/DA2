@@ -1,7 +1,5 @@
-﻿using DataAccess.Exceptions;
-using Domain;
+﻿using Domain;
 using IBusinessLogic;
-using IDataAccess;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Filters;
 using WebApi.Models.In;
@@ -14,12 +12,10 @@ namespace WebApi.Controllers
     [ExceptionFilter]
     public class UserController : ControllerBase
     {
-        private readonly IService<User> UserService;
-        private readonly ISessionLogic SessionLogic;
-        public UserController(IService<User> userService, ISessionLogic sessionLogic)
+        private readonly IUserLogic UserLogic;
+        public UserController(IUserLogic userLogic)
         {
-            UserService = userService;
-            SessionLogic = sessionLogic;
+            UserLogic = userLogic;
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]
@@ -27,11 +23,11 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            IEnumerable<UserModelOut> models = new List<UserModelOut>();
-            IEnumerable<User> users = UserService.GetAll();
+            IEnumerable<User> users = UserLogic.GetAll();
+            IEnumerable<UserModelOutForAdmins> models = new List<UserModelOutForAdmins>();
             foreach (User user in users)
             {
-                UserModelOut model = new UserModelOut(user);
+                UserModelOutForAdmins model = new UserModelOutForAdmins(user);
                 models = models.Append(model);
             }
             return Ok(models);
@@ -41,98 +37,25 @@ namespace WebApi.Controllers
         [HttpGet("{email}")]
         public IActionResult Get([FromRoute] string email)
         {
-            User u = new User()
-            {
-                Email = email
-            };
-
-            User current = SessionLogic.GetCurrentUser();
-            if (current.Roles.Contains(EUserRole.Admin)) //is admin
-            {
-                User user = UserService.Get(u);
-                UserModelOut model = new UserModelOut(user);
-                return Ok(model);
-            }
-            else //is not admin
-            {
-                try
-                {
-                    User user = UserService.Get(u);
-                    if (user.Id != current.Id) //is not their own profile
-                    {
-                        return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
-                    }
-                    else
-                    {
-                        return Ok(new UserModelOut(user)); //is their profile
-                    }
-
-                }
-                catch (ResourceNotFoundException) //not found
-                {
-                    return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
-                }
-            }
+            User user = UserLogic.Get(email);
+            UserModelOutForCustomers model = new UserModelOutForCustomers(user);
+            return Ok(model);
         }
 
         [AuthorizationFilter(RoleNeeded = EUserRole.Admin)]
         [HttpPost]
-        public IActionResult Post([FromBody] UserModelIn modelIn)
+        public IActionResult Post([FromBody] UserModelInForAdmins modelIn)
         {
-            bool exists = UserService.Exists(modelIn.ToEntity());
-
-            if (!exists)
-            {
-                UserService.Add(modelIn.ToEntity());
-                return Created(modelIn.Email, "User created");
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
-            }
+            UserLogic.Add(modelIn.ToEntity());
+            return Created(modelIn.Email, modelIn);
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]
         [HttpPut("{email}")]
-        public IActionResult Put([FromRoute] string email, [FromBody] UserModelIn modelIn)
+        public IActionResult Put([FromRoute] string email, [FromBody] UserModelInForCustomers modelIn)
         {
-            User current = SessionLogic.GetCurrentUser();
-            User newUser = modelIn.ToEntity();
-            bool exists = UserService.Exists(newUser);
-            User oldUser = new User()
-            {
-                Email = email
-            };
-            if (current.Roles.Contains(EUserRole.Admin)) //is admin
-            {
-                oldUser = UserService.Get(oldUser);
-                newUser.Id = oldUser.Id;
-                if (exists) return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
-                UserService.Update(newUser);
-                return Ok("User modified");
-            }
-            else //is not admin 
-            {
-                try
-                {
-                    oldUser = UserService.Get(oldUser);
-                    if (current.Id != oldUser.Id) //it's not their profile
-                    {
-                        return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
-                    }
-                    else //it's their own profile
-                    {
-                        if (exists) return StatusCode(StatusCodes.Status403Forbidden, "Email already exists");
-                        newUser.Id = oldUser.Id;
-                        UserService.Update(newUser);
-                        return Ok("User modified");
-                    }
-                }
-                catch (ResourceNotFoundException) //the other profile does not exist
-                {
-                    return StatusCode(StatusCodes.Status403Forbidden, "Profile mismatch");
-                }
-            }
+            UserLogic.Update(email, modelIn.ToEntity());
+            return Ok();
         }
 
         [ServiceFilter(typeof(AuthenticationFilter))]
@@ -140,9 +63,8 @@ namespace WebApi.Controllers
         [HttpDelete("{email}")]
         public IActionResult Delete([FromRoute] string email)
         {
-            User user = new User() { Email = email };
-            UserService.Delete(user);
-            return Ok("User deleted");
+            UserLogic.Delete(email);
+            return Ok();
         }
     }
 }

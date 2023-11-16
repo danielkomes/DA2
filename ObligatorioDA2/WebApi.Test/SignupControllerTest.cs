@@ -1,5 +1,5 @@
 ﻿using Domain;
-using IDataAccess;
+using IBusinessLogic;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using WebApi.Controllers;
@@ -10,60 +10,41 @@ namespace WebApi.Test
     [TestClass]
     public class SignupControllerTest
     {
+        private Mock<ISignupLogic> SignupMock { get; set; }
+        private SignupController SignupController { get; set; }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            SignupMock = new Mock<ISignupLogic>(MockBehavior.Strict);
+            SignupController = new SignupController(SignupMock.Object);
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            SignupMock.VerifyAll();
+        }
+
         [TestMethod]
         public void SignupOk()
         {
             Guid token = new Guid();
-            UserModelIn model = new UserModelIn()
+            UserModelInForCustomers model = new UserModelInForCustomers()
             {
                 Email = "user@test.com",
                 Address = "user address"
             };
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            SignupController signupController = new SignupController(userMock.Object);
-            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(false);
-            userMock.Setup(m => m.Add(It.IsAny<User>()));
+            SignupMock.Setup(m => m.Signup(It.IsAny<User>()));
 
-            var expectedObject = new
-            {
-                result = "Logged in",
-                token = token
-            };
-            IActionResult actual = signupController.Signup(model);
-            IActionResult expected = new CreatedResult(model.Email, "User created");
+            IActionResult actual = SignupController.Signup(model);
+            IActionResult expected = new CreatedResult(model.Email, model);
 
             Assert.AreEqual(expected.GetType(), actual.GetType());
             CreatedResult actualOk = actual as CreatedResult;
             CreatedResult expectedOk = expected as CreatedResult;
             Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            userMock.VerifyAll();
-        }
-        [TestMethod]
-        public void SignupEmailAlreadyExists()
-        {
-            Guid token = new Guid();
-            UserModelIn model = new UserModelIn()
-            {
-                Email = "user@test.com",
-                Address = "user address"
-            };
-            var userMock = new Mock<IService<User>>(MockBehavior.Strict);
-            SignupController signupController = new SignupController(userMock.Object);
-            userMock.Setup(m => m.Exists(It.IsAny<User>())).Returns(true);
-
-            var expectedObject = new
-            {
-                result = "Logged in",
-                token = token
-            };
-            IActionResult actual = signupController.Signup(model);
-            IActionResult expected = new ObjectResult("Email already exists");
-
-            Assert.AreEqual(expected.GetType(), actual.GetType());
-            ObjectResult actualOk = actual as ObjectResult;
-            ObjectResult expectedOk = expected as ObjectResult;
-            Assert.AreEqual(expectedOk.Value.ToString(), actualOk.Value.ToString());
-            userMock.VerifyAll();
+            SignupMock.VerifyAll();
         }
     }
 }
