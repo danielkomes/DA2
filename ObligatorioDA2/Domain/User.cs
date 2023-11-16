@@ -1,6 +1,4 @@
-﻿using Domain.PaymentMethods.BaseClasses;
-
-namespace Domain
+﻿namespace Domain
 {
     public class User
     {

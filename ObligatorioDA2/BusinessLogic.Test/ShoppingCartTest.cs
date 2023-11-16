@@ -1,10 +1,7 @@
-﻿using DataAccess.Exceptions;
-using Domain;
+﻿using Domain;
 using Domain.PaymentMethods;
-using Domain.PaymentMethods.BaseClasses;
 using Domain.PaymentMethods.CreditCards;
 using IBusinessLogic;
-using IDataAccess;
 using Moq;
 using Promotions;
 

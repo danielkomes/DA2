@@ -16,7 +16,7 @@ namespace BusinessLogic
 
         public void Signup(User user)
         {
-            if(UserService.Exists(user))
+            if (UserService.Exists(user))
             {
                 throw new EntityAlreadyExistsException("Email already exists");
             }

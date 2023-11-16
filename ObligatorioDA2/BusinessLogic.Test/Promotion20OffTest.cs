@@ -1,7 +1,5 @@
 using Domain;
 using IBusinessLogic;
-using IDataAccess;
-using Moq;
 using Promotions;
 
 namespace BusinessLogic.Test
